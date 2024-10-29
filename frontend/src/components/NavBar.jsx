@@ -41,7 +41,7 @@ function NavBar() {
                 </div>
                 <div className="btn">
                     <Link to="/dashboard"><button type="button" className="btn btn-primary pr-5 dash">Dashboard</button></Link> 
-                    <Link to="/register"><button type="button" className="btn btn-primary mx-auto ml-8 login">Login</button></Link> 
+                    <Link to="/login"><button type="button" className="btn btn-primary mx-auto ml-8 login">Login</button></Link> 
                 </div>
             </div>
             {/* <div className="subhead">
