@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../utils';
+
 function Register() {
     
     const [firstName, setFirstname] = useState("");
@@ -20,7 +22,7 @@ function Register() {
         formData.append('password',password)
 
         try {
-            const response = await axios.post('http://localhost:4000/api/users/register', formData, {
+            const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
                 headers:{
                     "Content-Type":"application/json"
                 }

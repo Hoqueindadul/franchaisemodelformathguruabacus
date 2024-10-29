@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../utils';
+
 function Login() {
     
     const [email, setEmail] = useState("");
@@ -17,7 +19,7 @@ function Login() {
         }
 
         try {
-            const response = await axios.post('http://localhost:4000/api/users/login', {email, password}, {
+            const response = await axios.post(`${BACKEND_URL}/api/users/login`, {email, password}, {
                 headers:{
                     "Content-Type":"application/json"
                 }

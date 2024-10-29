@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { BACKEND_URL } from '../utils';
 
 export const AuthContext = createContext();
 
@@ -10,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get('http://localhost:4000/api/users/all-users');
+        const { data } = await axios.get(`${BACKEND_URL}/api/users/all-users`);
         setUser(data); // Assuming data contains user information
         setIsAuthenticated(true)
       } catch (error) {
