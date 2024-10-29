@@ -19,11 +19,10 @@ const port = process.env.PORT
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-
-    origin: "http://localhost:5173",
+    origin: "https://franchaisemodelformathguruabacus.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-}))
+}));
 app.use(express.urlencoded())
 // app.use(fileUpload({
 //     useTempFiles:true,
