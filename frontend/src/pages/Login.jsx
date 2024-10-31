@@ -1,25 +1,38 @@
 
 import { useAuth } from '../context/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils';
+import { LOCAL_BACKEND_URL } from '../local_backend_url';
 
 function Login() {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate()
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     const handleLogin = async(e) => {
         e.preventDefault()
         
-        if(!email || !password){
+        if(!email && !password){
             toast.error("Please fill the required field")
+        }
+        else{
+            if(!password){
+                toast.error("Please enter your password")
+            }
+            if(!email){
+                toast.error("Please enter your email")
+            }
         }
 
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/users/login`, {email, password}, {
+            // const response = await axios.post(`${BACKEND_URL}/api/users/login`, {email, password}, {
+            const response = await axios.post(`${LOCAL_BACKEND_URL || BACKEND_URL}/api/users/login`, {email, password}, {
                 headers:{
                     "Content-Type":"application/json"
                 }
@@ -36,6 +49,7 @@ function Login() {
             
         } catch (error) {
             console.log(error);
+            // toast.error("Error occuring! please try agian.")
             
         }
     }
@@ -78,8 +92,7 @@ function Login() {
                                             type="email"
                                             className="form-control p_lg"
                                             id="login-email"
-                                            name="email"
-                                            required
+                                            name="email"    
                                             placeholder="Email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
@@ -91,7 +104,6 @@ function Login() {
                                             className="form-control p_lg"
                                             id="login-password"
                                             name="password"
-                                            required
                                             placeholder="Password"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}

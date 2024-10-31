@@ -13,16 +13,24 @@ dotenv.config()
 
 const mongo_url = process.env.MONGODB_URI
 const port = process.env.PORT
+const localFrontendUrl = process.env.FRONTEND_URL_LOCAL || "http://localhost:5173"
+const deploymentFrontendUrl = process.env.FRONTEND_URL || "https://franchaisemodelformathguruabacus.vercel.app"
 
 
 // middleware
 app.use(cookieParser())
 app.use(express.json())
-app.use(cors({
-    origin: "https://franchaisemodelformathguruabacus.vercel.app",
+// {app.use(cors({
+//     origin: "https://franchaisemodelformathguruabacus.vercel.app",
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+// }));}
+{app.use(cors({
+    origin: [localFrontendUrl, deploymentFrontendUrl],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-}));
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));}
 app.use(express.urlencoded())
 // app.use(fileUpload({
 //     useTempFiles:true,

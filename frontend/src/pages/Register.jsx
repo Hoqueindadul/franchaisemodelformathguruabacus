@@ -1,10 +1,11 @@
 
 import { useAuth } from '../context/AuthProvider';
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Link, useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils';
+import { LOCAL_BACKEND_URL } from '../local_backend_url';
 
 function Register() {
     
@@ -12,6 +13,11 @@ function Register() {
     const [lastName, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     
     const handleRegister = async(e) => {
         e.preventDefault()
@@ -22,7 +28,7 @@ function Register() {
         formData.append('password',password)
 
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
+            const response = await axios.post(`${LOCAL_BACKEND_URL || BACKEND_URL}/api/users/register`, formData, {
                 headers:{
                     "Content-Type":"application/json"
                 }
@@ -33,6 +39,10 @@ function Register() {
             setLastname("")
             setEmail("")
             setPassword("")
+
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000);
             
         } catch (error) {
             console.log(error);
