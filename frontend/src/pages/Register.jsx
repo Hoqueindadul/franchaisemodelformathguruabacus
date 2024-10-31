@@ -6,8 +6,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
-const isProduction = process.env.NODE_ENV === 'production';
-const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
+
 
 function Register() {
     
@@ -32,7 +31,7 @@ function Register() {
         formData.append('password',password)
 
         try {
-            const response = await axios.post(`${BASE_URL}/api/users/register`, formData, {
+            const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
                 headers:{
                     "Content-Type":"application/json"
                 }
