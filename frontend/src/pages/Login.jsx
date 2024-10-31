@@ -7,6 +7,9 @@ import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
 
+const isProduction = process.env.NODE_ENV === 'production';
+const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
+
 function Login() {
     
     const [email, setEmail] = useState("");
@@ -32,7 +35,7 @@ function Login() {
 
         try {
             // const response = await axios.post(`${BACKEND_URL}/api/users/login`, {email, password}, {
-            const response = await axios.post(`${LOCAL_BACKEND_URL || BACKEND_URL}/api/users/login`, {email, password}, {
+            const response = await axios.post(`${BASE_URL}/api/users/login`, {email, password}, {
                 headers:{
                     "Content-Type":"application/json"
                 }
