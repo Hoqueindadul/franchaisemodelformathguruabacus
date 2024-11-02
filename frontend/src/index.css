@@ -128,8 +128,13 @@ body {
     align-items: center;
     margin: auto;
     gap: 1.5rem;
-
 }
+@media (max-width: 550px){
+    
+}
+
+
+
 
 /* About Us page design start*/
 /* page banner start */
@@ -292,13 +297,77 @@ body {
 
 /* Home page design start */
 /* slider style */
+
+/* General Slider Styling */
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Image Styling */
 .slider img {
     width: 100%;
-    /* Ensures the image takes the full width of the carousel */
-    height: 400px;
-    /* Set the desired height */
-    object-fit: cover;
+    height: 80vh; /* Set a height for desktop view */
+    object-fit: cover; /* Cover the entire slider area without stretching */
 }
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .slider img {
+        height: 60vh; /* Adjust height for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .slider img {
+        height: 50vh; /* Adjust for mobile screens */
+    }
+}
+
+/* Caption Styling */
+.carousel-caption {
+    bottom: 20%;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+.slider-heading {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.slider-desc {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Responsive Caption Text */
+@media (max-width: 1024px) {
+    .slider-heading {
+        font-size: 1.5rem;
+    }
+
+    .slider-desc {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-caption {
+        bottom: 15%; /* Position captions higher on smaller screens */
+    }
+
+    .slider-heading {
+        font-size: 1.2rem;
+    }
+
+    .slider-desc {
+        font-size: 0.8rem;
+    }
+}
+
 
 /* Features style */
 .feature {

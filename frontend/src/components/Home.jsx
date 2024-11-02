@@ -5,43 +5,44 @@ function Home() {
     return (
         <>
             <div className="slider">
-                <Carousel>
-                    <Carousel.Item interval={1000}>
-                        <img
-                            className="d-block w-100"
-                            src="about1.jpg"
-                            alt="First slide"
-                        />
-                        <Carousel.Caption>
-                            <h3>Best Online Learning Platform</h3>
-                            <p>Make Your Free Account & Get Discounts</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+            <Carousel>
+    <Carousel.Item interval={2000} fade>
+        <img
+            className="d-block w-100"
+            src="/carousel-2.jpg"  // Ensure this path is correct
+            alt="Best Online Learning Platform"
+        />
+        <Carousel.Caption>
+            <h3 className="slider-heading">Best Online Learning Platform</h3>
+            <p className="slider-desc">Make Your Free Account & Get Discounts</p>
+        </Carousel.Caption>
+    </Carousel.Item>
 
-                    <Carousel.Item interval={1000}>
-                        <img
-                            className="d-block w-100"
-                            src="about2.jpg"
-                            alt="Second slide"
-                        />
-                        <Carousel.Caption>
-                            <h3>Second slide label</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
+    <Carousel.Item interval={1000}>
+        <img
+            className="d-block w-100"
+            src="/appointment.jpg"  // Ensure this path is correct
+            alt="Master the Art of Abacus"
+        />
+        <Carousel.Caption>
+            <h3 className="slider-heading">Master the Art of Abacus</h3>
+            <p className="slider-desc">Experience personalized learning and achieve math fluency with MathGuru Abacus.</p>
+        </Carousel.Caption>
+    </Carousel.Item>
 
-                    <Carousel.Item>
-                        <img
-                            className="d-block w-100"
-                            src="about3.jpg"
-                            alt="Third slide"
-                        />
-                        <Carousel.Caption>
-                            <h3>Third slide label</h3>
-                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>
+    <Carousel.Item>
+        <img
+            className="d-block w-100"
+            src="/about-6.jpg"  // Ensure this path is correct
+            alt="Interactive and Fun Learning"
+        />
+        <Carousel.Caption>
+            <h3 className="slider-heading">Interactive and Fun Learning</h3>
+            <p className="slider-desc">Engage with interactive lessons designed for children and adults alike.</p>
+        </Carousel.Caption>
+    </Carousel.Item>
+</Carousel>
+
             </div>
 
             {/* Slider end */}
