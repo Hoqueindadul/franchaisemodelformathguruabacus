@@ -31,7 +31,7 @@ function NavBar() {
                         <span className="icon-phone mr-2"><i class="fa-solid fa-phone"></i></span>
                         <span className="d-none d-md-inline-block">+1 234 4567 8910</span>
                     </a> */}
-                    <Link to="/"><img src="./logo.png" style={{ width: 65, height: 65 }} alt="logo" /></Link>
+                    <Link to="/" className='logo'><img src="./logo.png" style={{ width: 75, height: 70 }} alt="logo" /></Link>
                 </div>
                 <div className="icons">
                     <Link to="/home" className="iconimage"> <FaFacebook /> </Link>
@@ -51,7 +51,7 @@ function NavBar() {
             </div> */}
             <div className="mainabar navbar-container">
                 <Navbar expand="lg" className="navbar-custom">
-                    <Container fluid     >
+                    <Container fluid>
                         <Navbar.Toggle aria-controls="navbarScroll" />
                         <Navbar.Collapse id="navbarScroll">
                             <Nav
