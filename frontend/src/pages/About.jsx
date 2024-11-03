@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 function About() {
@@ -39,7 +39,7 @@ function About() {
                             {/* About description start */}
 
                             <div className='heading mb-16'>
-                                <h6 className="color-primary mb-8">----About Us</h6>
+                                <h6 className="color-primary about-tittle mb-8">---About Us</h6>
                                 <h2>Building a Digital Learning <span className='fm-sec'>Ecosystem</span></h2>
                             </div>
                             <p className="mb-32">
@@ -55,7 +55,7 @@ function About() {
                                 </div>
                                 <div className="about_card_content">
                                     <h5 className="mb-4p">Leatest Course</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur voluptate necessitatibus, odit voluptatem beatae, labore ex nulla dolores eligendi harum voluptatum dolore ad!</p>
+                                    <p>Our latest courses are designed to provide an engaging and effective approach to mastering essential mathematical skills for learners of all levels.</p>
                                 </div>
                             </div>
 
@@ -65,8 +65,8 @@ function About() {
                                     <img src="/WiFi.png" alt="" />
                                 </div>
                                 <div className="about_card_content">
-                                    <h5 className="mb-4p">Leatest Course</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur voluptate necessitatibus, odit voluptatem beatae, labore ex nulla dolores eligendi harum voluptatum dolore ad!</p>
+                                    <h5 className="mb-4p">Interactive Learning</h5>
+                                    <p>Our unique and extremely interactive approach for the overall mental development of children.</p>
                                 </div>
                             </div>
 
@@ -76,8 +76,8 @@ function About() {
                                     <img src="/star.png" alt="" />
                                 </div>
                                 <div className="about_card_content">
-                                    <h5 className="mb-4p">Leatest Course</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur voluptate necessitatibus, odit voluptatem beatae, labore ex nulla dolores eligendi harum voluptatum dolore ad!</p>
+                                    <h5 className="mb-4p">Modern Teaching Methods</h5>
+                                    <p>We standardize and modernize the teachers' training to ensure the best learning experience.</p>
                                 </div>
                             </div>
                         </div>

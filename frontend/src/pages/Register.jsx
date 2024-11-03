@@ -6,6 +6,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
+import { FaAngleRight } from "react-icons/fa6";
+
 
 
 function Register() {
@@ -63,11 +65,11 @@ function Register() {
                         <div className="form_block">
                             <div className="text_block">
                                 <Link to="/" className="educate_link_btn color-primary h6 mb-48">
-                                    <i className="fa-solid fa-chevron-left"></i> Back To Home
+                                <FaAngleRight /> Back To Home
                                 </Link>
                                 <div className="title">
                                     <img src="/mic-speaker.png" alt="speaker icon" className="speaker_icon" />
-                                    <h2 className="mb-48">Create an account</h2>
+                                    <h2 className="mb-48 reg-heading">Create an account</h2>
                                 </div>
                                 <form onSubmit={handleRegister} className="form-validator">
                                     <div className="row">

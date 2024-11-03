@@ -61,7 +61,7 @@ function Home() {
                                 </div>
                                 <div className="feature-content">
                                     <h5 className="mb-8">Free Trials</h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae voluptatem delectus vitae?</p>
+                                    <p>Explore all the benefits with our exclusive free trial. Sign up now for advanced features, and expert support without any commitment.</p>
                                     <img src="/feture-bg-shape.png" alt="" className='feature-bg-shape' />
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ function Home() {
                                 </div>
                                 <div className="feature-content">
                                     <h5 className="mb-8">Lifetime Access</h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae voluptatem delectus vitae?</p>
+                                    <p>Forever access to all premium features, and Unrestricted benefits for all time, without renewals or additional costs.</p>
                                     <img src="/feture-bg-shape.png" alt="" />
                                 </div>
                             </div>
@@ -89,7 +89,7 @@ function Home() {
                                 </div>
                                 <div className="feature-content">
                                     <h5 className="mb-8">Best Teachers</h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae voluptatem delectus vitae?</p>
+                                    <p>Through our courses, you can get in touch with outstanding teachers who are enthusiastic about teaching.</p>
                                     <img src="/feture-bg-shape.png" alt="" />
                                 </div>
                             </div>
@@ -103,7 +103,7 @@ function Home() {
                                 </div>
                                 <div className="feature-content">
                                     <h5 className="mb-8">24/7 Support</h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae voluptatem delectus vitae?</p>
+                                    <p>Our dedicated support team is available here to assist you. Whether you have questions, need guidance, or any issue, drop a message.</p>
                                     <img src="/feture-bg-shape.png" alt="" />
                                 </div>
                             </div>
@@ -124,7 +124,7 @@ function Home() {
                             {/* About description start */}
 
                             <div className='heading mb-16'>
-                                <h6 className="color-primary mb-8">----About Us</h6>
+                                <h6 className="color-primary about-tittle mb-8">----About Us</h6>
                                 <h2>Building a Digital Learning <span className='fm-sec'>Ecosystem</span></h2>
                             </div>
                             <p className="mb-32">
@@ -140,7 +140,7 @@ function Home() {
                                 </div>
                                 <div className="about_card_content">
                                     <h5 className="mb-4p">Leatest Course</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur voluptate necessitatibus, odit voluptatem beatae, labore ex nulla dolores eligendi harum voluptatum dolore ad!</p>
+                                    <p>Our latest courses are designed to provide an engaging and effective approach to mastering essential mathematical skills for learners of all levels.</p>
                                 </div>
                             </div>
 
@@ -150,8 +150,8 @@ function Home() {
                                     <img src="/WiFi.png" alt="" />
                                 </div>
                                 <div className="about_card_content">
-                                    <h5 className="mb-4p">Leatest Course</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur voluptate necessitatibus, odit voluptatem beatae, labore ex nulla dolores eligendi harum voluptatum dolore ad!</p>
+                                <h5 className="mb-4p">Interactive Learning</h5>
+                                <p>Our unique and extremely interactive approach for the overall mental development of children.</p>
                                 </div>
                             </div>
 

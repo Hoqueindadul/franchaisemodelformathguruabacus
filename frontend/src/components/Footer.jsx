@@ -1,6 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
+import { FaAngleRight } from "react-icons/fa6";
+import { FaFacebook } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaTwitterSquare } from "react-icons/fa";
+
+
 function Footer() {
     return (
         <>
@@ -28,13 +35,14 @@ function Footer() {
                                     <h5 className="medium-black mb-16">Quick Links</h5>
                                     <ul className="unstyled list">
                                         <li key="link1">
-                                            <Link to="#" className='items'><i class="fa-solid fa-chevron-right"></i> Join to Career</Link>
+                                            <Link to="#" className='items'><FaAngleRight />
+                                                Join to Career</Link>
                                         </li>
                                         <li key="link2">
-                                            <Link to="#" className='items'><i class="fa-solid fa-chevron-right"></i> Contact Us</Link>
+                                            <Link to="#" className='items'><FaAngleRight /> Contact Us</Link>
                                         </li>
                                         <li key="link3">
-                                            <Link to="#" className='items'><i class="fa-solid fa-chevron-right"></i> About Us</Link>
+                                            <Link to="#" className='items'><FaAngleRight /> About Us</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -46,13 +54,13 @@ function Footer() {
                                     <h5 className="medium-black mb-16">Explore</h5>
                                     <ul className="unstyled list">
                                         <li key="link4">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Privacy Policy</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Privacy Policy</Link>
                                         </li>
                                         <li key="link5">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Terms & Conditions</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Terms & Conditions</Link>
                                         </li>
                                         <li key="link6">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>FAQ</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> FAQ</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -64,13 +72,13 @@ function Footer() {
                                     <h5 className="medium-black mb-16">Information</h5>
                                     <ul className="unstyled list">
                                         <li key="link7">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Blog</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Blog</Link>
                                         </li>
                                         <li key="link8">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Support</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Support</Link>
                                         </li>
                                         <li key="link9">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Help Center</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Help Center</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -82,13 +90,13 @@ function Footer() {
                                     <h5 className="medium-black mb-16">Contact Us</h5>
                                     <ul className="unstyled list">
                                         <li key="link10">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Careers</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Careers</Link>
                                         </li>
                                         <li key="link11">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Press</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Press</Link>
                                         </li>
                                         <li key="link12">
-                                            <Link to="#" className="items"><i class="fa-solid fa-chevron-right"></i>Partnerships</Link>
+                                            <Link to="#" className="items"><FaAngleRight /> Partnerships</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -98,24 +106,24 @@ function Footer() {
                         {/* Social Icons and Newsletter Section */}
                         <div className="bottom-row">
                             <ul className="unstyled social_icons_list">
-                                <li key="fb">
-                                    <Link to="/home" className="iconimage">
-                                        <i className="fa-brands fa-facebook"></i>
+                                <li key="fb" className="soci-icon">
+                                    <Link to="https://www.facebook.com/" className="footer-iconimage">
+                                        <FaFacebook style={{ color: '#2698c3', fontSize: '35px', transition: 'color 0.3s ease' }} />
                                     </Link>
                                 </li>
-                                <li key="yt">
-                                    <Link to="/home" className="iconimage">
-                                        <i className="fa-brands fa-youtube"></i>
+                                <li key="yt" className="soci-icon">
+                                    <Link to="https://www.instagram.com/" className="footer-iconimage">
+                                        <FaInstagram style={{ color: '#2698c3', fontSize: '35px', transition: 'color 0.3s ease' }} />
                                     </Link>
                                 </li>
-                                <li key="ig">
-                                    <Link to="/home" className="iconimage">
-                                        <i className="fa-brands fa-instagram"></i>
+                                <li key="ig" className="soci-icon">
+                                    <Link to="https://www.youtube.com/" className="footer-iconimage">
+                                        <FaYoutube style={{ color: '#2698c3', fontSize: '38px', transition: 'color 0.3s ease' }} />
                                     </Link>
                                 </li>
-                                <li key="tw">
-                                    <Link to="/home" className="iconimage">
-                                        <i className="fa-brands fa-twitter"></i>
+                                <li key="tw" className="soci-icon">
+                                    <Link to="https://twitter.com/" className="footer-iconimage">
+                                        <FaTwitterSquare style={{ color: '#2698c3', fontSize: '33px', transition: 'color 0.3s ease' }} />
                                     </Link>
                                 </li>
                             </ul>

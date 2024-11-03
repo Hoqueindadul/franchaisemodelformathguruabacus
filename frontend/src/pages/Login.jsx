@@ -6,6 +6,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
+import { FaAngleRight } from "react-icons/fa6";
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
@@ -66,11 +68,11 @@ function Login() {
                         <div className="form_block">
                             <div className="text_block">
                                 <Link to="/" className="educate_link_btn color-primary h6 mb-48">
-                                <i class="fa-solid fa-chevron-left"></i> Back To Home
+                                <FaAngleRight /> Back To Home
                                 </Link>
                                 <div className="title">
                                     <img src="/mic-speaker.png" alt="speaker icon" className="speaker_icon" />
-                                    <h2 className="mb-48">Login To Your Account</h2>
+                                    <h2 className="mb-48 login-heading">Login To Your Account</h2>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-6">

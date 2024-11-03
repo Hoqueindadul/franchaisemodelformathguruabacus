@@ -19,9 +19,9 @@ function NavBar() {
     const [show, setShow] = useState(false);
 
     const toggleDropdown = () => setShow((prev) => !prev);
-  return (
-    <>
-        <div className="head">
+    return (
+        <>
+            <div className="head">
                 <div className="d-flex cont">
                     {/* <a href="#" className="d-flex align-items-center mr-4">
                         <span className="icon-envelope mr-2"><i class="fa-solid fa-envelope"></i></span>
@@ -34,14 +34,14 @@ function NavBar() {
                     <Link to="/" className='logo'><img src="./logo.png" style={{ width: 75, height: 70 }} alt="logo" /></Link>
                 </div>
                 <div className="icons">
-                    <Link to="/home" className="iconimage"> <FaFacebook /> </Link>
-                    <Link to="/home" className="iconimage"> <FaInstagram /> </Link>
-                    <Link to="/home" className="iconimage"> <FaYoutube /> </Link>
-                    <Link to="/home" className="iconimage"> <FaTwitterSquare /> </Link>
+                    <Link to="https://www.facebook.com/" className="iconimage"> <FaFacebook className='header-sodial-icon' /> </Link>
+                    <Link to="https://www.instagram.com/" className="iconimage"> <FaInstagram className='header-sodial-icon' /> </Link>
+                    <Link to="https://www.youtube.com/" className="iconimage"> <FaYoutube className='header-sodial-icon' /> </Link>
+                    <Link to="https://twitter.com/" className="iconimage"> <FaTwitterSquare className='header-sodial-icon' /> </Link>
                 </div>
                 <div className="btn">
-                    <Link to="/dashboard"><button type="button" className="btn btn-primary pr-5 dash">Dashboard</button></Link> 
-                    <Link to="/login"><button type="button" className="btn btn-primary mx-auto ml-8 login">Login</button></Link> 
+                    <Link to="/dashboard"><button type="button" className="btn btn-primary pr-5 dash">Dashboard</button></Link>
+                    <Link to="/login"><button type="button" className="btn btn-primary mx-auto ml-8 login">Login</button></Link>
                 </div>
             </div>
             {/* <div className="subhead">
@@ -103,8 +103,8 @@ function NavBar() {
                 </Navbar>
             </div>
 
-    </>
-  )
+        </>
+    )
 }
 
 export default NavBar
