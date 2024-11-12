@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import Carousel from 'react-bootstrap/Carousel';
+
+import { GoPeople } from "react-icons/go";
 
 function Home() {
     return (
