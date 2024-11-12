@@ -43,7 +43,9 @@ function About() {
                                 <h2>Building a Digital Learning <span className='fm-sec'>Ecosystem</span></h2>
                             </div>
                             <p className="mb-32">
-                                Abacus learning, an ancient method of mental mathematics, originated in Mesopotamia around 2500 BC. It involves using a physical or visual abacus tool to perform arithmetic calculations like addition, subtraction, multiplication, and division, optimizing brain growth, developing confidence, and fostering math enjoyment.
+                            "To say that the Abacus tool is merely used to calculate numbers would be a mistake"
+                                	Abacus learning is an ancient method of mental mathematics and calculation that originated  in Mesopotamia around 2500 BC . It involves using a physical abacus tool or visualizing one to perform arithmetic calculation, such as addition , Subtraction , multiplication and division .The Abacus and its derivative technique of Mental  Maths cater to the importance of optimizing  the growth of a human brain and its functions . Additionally the child develops confidence, masters arithmetic concepts, and starts enjoying math.
+
                             </p>
 
                             {/* About description start */}

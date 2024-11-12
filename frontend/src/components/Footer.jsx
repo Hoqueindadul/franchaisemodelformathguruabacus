@@ -24,7 +24,8 @@ function Footer() {
                                         <img src="/logo.png" alt="" />
                                     </Link>
                                     <p className="description_text">
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni fugit animi at.
+                                        From zero to hero, no need for speed,
+                                        MathGuru Abacus gives you all you need.
                                     </p>
                                 </div>
                             </div>
@@ -42,7 +43,7 @@ function Footer() {
                                             <Link to="#" className='items'><FaAngleRight /> Contact Us</Link>
                                         </li>
                                         <li key="link3">
-                                            <Link to="#" className='items'><FaAngleRight /> About Us</Link>
+                                            <Link to="/about" className='items'><FaAngleRight /> About Us</Link>
                                         </li>
                                     </ul>
                                 </div>
