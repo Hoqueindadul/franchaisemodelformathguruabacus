@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-
 import { GoPeople } from "react-icons/go";
 
 function Home() {
