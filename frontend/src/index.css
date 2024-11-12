@@ -136,7 +136,42 @@ body {
     gap: 1.5rem;
 }
 
-@media (max-width: 550px) {}
+
+}
+.home-section{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.opt{
+  width: 50px;
+}
+.form{
+  border: 2px solid #0aa6d7;
+  border-radius: 8px;
+  padding: 20px; 
+}
+.video-full{
+  border-radius: 8px;
+}
+.btn-pink{
+  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+}
+.limited-seat{
+  background-color: #f2f5f2 ;
+  padding: 6px;
+  border-radius: 4px;
+}
+.limited-seat span{
+  display: flex;
+  padding-left: 4px;
+}
+.ico{
+  margin: 0 5px;
+}
 
 
 
@@ -425,8 +460,7 @@ body {
 
 .feature-card .feature-content img {
     width: 100%;
-    border-radius: 10px;
-
+    border-radius: 2px;
     background-color: #fefcfb;
 }
 
@@ -616,6 +650,36 @@ body {
     gap: 36px;
 }
 
+
+.role{
+    border: 1px solid #e6dde6;
+    border-radius: 5px;
+    background-color: #fdfcfa;
+    color: #5b5b58;
+    outline: none;
+}
+option{
+    color: #7c7a7c;
+}
+.h6 {
+    font-size: 1rem;
+    font-weight: 800;
+}
+.reg-heading{
+    font-weight: 500;
+    color: #343f49;
+}
+.educate-btn__curve{
+    font-weight: 800;
+    color: #111213;
+}
+.color-primary{
+    text-decoration: none;
+    font-weight: 800;
+}
+.account{
+    font-weight: 800;
+}
 /* Regestration page design end */
 
 /* Contact page start */
@@ -641,23 +705,6 @@ body {
     }
 }
 
-.popup {
-    position: fixed;
-    top: 85px;
-    left: 50%;
-    width: 18%;
-    transform: translateX(-50%);
-    background-color: #e6e9e6;
-    color: #63666c;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.popup h3 {
-    font-size: 1rem;
-}
 
 
 /* What we do page design start */
@@ -721,6 +768,25 @@ body {
 }
 
 /* What we do page design end */
+
+
+/* Course pages design start */
+/* Abacus page  */
+.page-banner{
+    width: 58px;
+     height: 58px;
+      top: -60px; 
+      left: 450px; 
+      animation: upDown 3s linear infinite alternate;
+}
+.page-tittle{
+    position: relative;
+    top: 35px;
+
+}
+
+
+/* Course pages design end */
 
 
 /* Footer page design start */

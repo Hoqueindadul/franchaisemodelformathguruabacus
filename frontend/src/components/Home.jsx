@@ -4,46 +4,57 @@ import Carousel from 'react-bootstrap/Carousel';
 function Home() {
     return (
         <>
-            <div className="slider">
-            <Carousel>
-    <Carousel.Item interval={2000} fade>
-        <img
-            className="d-block w-100"
-            src="/carousel-2.jpg"  // Ensure this path is correct
-            alt="Best Online Learning Platform"
-        />
-        <Carousel.Caption>
-            <h3 className="slider-heading">Best Online Learning Platform</h3>
-            <p className="slider-desc">Make Your Free Account & Get Discounts</p>
-        </Carousel.Caption>
-    </Carousel.Item>
+            <section className="home-section p-60">
+                <div className="container">
+                    <div className="row p-6 gg align-item-center">
+                        <div className="col-md-6 mb-3 gap-3">
+                            <video className="video-full" loop autoPlay muted style={{ width: '100%', height: 'auto', maxHeight: '100vh' }}>
+                                <source src="video.mp4" type="video/mp4" />
+                            </video>
+                        </div>
+                        <div className="col-md-6 form">
+                            <h2 className="text-center mb-4">Book a Live Class, For Free!</h2>
+                            <form>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="programSelect mb-3">Your Topic of Interest *</label>
+                                    <select className="form-control mt-2 w-100" id="programSelect" style={{ backgroundColor: 'white' }}>
+                                        <option className='opt'>Select Program</option>
+                                        <option className='opt'>Abacus</option>
+                                        <option className='opt'>Kids English</option>
+                                        <option className='opt'>Vedic Math</option>
+                                        <option className='opt'>Handwritting</option>
+                                    </select>
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="nameInput">Name</label>
+                                    <input type="text" className="form-control mt-2" id="nameInput" placeholder="Enter Name" />
+                                </div>
 
-    <Carousel.Item interval={1000}>
-        <img
-            className="d-block w-100"
-            src="/appointment.jpg"  // Ensure this path is correct
-            alt="Master the Art of Abacus"
-        />
-        <Carousel.Caption>
-            <h3 className="slider-heading">Master the Art of Abacus</h3>
-            <p className="slider-desc">Experience personalized learning and achieve math fluency with MathGuru Abacus.</p>
-        </Carousel.Caption>
-    </Carousel.Item>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="phoneInput">Phone</label>
+                                    <div className="input-group mt-2">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text p-3">+91</span>
+                                        </div>
+                                        <input type="text" className="form-control" id="phoneInput" placeholder="Enter Phone" />
+                                    </div>
+                                </div>
+                                <button type="submit" className="btn btn-pink w-100 mt-3">
+                                    Book Free Live Class
+                                </button>
+                                <div className="limited-seat     mt-3">
+                                    <span><GoPeople className='ico'/> Limited Seats Left</span>
+                                </div>
+                                <div className="haveAccount mt-3">
+                                    <span>Already Have An Account? <Link to="/login">Login</Link></span>
+                                </div>
+                            </form>
 
-    <Carousel.Item>
-        <img
-            className="d-block w-100"
-            src="/about-6.jpg"  // Ensure this path is correct
-            alt="Interactive and Fun Learning"
-        />
-        <Carousel.Caption>
-            <h3 className="slider-heading">Interactive and Fun Learning</h3>
-            <p className="slider-desc">Engage with interactive lessons designed for children and adults alike.</p>
-        </Carousel.Caption>
-    </Carousel.Item>
-</Carousel>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            </div>
 
             {/* Slider end */}
 

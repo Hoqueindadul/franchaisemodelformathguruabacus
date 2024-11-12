@@ -63,14 +63,14 @@ function NavBar() {
                                 <Nav.Link as={Link} to="/about">About Us</Nav.Link>
                                 <Nav.Link as={Link} to="/whatwedo">What we do</Nav.Link>
                                 <NavDropdown title="Courses" id="navbarScrollingDropdown">
-                                    <NavDropdown.Item as={Link} to="/action1">Abacus</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/action2">
+                                    <NavDropdown.Item as={Link} to="/abacus">Abacus</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/kidsenglish">
                                         Kids English
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/action2">
+                                    <NavDropdown.Item as={Link} to="/vedicmath">
                                         Vedic Math
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/action2">
+                                    <NavDropdown.Item as={Link} to="/handwritting">
                                         Handwritting
                                     </NavDropdown.Item>
                                     {/* <NavDropdown.Divider />
