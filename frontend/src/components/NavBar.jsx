@@ -32,15 +32,15 @@ function NavBar() {
                     <Link to="https://twitter.com/" className="iconimage"> <FaTwitterSquare className='header-sodial-icon' /> </Link>
                 </div>
                 <div className="btn">
-                    <Link to="/dashboard"><button type="button" className="btn btn-primary pr-5 dash">Dashboard</button></Link>
+                    {/* <Link to="/dashboard"><button type="button" className="btn btn-primary pr-5 dash">Dashboard</button></Link> */}
                     <Link to="/login"><button type="button" className="btn btn-primary mx-auto ml-8 login">Login</button></Link>
                 </div>
             </div>
             <div className="subhead col justify-content-center">
-                <h1>Math Guru Abacus</h1>
-                <h5>Regd.under T.M.Act Govt INDIA</h5>
-                <h5>ISO 9001:2015 Certified organization</h5>
-            </div>
+            <h1>Math Guru Abacus</h1>
+            <h5>Regd.under T.M.Act Govt INDIA</h5>
+            <h5>ISO 9001:2015 Certified organization</h5>
+        </div>
             <div className="mainabar navbar-container">
                 <Navbar expand="lg" className="navbar-custom">
                     <Container fluid>
@@ -70,7 +70,7 @@ function NavBar() {
                                         Something else here
                                     </NavDropdown.Item> */}
                                 </NavDropdown>
-                                <Nav.Link as={Link} to="/link">Study Center</Nav.Link>
+                                <Nav.Link as={Link} to="/studycenter">Study Center</Nav.Link>
                                 <NavDropdown title="Franchise" id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/action1">Benifit</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/action2">
@@ -80,7 +80,7 @@ function NavBar() {
                                         Registration
                                     </NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link as={Link} to="/link">School Tie-up</Nav.Link>
+                                <Nav.Link as={Link} to="/school-tieup">School Tie-up</Nav.Link>
                                 <NavDropdown title="Trainer" id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/action1">Become a Trainer</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/action2">

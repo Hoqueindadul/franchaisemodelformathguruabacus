@@ -1,33 +1,92 @@
 import { Link } from 'react-router-dom';
 import { GoPeople } from "react-icons/go";
+import React, { useState } from 'react';
+
 
 function Home() {
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const handleImageClick = () => {
+        setIsPlaying(true); // Show the video and hide the image
+    };
     return (
         <>
             <section className="home-section p-60">
                 <div className="container">
-                    <div className="row p-6 gg align-item-center">
-                        <div className="col-md-6 mb-3 gap-3">
-                            <video className="video-full" loop autoPlay muted style={{ width: '100%', height: 'auto', maxHeight: '100vh' }}>
-                                <source src="video.mp4" type="video/mp4" />
-                            </video>
+                    <div className="row align-items-center">
+                        {/* Video Section */}
+                        <div className="col-md-6 mb-3">
+                            <div className="video">
+                                {/* Show image until video starts */}
+                                {!isPlaying && (
+                                    <img
+                                        src="/MGA.jpg"
+                                        alt="Video Placeholder"
+                                        style={{
+                                            width: '100%',
+                                            height: '50vh',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={handleImageClick}
+                                    />
+                                )}
+
+                                {/* Show video when playing */}
+                                {isPlaying && (
+                                    <video
+                                        className="video-full"
+                                        loop
+                                        autoPlay
+                                        muted
+                                        style={{
+                                            width: '100%',
+                                            height: '200%',
+                                            maxHeight: '800vh',
+                                        }}
+                                    >
+                                        <source src="video.mp4" type="video/mp4" />
+                                    </video>
+                                )}
+                                <div className="another-item mt-3 d-flex align-items-center justify-content-center text-center">
+                                    <div className="item1 mt-3">
+                                        <h2>4+ <p>Courses</p></h2>
+                                    </div>
+                                    <div className="item1 mt-3">
+                                        <h2>10+ <p>Trainer</p></h2>
+                                    </div>
+                                    <div className="item1 mt-3">
+                                        <h2>50+ <p>Learning Module</p></h2>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-md-6 form">
+
+                        {/* Form Section */}
+                        <div className="col-md-6 form p-4 h-auto">
                             <h2 className="text-center mb-4">Book a Live Class, For Free!</h2>
                             <form>
                                 <div className="form-group mb-3">
-                                    <label htmlFor="programSelect mb-3">Your Topic of Interest *</label>
-                                    <select className="form-control mt-2 w-100" id="programSelect" style={{ backgroundColor: 'white' }}>
-                                        <option className='opt'>Select Program</option>
-                                        <option className='opt'>Abacus</option>
-                                        <option className='opt'>Kids English</option>
-                                        <option className='opt'>Vedic Math</option>
-                                        <option className='opt'>Handwritting</option>
+                                    <label htmlFor="programSelect">Your Topic of Interest *</label>
+                                    <select
+                                        className="form-control mt-2 w-100"
+                                        id="programSelect"
+                                        style={{ backgroundColor: 'white' }}
+                                    >
+                                        <option className="opt">Select Program</option>
+                                        <option className="opt">Abacus</option>
+                                        <option className="opt">Kids English</option>
+                                        <option className="opt">Vedic Math</option>
+                                        <option className="opt">Handwriting</option>
                                     </select>
                                 </div>
                                 <div className="form-group mb-3">
                                     <label htmlFor="nameInput">Name</label>
-                                    <input type="text" className="form-control mt-2" id="nameInput" placeholder="Enter Name" />
+                                    <input
+                                        type="text"
+                                        className="form-control mt-2"
+                                        id="nameInput"
+                                        placeholder="Enter Name"
+                                    />
                                 </div>
 
                                 <div className="form-group mb-3">
@@ -36,24 +95,33 @@ function Home() {
                                         <div className="input-group-prepend">
                                             <span className="input-group-text p-3">+91</span>
                                         </div>
-                                        <input type="text" className="form-control" id="phoneInput" placeholder="Enter Phone" />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="phoneInput"
+                                            placeholder="Enter Phone"
+                                        />
                                     </div>
                                 </div>
                                 <button type="submit" className="btn btn-pink w-100 mt-3">
                                     Book Free Live Class
                                 </button>
-                                <div className="limited-seat     mt-3">
-                                    <span><GoPeople className='ico'/> Limited Seats Left</span>
+                                <div className="limited-seat mt-3">
+                                    <span>
+                                        <GoPeople className="ico" /> Limited Seats Left
+                                    </span>
                                 </div>
                                 <div className="haveAccount mt-3">
-                                    <span>Already Have An Account? <Link to="/login">Login</Link></span>
+                                    <span>
+                                        Already Have An Account? <Link to="/login">Login</Link>
+                                    </span>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
             </section>
+
 
 
             {/* Slider end */}
@@ -161,8 +229,8 @@ function Home() {
                                     <img src="/WiFi.png" alt="" />
                                 </div>
                                 <div className="about_card_content">
-                                <h5 className="mb-4p">Interactive Learning</h5>
-                                <p>Our unique and extremely interactive approach for the overall mental development of children.</p>
+                                    <h5 className="mb-4p">Interactive Learning</h5>
+                                    <p>Our unique and extremely interactive approach for the overall mental development of children.</p>
                                 </div>
                             </div>
 

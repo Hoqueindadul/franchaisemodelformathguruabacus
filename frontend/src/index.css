@@ -103,10 +103,12 @@ body {
     font-size: 2.5rem;
     font-weight: 800;
     text-align: center;
+    color: #423f3c;
 }
 .subhead h5 {
     text-align: center;
     padding: 0 3px;
+    color: #63615f;
 }
 .navbar-container {
     display: flex;
@@ -144,23 +146,38 @@ body {
     gap: 1.5rem;
 }
 
+.another-item .item1{
+    padding: 0 3rem;
+}
+.another-item .item1 p{
+    font-size: 1rem;
+    font-weight: 700;
+    color: #63615f;
+    text-wrap: wrap;
+}
+.another-item .item1 h2{
+    font-size: 1.9rem;
+    font-weight: 700;
 
-.home-section{
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+@media (max-width: 768px) {
+.another-item{
+    display: flex;
+    flex-direction: column;
+
 }
 
-.opt{
-  width: 50px;
-}
+} 
 .form{
-  border: 2px solid #0aa6d7;
-  border-radius: 8px;
-  padding: 20px; 
+  border: 1px solid #31bde7;
+  border-radius: 6px;
 }
+
+@media (max-width: 455px) {
+    .form{
+        border: none;
+    }
+} 
 .video-full{
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
@@ -899,3 +916,27 @@ footer .footer_main .footer_widget .list li {
 }
 
 /* Footer page design end */
+
+
+/* StudyCenter page design start */
+
+.table-main{
+    overflow-x: scroll;
+}
+.table{
+ 
+    border-radius: 8px;
+    overflow-x: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.thead-dark{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    text-wrap: nowrap;
+    border: 2px solid red;
+    border-radius: 8px;
+}
+
+
+
+/* StudyCenter page design end */

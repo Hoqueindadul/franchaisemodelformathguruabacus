@@ -19,6 +19,9 @@ import Course_abacus from './pages/Course_abacus';
 import Course_kidsEnglish from './pages/Course_kidsEnglish';
 import Course_handwritting from './pages/Course_handwritting';
 import Course_vedicMath from './pages/Course_vedicMath';
+import Study_Center from './pages/Study_Center';
+import School_tieup from './pages/School_tieup';
+
 
 
 
@@ -38,6 +41,8 @@ function App() {
             <Route path="/whatwedo" element={<Whatwedo />} />
             <Route path="/trainers" element={<Trainers />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/studycenter" element={<Study_Center />} />
+            <Route path="/school-tieup" element={<School_tieup />} />
             
             <Route path="/vedicmath" element={<Course_vedicMath />} />
             <Route path="/abacus" element={<Course_abacus />} />
