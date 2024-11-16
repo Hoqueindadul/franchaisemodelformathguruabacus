@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Header() {
+function Header() {
     return (
         <div className="subhead col justify-content-center">
             <h1>Math Guru Abacus</h1>
@@ -9,3 +9,5 @@ export default function Header() {
         </div>
     )
 }
+
+export default Header

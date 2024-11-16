@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Dropdown from 'react-bootstrap/Dropdown';
-
+import Header from './Header';
 // icon import
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
@@ -17,7 +16,7 @@ import { FaTwitterSquare } from "react-icons/fa";
 
 function NavBar() {
     const [show, setShow] = useState(false);
-
+    const location = useLocation();
     const toggleDropdown = () => setShow((prev) => !prev);
     return (
         <>
@@ -36,11 +35,7 @@ function NavBar() {
                     <Link to="/login"><button type="button" className="btn btn-primary mx-auto ml-8 login">Login</button></Link>
                 </div>
             </div>
-            <div className="subhead col justify-content-center">
-            <h1>Math Guru Abacus</h1>
-            <h5>Regd.under T.M.Act Govt INDIA</h5>
-            <h5>ISO 9001:2015 Certified organization</h5>
-        </div>
+            {location.pathname === '/' && <Header />}
             <div className="mainabar navbar-container">
                 <Navbar expand="lg" className="navbar-custom">
                     <Container fluid>
