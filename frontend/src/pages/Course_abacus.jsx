@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function Course_abacus() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
   return (
     <div>
         {/* page title banner start */}

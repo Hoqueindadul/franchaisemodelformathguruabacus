@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
-function About() {
+export default function About() {
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -114,5 +114,3 @@ function About() {
         </>
     )
 }
-
-export default About

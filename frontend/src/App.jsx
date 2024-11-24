@@ -21,6 +21,7 @@ import Course_handwritting from './pages/Course_handwritting';
 import Course_vedicMath from './pages/Course_vedicMath';
 import Study_Center from './pages/Study_Center';
 import School_tieup from './pages/School_tieup';
+import Buy_materials from './pages/Buy_materials';
 
 
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/studycenter" element={<Study_Center />} />
             <Route path="/school-tieup" element={<School_tieup />} />
+            <Route path="/buymaterials" element={<Buy_materials />} />
             
             <Route path="/vedicmath" element={<Course_vedicMath />} />
             <Route path="/abacus" element={<Course_abacus />} />

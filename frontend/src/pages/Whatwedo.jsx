@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaBrain, FaCalculator, FaBookOpen, FaClipboardList, FaStar } from 'react-icons/fa';
 
@@ -36,7 +36,10 @@ const services = [
 ];
 
 
-function Whatwedo() {
+export default function Whatwedo() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     return (
         <div>
             {/* page title banner start */}
@@ -92,5 +95,3 @@ function Whatwedo() {
         </div>
     )
 }
-
-export default Whatwedo

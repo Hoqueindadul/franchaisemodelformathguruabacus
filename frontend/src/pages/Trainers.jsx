@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-function Trainers() {
+export default function Trainers() {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+}, [])
   return (
     <div>Trainers</div>
   )
 }
-
-export default Trainers

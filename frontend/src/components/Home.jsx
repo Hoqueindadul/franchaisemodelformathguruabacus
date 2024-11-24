@@ -128,13 +128,13 @@ function Home() {
 
             {/* Features area start */}
 
-            <section className='py-60 feature'>
+            <section className='py-6 feature'>
                 <div className="container">
                     <div className="row">
 
                         {/* First Card */}
-                        <div className="col-xl-3 col-sm-6 cd">
-                            <div className="feature-card mb-24 mb-xl-0">
+                        <div className="col-xl-3 col-sm-6">
+                            <div className="feature-card mb-24 ">
                                 <div className="feature-icon">
                                     <img src="/Pricing.png" alt="Free Trials Icon" />
                                 </div>
@@ -150,7 +150,7 @@ function Home() {
                         <div className="col-xl-3 col-sm-6" data-wow-delay="200ms">
                             <div className="feature-card mb-24 mb-xl-0">
                                 <div className="feature-icon">
-                                    <img src="/Quality.png" alt="Free Trials Icon" />
+                                    <img src="/Quality.png" alt="lifetime access icon" />
                                 </div>
                                 <div className="feature-content">
                                     <h5 className="mb-8">Lifetime Access</h5>

@@ -5,11 +5,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Header from './Header';
+
 // icon import
-import { FaFacebook } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitterSquare } from "react-icons/fa";
+import { FaFacebook, FaTwitterSquare, FaYoutube, FaInstagram } from "react-icons/fa";
 
 
 
@@ -82,7 +80,7 @@ function NavBar() {
                                         Our Certified Trainer
                                     </NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link as={Link} to="/contact">Buy Materials</Nav.Link>
+                                <Nav.Link as={Link} to="/buymaterials">Buy Materials</Nav.Link>
                                 <Nav.Link as={Link} to="/contact">Contact us</Nav.Link>
 
                             </Nav>

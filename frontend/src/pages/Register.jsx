@@ -9,8 +9,7 @@ import { LOCAL_BACKEND_URL } from '../local_backend_url';
 import { FaAngleRight } from "react-icons/fa6";
 
 
-
-function Register() {
+export default function Register() {
 
     const [firstName, setFirstname] = useState("");
     const [lastName, setLastname] = useState("");
@@ -155,5 +154,3 @@ function Register() {
         </div>
     )
 }
-
-export default Register

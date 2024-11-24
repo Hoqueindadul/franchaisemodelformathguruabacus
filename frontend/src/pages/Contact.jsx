@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast from 'react-hot-toast';
 
-function Contact() {
+export default function Contact() {
    
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -151,5 +151,3 @@ function Contact() {
         </>
     )
 }
-
-export default Contact

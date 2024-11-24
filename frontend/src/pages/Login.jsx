@@ -12,7 +12,7 @@ import { FaAngleRight } from "react-icons/fa6";
 const isProduction = process.env.NODE_ENV === 'production';
 const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
 
-function Login() {
+export default function Login() {
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -144,5 +144,3 @@ function Login() {
         </div>
     )
 }
-
-export default Login

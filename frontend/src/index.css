@@ -940,3 +940,29 @@ footer .footer_main .footer_widget .list li {
 
 
 /* StudyCenter page design end */
+
+/* Not Found Page design start */
+
+.notFoundPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    font-size: 4rem;
+    padding: 25px 0;
+}
+.font-semibold{
+    font-size: 5rem;
+    font-weight: 900;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.zero{
+    color: gold;
+    font-weight: 900;
+    font-size: 6rem;
+}
+.sub{
+    color: #63666c;
+    font-weight: 700;
+}
+/* Not Found Page design end */
