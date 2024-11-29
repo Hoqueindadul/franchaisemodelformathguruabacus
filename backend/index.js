@@ -13,7 +13,7 @@ dotenv.config();
 const mongo_url = process.env.MONGODB_URI;
 const port = process.env.PORT || 5000; // Default port fallback
 const localFrontendUrl = process.env.FRONTEND_URL_LOCAL || "http://localhost:5173";
-const deploymentFrontendUrl = process.env.FRONTEND_URL || "https://franchaisemodelformathguruabacus.vercel.app";
+const deploymentFrontendUrl = process.env.MAIN_FRONTEND_URL || "https://mathguruabacus.com/";
 
 // Middleware
 app.use(cookieParser());
