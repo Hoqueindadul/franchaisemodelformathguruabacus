@@ -23,13 +23,11 @@ export const register = async (req, res) => {
 
         if (newUser) {
             const token = await createTokenAndSaveCookies(newUser._id, res)
-            console.log(token);
 
             res.status(201).json({ message: "User register successfully.", newUser, token: token })
         }
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ error: "Internal server error" })
 
     }

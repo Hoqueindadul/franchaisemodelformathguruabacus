@@ -32,12 +32,11 @@ export default function Register() {
         formData.append('password', password)
 
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
+            const response = await axios.post(`${LOCAL_BACKEND_URL}/api/users/register`, formData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-            console.log(response.data);
             toast.success("User register successfully.")
             setFirstname("")
             setLastname("")
@@ -49,8 +48,11 @@ export default function Register() {
             }, 2000);
 
         } catch (error) {
-            console.log(error);
-            toast.error("error.message || please fill the required field")
+            if (error.response && error.response.data.message) {
+                toast.error(error.response.data.message); // Show error message from backend
+            } else {
+                toast.error("An unexpected error occurred. Please try again."); // Fallback error message
+            }
 
         }
     }

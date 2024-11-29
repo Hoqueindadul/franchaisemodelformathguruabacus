@@ -36,8 +36,8 @@ export default function Login() {
         }
 
         try {
-            // const response = await axios.post(`${BACKEND_URL}/api/users/login`, {email, password}, {
-            const response = await axios.post(`${BACKEND_URL}/api/users/login`, { email, password }, {
+            const response = await axios.post(`${LOCAL_BACKEND_URL}/api/users/login`, {email, password}, {
+            // const response = await axios.post(`${BACKEND_URL}/api/users/login`, { email, password }, {
                 headers: {
                     "Content-Type": "application/json"
                 }
