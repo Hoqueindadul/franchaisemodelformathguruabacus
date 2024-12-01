@@ -1,4 +1,3 @@
-
 import { useAuth } from '../context/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
@@ -8,7 +7,6 @@ import { BACKEND_URL } from '../utils';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
 import { FaAngleRight } from "react-icons/fa6";
 
-
 const isProduction = process.env.NODE_ENV === 'production';
 const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
 
@@ -16,48 +14,53 @@ export default function Login() {
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate()
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
-    const handleLogin = async (e) => {
-        e.preventDefault()
+    const { setIsAuthenticated } = useAuth(); // Access setIsAuthenticated from Auth context
+    const navigate = useNavigate();
 
-        if (!email && !password) {
-            toast.error("Please fill the required field")
-        }
-        else {
-            if (!password) {
-                toast.error("Please enter your password")
-            }
-            if (!email) {
-                toast.error("Please enter your email")
-            }
+    useEffect(() => {
+        window.scrollTo(0, 0); // Scroll to top on component mount
+    }, []);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        // Validation
+        if (!email || !password) {
+            toast.error("Please fill in all required fields.");
+            return;
         }
 
         try {
-            const response = await axios.post(`${LOCAL_BACKEND_URL}/api/users/login`, {email, password}, {
-            // const response = await axios.post(`${BACKEND_URL}/api/users/login`, { email, password }, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            console.log(response.data);
-            toast.success("User login successfully.")
+            // Make API call to login endpoint
+            const { data } = await axios.post(`${BACKEND_URL}/api/users/login`, {
+                email,
+                password,
+            }, {
+                headers: { "Content-Type": "application/json" },
+            });
 
-            setEmail("")
-            setPassword("")
+            // Store the JWT token in localStorage
+            localStorage.setItem("jwt", data.token); // Ensure both key and value are passed
 
+            // Update the auth state
+            setIsAuthenticated(true);
+
+            // Display success message
+            toast.success(data.message || "User logged in successfully.");
+
+            // Reset input fields
+            setEmail("");
+            setPassword("");
+
+            // Redirect to the home page after a short delay
             setTimeout(() => {
-                navigate('/')
+                navigate('/');
             }, 2000);
-
         } catch (error) {
-            console.log(error);
-            // toast.error("Error occuring! please try agian.")
-
+            console.error("Login failed:", error);
+            toast.error(error.response?.data?.message || "Failed to log in.");
         }
-    }
+    };
 
     return (
         <div>
@@ -91,10 +94,15 @@ export default function Login() {
                                         <h6 className="mb-24">Login with your email address</h6>
                                     </div>
                                     <form onSubmit={handleLogin} className="form-validator">
-
                                         <div className="mb-24">
-                                            <select name="role" id="role" className='p_lg w-100 p-3 role'>
-                                                <option value="" className='op'>Select a Role</option>
+                                            <select
+                                                name="role"
+                                                id="role"
+                                                className="p_lg w-100 p-3 role"
+                                                value={role}
+                                                onChange={(e) => setRole(e.target.value)}
+                                            >
+                                                <option value="" className="op">Select a Role</option>
                                                 <option value="admin">Admin</option>
                                                 <option value="franchise">Franchise</option>
                                                 <option value="student">Student</option>
@@ -131,10 +139,9 @@ export default function Login() {
                                             Don't have an account? <Link to="/register" className="color-primary">Register</Link>
                                         </h6>
                                         <h6>
-                                            <Link to="/register" className="color-primary">Forgot Password</Link>
+                                            <Link to="/forgot-password" className="color-primary">Forgot Password</Link>
                                         </h6>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -142,5 +149,5 @@ export default function Login() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

@@ -1,32 +1,34 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { BACKEND_URL } from '../utils';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
-export const AuthContext = createContext();
+// Create Context
+const AuthContext = createContext();
+
+// Create a custom hook to use the AuthContext
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { data } = await axios.get(`${BACKEND_URL}/api/users/all-users`);
-        setUser(data); // Assuming data contains user information
-        setIsAuthenticated(true)
-      } catch (error) {
-        console.error(error);
-      }
+    // Check localStorage for JWT token on app load
+    useEffect(() => {
+        const token = localStorage.getItem("jwt");
+        if (token) {
+            setIsAuthenticated(true); // If token exists, the user is authenticated
+        }
+    }, []);
+
+    const login = () => {
+        setIsAuthenticated(true);
     };
 
-    fetchUser();
-  }, []);
+    const logout = () => {
+        localStorage.removeItem("jwt"); // Remove the JWT token on logout
+        setIsAuthenticated(false); // Update the state to indicate the user is logged out
+    };
 
-  return (
-    <AuthContext.Provider value={{ user }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, setIsAuthenticated }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
-
-export const useAuth = () => useContext(AuthContext);

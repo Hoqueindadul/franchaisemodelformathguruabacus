@@ -32,7 +32,7 @@ export default function Register() {
         formData.append('password', password)
 
         try {
-            const response = await axios.post(`${LOCAL_BACKEND_URL}/api/users/register`, formData, {
+            const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
