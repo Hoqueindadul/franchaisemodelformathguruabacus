@@ -18,6 +18,7 @@ const deploymentFrontendUrl = process.env.MAIN_FRONTEND_URL || "https://mathguru
 // Middleware
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
     origin: [localFrontendUrl, deploymentFrontendUrl], // Allow both local and production frontends
@@ -26,7 +27,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
   })
 );
-app.use(express.urlencoded({ extended: true }));
 app.use(
   fileUpload({
     useTempFiles: true,

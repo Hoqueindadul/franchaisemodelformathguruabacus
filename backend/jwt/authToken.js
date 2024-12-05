@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
+import Students from "../models/student.model.js";
 
-const createTokenAndSaveCookies = async(userId, res) => {
-    const token = jwt.sign({userId}, process.env.JWT_SECRET_KEY, {
-        expiresIn: "7d"
+const createTokenAndSaveCookies = async(studentId, res) => {
+    const token = jwt.sign({studentId}, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1h"
     })
 
     res.cookie("jwt", token, {
@@ -12,7 +12,7 @@ const createTokenAndSaveCookies = async(userId, res) => {
         sameSite:"none"
     })
 
-    await User.findByIdAndUpdate(userId, {token})
+    await Students.findByIdAndUpdate(studentId, {token})
     return token
 }
 
