@@ -25,7 +25,7 @@ export default function Login() {
         e.preventDefault();
 
         // Validation
-        if (!email || !password) {
+        if (!role || !email || !password) {
             toast.error("Please fill in all required fields.");
             return;
         }
@@ -33,6 +33,7 @@ export default function Login() {
         try {
             // Make API call to login endpoint
             const { data } = await axios.post(`${BACKEND_URL}/api/users/login`, {
+                role,
                 email,
                 password,
             }, {

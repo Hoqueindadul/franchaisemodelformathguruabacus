@@ -13,11 +13,13 @@ export default function Register() {
 
     const [firstName, setFirstname] = useState("");
     const [lastName, setLastname] = useState("");
+    const [role, setRole] = useState("");
+    const [phone, setPhone] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
     const navigate = useNavigate()
-
-
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -28,8 +30,13 @@ export default function Register() {
         const formData = new FormData()
         formData.append('firstName', firstName)
         formData.append('lastName', lastName)
+        formData.append('role', role)
+        formData.append('phone', phone)
+        formData.append('dateOfBirth', dateOfBirth)
         formData.append('email', email)
         formData.append('password', password)
+        
+        
 
         try {
             const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
@@ -38,6 +45,9 @@ export default function Register() {
                 }
             })
             toast.success("User register successfully.")
+            console.log(response.data);
+            
+            
             setFirstname("")
             setLastname("")
             setEmail("")
@@ -104,7 +114,7 @@ export default function Register() {
                                             </div>
                                         </div>
                                         <div className="mb-24">
-                                            <select name="role" id="role" className='p_lg w-100 p-3 role'>
+                                            <select name="role" id="role" value={role} onChange={(e) => setRole(e.target.value)} className='p_lg w-100 p-3 role'>
                                                 <option value="" className='op'>Select a Role</option>
                                                 <option value="admin">Admin</option>
                                                 <option value="franchise">Franchise</option>
@@ -112,6 +122,30 @@ export default function Register() {
                                             </select>
                                         </div>
 
+                                        <div className="mb-24">
+                                            <input
+                                                type="phone"
+                                                className="form-control p_lg p-3 mt-3"
+                                                id="phone"
+                                                name="phone"
+                                                required
+                                                placeholder="Phone number"
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="mb-24">
+                                            <input
+                                                type="date"
+                                                className="form-control p_lg p-3 mt-3"
+                                                id="dateofbirth"
+                                                name="date"
+                                                required
+                                                placeholder="Date Of Birth"
+                                                value={dateOfBirth}
+                                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                            />
+                                        </div>
 
                                         <div className="mb-24">
                                             <input
