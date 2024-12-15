@@ -103,7 +103,7 @@ function Home() {
                                         />
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-pink w-100 mt-3">
+                                <button type="submit" className="book-btn w-100 mt-3">
                                     Book Free Live Class
                                 </button>
                                 <div className="limited-seat mt-3">
@@ -281,6 +281,35 @@ function Home() {
             </section>
 
             {/* about area end */}
+
+            {/* Product sliding section start */}
+            
+            <div class="container">
+                <div class="marquee row p-4">
+                    <div class="marquee-content d-flex">
+                        <div class="marquee-item col-auto">
+                            <img src="../material-1.jpeg" class="img-fluid" alt="01" />
+                        </div>
+                        <div class="marquee-item col-auto">
+                            <img src="../material-2.jpeg" class="img-fluid" alt="02" />
+                        </div>
+                        <div class="marquee-item col-auto">
+                            <img src="../material-4.jpeg" class="img-fluid" alt="03" />
+                        </div>
+                        <div class="marquee-item col-auto">
+                            <img src="../material-5.jpeg" class="img-fluid" alt="04" />
+                        </div>
+                        <div class="marquee-item col-auto">
+                            <img src="../material-1.jpeg" class="img-fluid" alt="01" />
+                        </div>
+                        <div class="marquee-item col-auto">
+                            <img src="../material-2.jpeg" class="img-fluid" alt="02" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Product sliding section end*/}
 
         </>
     )

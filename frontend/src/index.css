@@ -6,7 +6,7 @@
 :root {
     --title-color: #0d0d0d;
     --para-color: #f2f4f3;
-    --button-color: #3cb4df;
+    --button-color: linear-gradient(to right, #f83600 0%, #f9d423 100%)
     --font: Inter, sans-serif;
 }
 
@@ -22,83 +22,123 @@
 body {
 
     background-color: #f4f5f5;
+    
     overflow-x: hidden;
 
 }
 
-/* Header and Navigationbar section*/
-.head {
+
+/* Top Header section start*/
+
+.top-header{
+    background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+}
+
+.phoneNumber{
     display: flex;
-    justify-content: space-around;
+    flex-direction: row;
     align-items: center;
-    background-color: rgb(243, 247, 247);
-    padding: 2px;
-    border-bottom: 1px solid gray;
-    /* box-shadow:
-    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-    0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12)
-  ; */
+    justify-content: center;
+}
+.gif{
+    height: 2rem;
 }
 
-.cont a {
-    margin: 0 4px;
-    text-decoration: none;
+.heading-tagline{
+    display: flex;
+    justify-content: center;
 }
 
-.cont a span {
-    margin: 0 5px;
-    color: #63666c;
+.icons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+.facebook{
+    font-size: 2rem;
+    color: #316FF6;
+}
+.youtube{
+    font-size: 2rem;
+    color: #FF0000;
 }
 
-.iconimage {
-    text-decoration: none;
-    margin: 0 12px;
-    font-size: 23px;
+.login-btn {
+    text-align: center;
+}
+.btn{
+    margin-left: 6rem;
+}
+.btn .login{
+    font-weight: 700;
+}
+.login {
+    background-image: linear-gradient(-60deg, #f04419 0%, #f04419 100%);
+    font-size: 2px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.login:hover {
+    background-color: red;
 }
 
-.iconimage .header-sodial-icon {
-    color: #2698c3;
-    font-size: 25px;
-}
 
-@media (max-width: 550px) {
+/* media query for top header start*/
+@media (min-width: 768px) and (max-width: 1024px) {
     .iconimage {
         display: none;
     }
-
+}
+@media (max-width: 425px) {
+    .heading-tagline{
+        text-wrap: wrap;
+        font-size: 1rem;
+    }
+    .gif{
+        display: none !important;
+    }
+}
+@media (max-width: 320px) {
+    .heading-tagline{
+        text-wrap: wrap;
+        font-size: 0.8rem;
+    }
+    .text-item{
+        font-size: 0.8rem;
+    }
+    .gif{
+        display: none !important;
+    }
 }
 
+/* media query for top header end*/
 
-/* .btn{
-    margin: 0 12px;
-} */
-.btn .dash {
-    font-weight: 700;
-    margin-right: 10px;
-}
+/* Top Header section end */
 
-.btn .login {
-    background-color: red;
-    font-weight: 700;
-}
 
-.btn .login:hover {
-    background-color: red;
-}
-
+/* Sub heading start */
 .subhead {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding: 12px 0;
 }
 
-
+.logo-image{
+    height: 10rem;
+}
+.heading-text{
+    margin: 0;
+}
+.heading-text h1{
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: #423f3c;
+}
+.heading-text h5 {
+    text-align: center;
+    padding: 0 3px;
+    color: #63615f;
+}
 .subhead h1 {
     font-size: 2.5rem;
     font-weight: 800;
@@ -110,6 +150,18 @@ body {
     padding: 0 3px;
     color: #63615f;
 }
+@media (max-width: 768px){
+    .iso-image{
+        display: none;
+    }
+    
+}
+
+
+/* Subheading end */
+
+/* Navbar start */
+
 .navbar-container {
     display: flex;
     justify-content: space-between;
@@ -160,6 +212,8 @@ body {
     font-weight: 700;
 
 }
+
+/* navbar item media query */
 @media (max-width: 768px) {
 .another-item{
     display: flex;
@@ -182,9 +236,7 @@ body {
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
-.btn-pink{
-  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-}
+
 .limited-seat{
   background-color: #f2f5f2 ;
   padding: 6px;
@@ -363,86 +415,19 @@ body {
 }
 
 /* about area end */
-/* About us page design start*/
+/* About us page design end*/
 
 
 /* Home page design start */
-/* slider style */
+/* Home class booking */
 
-/* General Slider Styling */
-.slider {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
+.book-btn{
+    padding: 12px 14px;
+    border: 2px solid violet;
+    border-radius: 8px;
+    background-color: rgb(161 98 7);
 }
 
-/* Image Styling */
-.slider img {
-    width: 100%;
-    height: 80vh;
-    /* Set a height for desktop view */
-    object-fit: cover;
-    /* Cover the entire slider area without stretching */
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
-    .slider img {
-        height: 60vh;
-        /* Adjust height for smaller screens */
-    }
-}
-
-@media (max-width: 768px) {
-    .slider img {
-        height: 50vh;
-        /* Adjust for mobile screens */
-    }
-}
-
-/* Caption Styling */
-.carousel-caption {
-    bottom: 20%;
-    color: #ffffff;
-    text-align: center;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
-}
-
-.slider-heading {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.slider-desc {
-    font-size: 1rem;
-    margin-top: 0.5rem;
-}
-
-/* Responsive Caption Text */
-@media (max-width: 1024px) {
-    .slider-heading {
-        font-size: 1.5rem;
-    }
-
-    .slider-desc {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .carousel-caption {
-        bottom: 15%;
-        /* Position captions higher on smaller screens */
-    }
-
-    .slider-heading {
-        font-size: 1.2rem;
-    }
-
-    .slider-desc {
-        font-size: 0.8rem;
-    }
-}
 
 
 /* Features style */
@@ -531,6 +516,68 @@ body {
     font-weight: bold;
 }
 
+/* pruduct sliding start */
+
+.container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.marquee {
+    overflow: hidden;
+    position: relative;
+}
+
+.marquee-content {
+    display: flex;
+    animation: marquee 20s linear infinite;
+    gap: 1rem; /* Bootstrap spacing (1rem = 16px) */
+}
+
+.marquee-item img {
+    height: 15rem; /* Adjust as needed */
+    width: 12rem;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+.marquee-item img:hover {
+    transform: scale(1.1); /* Scale up image on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+}
+/* Keyframes for Marquee Animation */
+@keyframes marquee {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .marquee-content {
+        animation-duration: 15s; /* Slower for smaller screens */
+    }
+
+    .marquee-item img {
+        max-width: 150px; /* Smaller images for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .marquee-content {
+        animation-duration: 20s; /* Even slower for extra small screens */
+    }
+
+    .marquee-item img {
+        max-width: 100px; /* Even smaller images */
+    }
+}
+
+/* pruduct sliding end */
+
 /* Home page design end */
 
 /* Login page design start */
@@ -582,7 +629,7 @@ body {
 .educate-btn {
     margin: 0px 0px 20px;
     padding: 12px 24px;
-    background: #2698c3;
+    background-color: red;
     border: 2px;
     border-radius: 7px;
     transition: transform 0.3s ease, background-color 0.3s ease;
@@ -966,3 +1013,19 @@ footer .footer_main .footer_widget .list li {
     font-weight: 700;
 }
 /* Not Found Page design end */
+
+/* Buy material page design start */
+
+.card{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.card-image{
+    height: 10rem;
+    width: 10rem;
+}
+.addtocard{
+    background-color: red;
+    font-weight: 600;
+}
+
+/* Buy material page design end */

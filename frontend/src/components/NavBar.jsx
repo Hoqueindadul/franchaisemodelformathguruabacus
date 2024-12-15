@@ -18,62 +18,75 @@ function NavBar() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        
-            // Clear local storage and update auth state
-            localStorage.removeItem("jwt");
 
-            setIsAuthenticated(false);
+        // Clear local storage and update auth state
+        localStorage.removeItem("jwt");
 
-            toast.success("Logout Successfully");
-            setTimeout(() => {
-                navigate("/login");
-            }, 2000)
-        
+        setIsAuthenticated(false);
+
+        toast.success("Logout Successfully");
+        setTimeout(() => {
+            navigate("/login");
+        }, 2000)
+
     };
 
     return (
         <>
-            <div className="head">
-                <div className="d-flex cont">
-                    <Link to="/" className="logo">
-                        <img src="./logo.png" style={{ width: 75, height: 70 }} alt="logo" />
-                    </Link>
-                </div>
-                <div className="icons">
-                    <Link to="https://www.facebook.com/" className="iconimage">
-                        <FaFacebook className="header-sodial-icon" />
-                    </Link>
-                    <Link to="https://www.instagram.com/" className="iconimage">
-                        <FaInstagram className="header-sodial-icon" />
-                    </Link>
-                    <Link to="https://www.youtube.com/" className="iconimage">
-                        <FaYoutube className="header-sodial-icon" />
-                    </Link>
-                    <Link to="https://twitter.com/" className="iconimage">
-                        <FaTwitterSquare className="header-sodial-icon" />
-                    </Link>
-                </div>
-                <div className="btn">
-                    {isAuthenticated ? (
-                        <button
-                            type="button"
-                            className="btn btn-primary mx-auto ml-8 login"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
-                    ) : (
-                        <Link to="/login">
-                            <button
-                                type="button"
-                                className="btn btn-primary mx-auto ml-8 login"
-                            >
-                                Login
-                            </button>
-                        </Link>
-                    )}
+            <div className="container-fluid">
+                <div className="row pt-0 py-3 py-md-2 py-sm-1 top-header align-items-center">
+                    {/* Left Column with Phone Number */}
+                    <div className="col-6 col-md-4 d-flex align-items-center">
+                        <div className="phoneNumber text-nowrap">
+                            <img src="../new_blink_gif.gif" className="gif  me-2" alt="Blink GIF" />
+                            <div className="text">
+                                <h6 className="mb-0 text-item">
+                                    Need Franchise? <br /> +91 8617848657, <br /> +91 97352333808
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Center Column with Heading */}
+                    <div className="col-6 col-md-5 text-center my-2 my-md-0">
+                        <h5 className="heading-tagline">🎉 Get Ready for the Adacus Mega Competition! 🎉</h5>
+                    </div>
+
+                    {/* Right Column with Social Icons */}
+                    <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2 mt-2 mt-md-0">
+                        <div className="icons">
+                            <Link to="https://www.facebook.com/" className="iconimage me-2">
+                                <FaFacebook className="header-social-icon facebook" />
+                            </Link>
+                            <Link to="https://www.youtube.com/" className="iconimage">
+                                <FaYoutube className="header-social-icon youtube" />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Login Button */}
+                    <div className="col-6 col-md-1 d-flex justify-content-end order-4 mt-2 mt-md-0">
+                        <div className="login-btn">
+                            {isAuthenticated ? (
+                                <button
+                                    type="button"
+                                    className="btn btn-primary login"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </button>
+                            ) : (
+                                <Link to="/login">
+                                    <button type="button" className="btn btn-primary login">
+                                        Login
+                                    </button>
+                                </Link>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
+
             {location.pathname === '/' && <Header />}
             <div className="mainabar navbar-container">
                 <Navbar expand="lg" className="navbar-custom">

@@ -112,21 +112,21 @@ function Footer() {
                                         <FaFacebook style={{ color: '#2698c3', fontSize: '35px', transition: 'color 0.3s ease' }} />
                                     </Link>
                                 </li>
-                                <li key="yt" className="soci-icon">
+                                {/* <li key="yt" className="soci-icon">
                                     <Link to="https://www.instagram.com/" className="footer-iconimage">
                                         <FaInstagram style={{ color: '#2698c3', fontSize: '35px', transition: 'color 0.3s ease' }} />
                                     </Link>
-                                </li>
+                                </li> */}
                                 <li key="ig" className="soci-icon">
                                     <Link to="https://www.youtube.com/" className="footer-iconimage">
                                         <FaYoutube style={{ color: '#2698c3', fontSize: '38px', transition: 'color 0.3s ease' }} />
                                     </Link>
                                 </li>
-                                <li key="tw" className="soci-icon">
+                                {/* <li key="tw" className="soci-icon">
                                     <Link to="https://twitter.com/" className="footer-iconimage">
                                         <FaTwitterSquare style={{ color: '#2698c3', fontSize: '33px', transition: 'color 0.3s ease' }} />
                                     </Link>
-                                </li>
+                                </li> */}
                             </ul>
 
                             {/* Newsletter Section */}
