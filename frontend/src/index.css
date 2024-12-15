@@ -162,6 +162,7 @@ body {
 
 /* Navbar start */
 
+
 .navbar-container {
     display: flex;
     justify-content: space-between;
@@ -212,6 +213,12 @@ body {
     font-weight: 700;
 
 }
+.navbar-toggler {
+    margin-right: 10px; /* Adjust as needed */
+    margin-left: auto;
+    float: right;
+}
+
 
 /* navbar item media query */
 @media (max-width: 768px) {
