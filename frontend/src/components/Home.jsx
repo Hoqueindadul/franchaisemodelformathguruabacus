@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import { GoPeople } from "react-icons/go";
 import React, { useState } from 'react';
+import axios from 'axios'
+import { BACKEND_URL } from '../utils';
+import { LOCAL_BACKEND_URL } from '../local_backend_url';
+import toast from 'react-hot-toast';
 
 
 function Home() {
@@ -9,18 +13,61 @@ function Home() {
     const handleImageClick = () => {
         setIsPlaying(true); // Show the video and hide the image
     };
+
+    const [formData, setFormData] = useState({
+        program: "",
+        name: "",
+        phone: "",
+    });
+    const [isSending, setIsSending] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.id]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSending(true);
+        try {
+            console.log(formData);
+
+            const response = await axios.post(
+                `${BACKEND_URL}/api/users/sendWhatsappMessage`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true, // Include cookies or credentials in the request
+                }
+            );
+
+            console.log("Message sent successfully:", response.data);
+            toast.success("Message sent successfully via WhatsApp!");
+            setFormData({
+                program: "",
+                name: "",
+                phone: "",
+            });
+        } catch (error) {
+            console.error("Error sending WhatsApp message:", error.response || error.message);
+            toast.error("Failed to send WhatsApp message.");
+        }finally {
+            setIsSending(false); // Reset the loading state
+          }
+    };
     return (
         <>
             <section className="home-section p-60">
                 <div className="container">
-                    <div className="row align-items-center">
+                    <div className="row">
                         {/* Video Section */}
                         <div className="col-md-6 mb-3">
                             <div className="video">
                                 {/* Show image until video starts */}
                                 {!isPlaying && (
                                     <img
-                                        src="/MGA.jpg"
+                                        src="/video-thumb.jpg"
                                         alt="Video Placeholder"
                                         style={{
                                             width: '100%',
@@ -33,19 +80,17 @@ function Home() {
 
                                 {/* Show video when playing */}
                                 {isPlaying && (
-                                    <video
-                                        className="video-full"
-                                        loop
-                                        autoPlay
-                                        muted
-                                        style={{
-                                            width: '100%',
-                                            height: '200%',
-                                            maxHeight: '800vh',
-                                        }}
-                                    >
-                                        <source src="video.mp4" type="video/mp4" />
-                                    </video>
+                                    <div style={{ width: '100%', height: '80vh' }}>
+                                        <iframe
+                                            width="100%"
+                                            height="100%"
+                                            src="https://www.youtube.com/embed/mAmRhpnZlyc"
+                                            title="YouTube video player"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        ></iframe>
+                                    </div>
                                 )}
                                 <div className="another-item mt-3 d-flex align-items-center justify-content-center text-center">
                                     <div className="item1 mt-3">
@@ -63,20 +108,21 @@ function Home() {
 
                         {/* Form Section */}
                         <div className="col-md-6 form p-4 h-auto">
-                            <h2 className="text-center mb-4">Book a Live Class, For Free!</h2>
-                            <form>
+                            {/* <h2 className="text-center mb-4">Book a Live Class, For Free!</h2> */}
+                            <form onSubmit={handleSubmit}>
                                 <div className="form-group mb-3">
                                     <label htmlFor="programSelect">Your Topic of Interest *</label>
                                     <select
                                         className="form-control mt-2 w-100"
-                                        id="programSelect"
-                                        style={{ backgroundColor: 'white' }}
+                                        id="program"
+                                        value={formData.program}
+                                        onChange={handleChange}
                                     >
-                                        <option className="opt">Select Program</option>
-                                        <option className="opt">Abacus</option>
-                                        <option className="opt">Kids English</option>
-                                        <option className="opt">Vedic Math</option>
-                                        <option className="opt">Handwriting</option>
+                                        <option value="">Select Program</option>
+                                        <option value="Abacus">Abacus</option>
+                                        <option value="Kids English">Kids English</option>
+                                        <option value="Vedic Math">Vedic Math</option>
+                                        <option value="Handwriting">Handwriting</option>
                                     </select>
                                 </div>
                                 <div className="form-group mb-3">
@@ -84,27 +130,29 @@ function Home() {
                                     <input
                                         type="text"
                                         className="form-control mt-2"
-                                        id="nameInput"
+                                        id="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
                                         placeholder="Enter Name"
                                     />
                                 </div>
-
                                 <div className="form-group mb-3">
                                     <label htmlFor="phoneInput">Phone</label>
-                                    <div className="input-group mt-2">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text p-3">+91</span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="phoneInput"
-                                            placeholder="Enter Phone"
-                                        />
-                                    </div>
+                                    <input
+                                        type="text"
+                                        className="form-control mt-2"
+                                        id="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        placeholder="Enter Phone"
+                                    />
                                 </div>
-                                <button type="submit" className="book-btn w-100 mt-3">
-                                    Book Free Live Class
+                                <button
+                                    type="submit"
+                                    className="book-btn w-100 mt-3"
+                                    disabled={isSending} // Disable the button while loading
+                                >
+                                    {isSending ? "Sending..." : "Book Free Live Class"}
                                 </button>
                                 <div className="limited-seat mt-3">
                                     <span>
@@ -283,7 +331,7 @@ function Home() {
             {/* about area end */}
 
             {/* Product sliding section start */}
-            
+
             <div class="container">
                 <div class="marquee row p-4">
                     <div class="marquee-content d-flex">

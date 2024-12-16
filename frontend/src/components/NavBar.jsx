@@ -38,10 +38,10 @@ function NavBar() {
                     {/* Left Column with Phone Number */}
                     <div className="col-6 col-md-4 d-flex align-items-center">
                         <div className="phoneNumber text-nowrap">
-                            <img src="../new_blink_gif.gif" className="gif  me-2" alt="Blink GIF" />
+                            {/* <img src="../new_blink_gif.gif" className="gif  me-2" alt="Blink GIF" /> */}
                             <div className="text">
                                 <h6 className="mb-0 text-item">
-                                    Need Franchise? <br /> +91 8617848657, <br /> +91 97352333808
+                                    Need Franchise?  +91 9735 2333 808
                                 </h6>
                             </div>
                         </div>
@@ -55,10 +55,10 @@ function NavBar() {
                     {/* Right Column with Social Icons */}
                     <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2 mt-2 mt-md-0">
                         <div className="icons">
-                            <Link to="https://www.facebook.com/" className="iconimage me-2">
+                            <Link to="https://www.facebook.com/profile.php?id=61566500032820" className="iconimage me-2">
                                 <FaFacebook className="header-social-icon facebook" />
                             </Link>
-                            <Link to="https://www.youtube.com/" className="iconimage">
+                            <Link to="https://www.youtube.com/@mathguruabacusho" className="iconimage">
                                 <FaYoutube className="header-social-icon youtube" />
                             </Link>
                         </div>
@@ -70,14 +70,14 @@ function NavBar() {
                             {isAuthenticated ? (
                                 <button
                                     type="button"
-                                    className="btn btn-primary login"
+                                    className="btn btn-primary fw-semibold login"
                                     onClick={handleLogout}
                                 >
                                     Logout
                                 </button>
                             ) : (
                                 <Link to="/login">
-                                    <button type="button" className="btn btn-primary login">
+                                    <button type="button" className="btn btn-primary fw-semibold login">
                                         Login
                                     </button>
                                 </Link>
@@ -89,7 +89,7 @@ function NavBar() {
 
             {location.pathname === '/' && <Header />}
             <div className="mainabar navbar-container">
-                <Navbar expand="xl" className="navbar-custom">
+                <Navbar expand="xl" className="navbar-custom bg-warning">
                     <Container fluid>
                         <Navbar.Toggle aria-controls="navbarScroll" className='ms-auto'/>
                         <Navbar.Collapse id="navbarScroll">

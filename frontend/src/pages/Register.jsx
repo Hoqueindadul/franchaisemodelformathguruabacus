@@ -15,7 +15,6 @@ export default function Register() {
     const [lastName, setLastname] = useState("");
     const [role, setRole] = useState("");
     const [phone, setPhone] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
@@ -32,7 +31,6 @@ export default function Register() {
         formData.append('lastName', lastName)
         formData.append('role', role)
         formData.append('phone', phone)
-        formData.append('dateOfBirth', dateOfBirth)
         formData.append('email', email)
         formData.append('password', password)
         
@@ -116,7 +114,6 @@ export default function Register() {
                                         <div className="mb-24">
                                             <select name="role" id="role" value={role} onChange={(e) => setRole(e.target.value)} className='p_lg w-100 p-3 role'>
                                                 <option value="" className='op'>Select a Role</option>
-                                                <option value="admin">Admin</option>
                                                 <option value="franchise">Franchise</option>
                                                 <option value="student">Student</option>
                                             </select>
@@ -132,18 +129,6 @@ export default function Register() {
                                                 placeholder="Phone number"
                                                 value={phone}
                                                 onChange={(e) => setPhone(e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="mb-24">
-                                            <input
-                                                type="date"
-                                                className="form-control p_lg p-3 mt-3"
-                                                id="dateofbirth"
-                                                name="date"
-                                                required
-                                                placeholder="Date Of Birth"
-                                                value={dateOfBirth}
-                                                onChange={(e) => setDateOfBirth(e.target.value)}
                                             />
                                         </div>
 

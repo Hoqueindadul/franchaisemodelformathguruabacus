@@ -19,14 +19,18 @@ const deploymentFrontendUrl = process.env.MAIN_FRONTEND_URL || "https://mathguru
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+
 app.use(
   cors({
-    origin: [localFrontendUrl, deploymentFrontendUrl], // Allow both local and production frontends
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: [localFrontendUrl, deploymentFrontendUrl], // Allow both local and production URLs
+    credentials: true, // Allow cookies or authentication headers
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow necessary HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
   })
 );
+
+// end points
+app.use("/api/users", userRoute);
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -34,8 +38,8 @@ app.use(
   })
 );
 
-// Define Routes
-app.use("/api/users", userRoute);
+
+
 
 // Connect to the database and start the server
 connectDatabase(mongo_url)
@@ -48,5 +52,3 @@ connectDatabase(mongo_url)
   .catch((err) => {
     console.error("Failed to connect to MongoDB", err);
   });
-
-

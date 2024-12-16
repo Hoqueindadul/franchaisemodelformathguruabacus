@@ -5,16 +5,16 @@ import createTokenAndSaveCookies from "../jwt/authToken.js"
 
 export const register = async (req, res) => {
     try {
-        const { firstName, lastName, role, phone, dateOfBirth, email, password } = req.body;
-        // console.log("Parsed Data:", { firstName, lastName, role, phone, dateOfBirth, email, password });
+        const { firstName, lastName, role, phone, email, password } = req.body;
+        // console.log("Parsed Data:", { firstName, lastName, role, phone, email, password });
 
         // Validate input fields
-        if (!firstName || !lastName || !role || !phone || !dateOfBirth || !email || !password) {
+        if (!firstName || !lastName || !role || !phone || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
         // Validate role
-        const validRoles = ['admin', 'franchise', 'student'];
+        const validRoles = ['franchise', 'student'];
         if (!validRoles.includes(role)) {
             return res.status(400).json({ message: "Invalid role" });
         }
@@ -40,7 +40,6 @@ export const register = async (req, res) => {
             lastName, 
             role, 
             phone, 
-            dateOfBirth, 
             email, 
             password: hashPassword 
         });
@@ -118,5 +117,50 @@ export const allUsers = async (req, res) => {
         
     }
 }
+
+
+// export const sendWhatsappMessage = async (req, res) => {
+//     try {
+//       const { program, name, phone } = req.body;
+  
+//       // Validate required fields
+//       if (!program || !name || !phone) {
+//         return res.status(400).json({ message: "Program, name, and phone number are required." });
+//       }
+  
+//       // WhatsApp API Configuration
+//       const whatsappApiUrl = "https://graph.facebook.com/v16.0/YOUR_PHONE_NUMBER_ID/messages";
+//       const accessToken = "YOUR_ACCESS_TOKEN"; // Replace with your actual token
+  
+//       // Message Body
+//       const message = `Hello ${name}, thank you for your interest in our ${program} program. We will contact you shortly!`;
+  
+//       // Make the API request
+//       const response = await axios.post(
+//         whatsappApiUrl,
+//         {
+//           messaging_product: "whatsapp",
+//           to: `91${phone}`, // Replace 91 with the appropriate country code
+//           type: "text",
+//           text: { body: message },
+//         },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${accessToken}`,
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+  
+//       res.status(200).json({
+//         message: "WhatsApp message sent successfully.",
+//         response: response.data,
+//       });
+//     } catch (error) {
+//       console.error("Error sending WhatsApp message:", error.message);
+//       res.status(500).json({ error: "Failed to send WhatsApp message" });
+//     }
+//   };
+
 
 export default register

@@ -14,17 +14,13 @@ const studentSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ["admin", "franchise", "student"],
+        enum: ["franchise", "student"],
     },
     phone: {
         type: String,  
         required: true,
         unique: true,
         match: [/^\d{10}$/, 'phone number must be 10 digits']
-    },
-    dateOfBirth: {
-        type: Date,
-        required: true,
     },
     email: {
         type: String,

@@ -55,7 +55,7 @@ export default function Login() {
 
             // Redirect to the home page after a short delay
             setTimeout(() => {
-                navigate('/');
+                navigate('/dashboard');
             }, 2000);
         } catch (error) {
             console.error("Login failed:", error);
@@ -76,9 +76,9 @@ export default function Login() {
                                     </Link>
                                     <div className="title">
                                         <img src="/mic-speaker.png" alt="speaker icon" className="speaker_icon" />
-                                        <h2 className="mb-48 login-heading">Login To Your Account</h2>
+                                        <h2 className="mb-50 login-heading">Login To Your Account</h2>
                                     </div>
-                                    <div className="row">
+                                    {/* <div className="row">
                                         <div className="col-sm-6">
                                             <Link to="#" className="link-btn h6 mb-24">
                                                 <img src="/google.png" alt="Google icon" /> Login with Google
@@ -93,7 +93,7 @@ export default function Login() {
                                     <h5 className="or mb-4">------------------- or -------------------</h5>
                                     <div className="text-center">
                                         <h6 className="mb-24">Login with your email address</h6>
-                                    </div>
+                                    </div> */}
                                     <form onSubmit={handleLogin} className="form-validator">
                                         <div className="mb-24">
                                             <select
@@ -104,7 +104,6 @@ export default function Login() {
                                                 onChange={(e) => setRole(e.target.value)}
                                             >
                                                 <option value="" className="op">Select a Role</option>
-                                                <option value="admin">Admin</option>
                                                 <option value="franchise">Franchise</option>
                                                 <option value="student">Student</option>
                                             </select>

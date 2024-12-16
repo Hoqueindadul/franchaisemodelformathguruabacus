@@ -31,7 +31,7 @@ body {
 /* Top Header section start*/
 
 .top-header{
-    background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+    /* background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%); */background-color: #df1b1b;
 }
 
 .phoneNumber{
@@ -39,6 +39,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    color: white;
 }
 .gif{
     height: 2rem;
@@ -47,20 +48,30 @@ body {
 .heading-tagline{
     display: flex;
     justify-content: center;
+    color: white;
 }
 
 .icons {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
+    
 }
 .facebook{
     font-size: 2rem;
     color: #316FF6;
+    background-color: white;
+    border-radius: 100px;
+    padding: 3px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .youtube{
     font-size: 2rem;
     color: #FF0000;
+    background-color: white;
+    border-radius: 100px;
+    padding: 3px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .login-btn {
@@ -69,16 +80,14 @@ body {
 .btn{
     margin-left: 6rem;
 }
-.btn .login{
-    font-weight: 700;
-}
+
 .login {
-    background-image: linear-gradient(-60deg, #f04419 0%, #f04419 100%);
+    background-image: linear-gradient(-60deg, #2e17fc 0%, #2e17fc 100%);
     font-size: 2px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .login:hover {
-    background-color: red;
+    background-image: linear-gradient(-60deg, #100192 0%, #100192 100%);
 }
 
 
@@ -150,6 +159,17 @@ body {
     padding: 0 3px;
     color: #63615f;
 }
+.iso{
+    height: 32vh;
+}
+.first{
+    background-color: #df1b1b;
+    color: white;
+    border-radius: 15px;
+    padding: 4px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
 @media (max-width: 768px){
     .iso-image{
         display: none;
@@ -157,6 +177,14 @@ body {
     
 }
 
+@media (max-width: 425px){
+    .mgTittle{
+        display: none;
+    }
+    .heading-text{
+        margin-top: 1rem;
+    }
+}
 
 /* Subheading end */
 
@@ -167,7 +195,7 @@ body {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    background-color: #fdfcfa;
+    color: blue;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     position: sticky;
     top: 0;
@@ -176,21 +204,33 @@ body {
 
 .navbar-custom {
     width: 100%;
-    padding: 14px;
+    padding: 10px;
     text-wrap: nowrap;
 
 }
 
 .navbar-custom .nav-link,
 .navbar-custom .dropdown-item {
-    margin: 0 px;
+    margin: 0px;
     /* Adjust this value to increase or decrease space */
 }
 
 .navbar-custom .nav-link.active {
     color: var(--button-color);
 }
+.nav-link {
+  
+    color: blue !important;
+    font-size: 1.1rem !important;
+    padding: 0  !important;
 
+ 
+}
+.nav-link:hover{
+    background-color: #df1b1b !important;
+    color: white !important;
+    
+}
 
 .navi {
     display: flex;
@@ -206,7 +246,6 @@ body {
     font-size: 1rem;
     font-weight: 700;
     color: #63615f;
-    text-wrap: wrap;
 }
 .another-item .item1 h2{
     font-size: 1.9rem;
@@ -230,8 +269,7 @@ body {
 
 } 
 .form{
-  border: 1px solid #31bde7;
-  border-radius: 6px;
+  border: 1px solid #df1b1b;
 }
 
 @media (max-width: 455px) {
@@ -432,9 +470,15 @@ body {
     padding: 12px 14px;
     border: 2px solid violet;
     border-radius: 8px;
-    background-color: rgb(161 98 7);
+    background-color: #df1b1b;
+    color: white;
+    font-weight: 600;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    transition: all 0.9s ease;
 }
-
+.book-btn:hover{ /* Change the background color */
+  transform: scale(1.02);
+}
 
 
 /* Features style */
@@ -591,6 +635,8 @@ body {
 
 .login-heading {
     margin-top: 15px;
+    margin-bottom: 33px
+    
 }
 
 .login-form {
