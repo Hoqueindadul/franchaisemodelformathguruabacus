@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { FaAngleRight } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import { MdOutlinePolicy } from "react-icons/md";
 import { FaYoutube } from "react-icons/fa";
-import { FaTwitterSquare } from "react-icons/fa";
+import { BiLogoGmail } from "react-icons/bi";
+import { FaPhoneAlt } from "react-icons/fa";
 
 
 function Footer() {
@@ -35,15 +37,14 @@ function Footer() {
                                 <div className="footer_widget">
                                     <h5 className="medium-black mb-16">Quick Links</h5>
                                     <ul className="unstyled list">
-                                        <li key="link1">
-                                            <Link to="#" className='items'><FaAngleRight />
-                                                Join to Career</Link>
+                                        <li key="link3">
+                                            <Link to="/about" className='items'><FaAngleRight className='text-danger'/> About Us</Link>
                                         </li>
                                         <li key="link2">
-                                            <Link to="#" className='items'><FaAngleRight /> Contact Us</Link>
+                                            <Link to="/contact" className='items'><FaAngleRight className='text-danger'/> Contact Us</Link>
                                         </li>
                                         <li key="link3">
-                                            <Link to="/about" className='items'><FaAngleRight /> About Us</Link>
+                                            <Link to="/buymaterials" className='items'><FaAngleRight className='text-danger'/> Buy Materials</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -55,31 +56,16 @@ function Footer() {
                                     <h5 className="medium-black mb-16">Explore</h5>
                                     <ul className="unstyled list">
                                         <li key="link4">
-                                            <Link to="#" className="items"><FaAngleRight /> Privacy Policy</Link>
+                                            <Link to="#" className="items" target="_blank"
+                                                rel="noopener noreferrer"><FaAngleRight className='text-danger'/> Privacy Policy</Link>
                                         </li>
                                         <li key="link5">
-                                            <Link to="#" className="items"><FaAngleRight /> Terms & Conditions</Link>
+                                            <Link to="#" className="items text-nowrap" target="_blank"
+                                                rel="noopener noreferrer"><FaAngleRight className='text-danger'/> Terms & Conditions</Link>
                                         </li>
                                         <li key="link6">
-                                            <Link to="#" className="items"><FaAngleRight /> FAQ</Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            {/* Information Links */}
-                            <div className="col-xl-2 col-lg-3 col-sm-6">
-                                <div className="footer_widget">
-                                    <h5 className="medium-black mb-16">Information</h5>
-                                    <ul className="unstyled list">
-                                        <li key="link7">
-                                            <Link to="#" className="items"><FaAngleRight /> Blog</Link>
-                                        </li>
-                                        <li key="link8">
-                                            <Link to="#" className="items"><FaAngleRight /> Support</Link>
-                                        </li>
-                                        <li key="link9">
-                                            <Link to="#" className="items"><FaAngleRight /> Help Center</Link>
+                                            <Link to="#" className="items" target="_blank"
+                                                rel="noopener noreferrer"><FaAngleRight className='text-danger'/> FAQ</Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -88,54 +74,29 @@ function Footer() {
                             {/* Contact us Links */}
                             <div className="col-xl-2 col-lg-3 col-sm-6">
                                 <div className="footer_widget">
-                                    <h5 className="medium-black mb-16">Contact Us</h5>
+                                    <h5 className="medium-black mb-16">Socials</h5>
                                     <ul className="unstyled list">
                                         <li key="link10">
-                                            <Link to="#" className="items"><FaAngleRight /> Careers</Link>
+                                            <Link to="#" className="items " target="_blank"
+                                                rel="noopener noreferrer"><BiLogoGmail className='text-danger'/> example123@gmail.com</Link>
                                         </li>
-                                        <li key="link11">
-                                            <Link to="#" className="items"><FaAngleRight /> Press</Link>
+                                        <li key="link10">
+                                            <Link to="#" className="items"><FaPhoneAlt className='text-warning'/> +91 9735 2338 08</Link>
                                         </li>
-                                        <li key="link12">
-                                            <Link to="#" className="items"><FaAngleRight /> Partnerships</Link>
+                                        <li key="link10">
+                                            <Link to="https://www.facebook.com/profile.php?id=61566500032820"           
+                                                className="items" 
+                                                target="_blank"
+                                                rel="noopener noreferrer"><FaFacebook className='text-primary'/> Facebook</Link>
                                         </li>
+                                        <li key="link10">
+                                            <Link to="https://www.youtube.com/@mathguruabacusho" 
+                                                className="items" 
+                                                target="_blank"
+                                                rel="noopener noreferrer"><FaYoutube className='text-danger'/> Youtube</Link>
+                                        </li>
+
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Social Icons and Newsletter Section */}
-                        <div className="bottom-row">
-                            <ul className="unstyled social_icons_list">
-                                <li key="fb" className="soci-icon">
-                                    <Link to="https://www.facebook.com/" className="footer-iconimage">
-                                        <FaFacebook style={{ color: '#2698c3', fontSize: '35px', transition: 'color 0.3s ease' }} />
-                                    </Link>
-                                </li>
-                                {/* <li key="yt" className="soci-icon">
-                                    <Link to="https://www.instagram.com/" className="footer-iconimage">
-                                        <FaInstagram style={{ color: '#2698c3', fontSize: '35px', transition: 'color 0.3s ease' }} />
-                                    </Link>
-                                </li> */}
-                                <li key="ig" className="soci-icon">
-                                    <Link to="https://www.youtube.com/" className="footer-iconimage">
-                                        <FaYoutube style={{ color: '#2698c3', fontSize: '38px', transition: 'color 0.3s ease' }} />
-                                    </Link>
-                                </li>
-                                {/* <li key="tw" className="soci-icon">
-                                    <Link to="https://twitter.com/" className="footer-iconimage">
-                                        <FaTwitterSquare style={{ color: '#2698c3', fontSize: '33px', transition: 'color 0.3s ease' }} />
-                                    </Link>
-                                </li> */}
-                            </ul>
-
-                            {/* Newsletter Section */}
-                            <div className="col-lg-3 col-md-6">
-                                <h4 className="section-title ff-secondary text-start text-primary fw-normal mb-4">Newsletter</h4>
-                                <p>Stay updated with our latest news and offers.</p>
-                                <div className="position-relative mx-auto" style={{ maxWidth: '400px' }}>
-                                    <input className="form-control border-primary w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
-                                    <button type="button" className="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Sign Up</button>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +104,7 @@ function Footer() {
                 </div>
 
                 {/* Copyright Section */}
-                <div className="copyright_row">
+                <div className="copyright_row d-flex justify-content-center">
                     <p>©2024 MathGuru-Abacus All Rights Reserved.</p>
                 </div>
             </footer>

@@ -5,10 +5,19 @@ import axios from 'axios'
 import { BACKEND_URL } from '../utils';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
 import toast from 'react-hot-toast';
+import { motion } from "framer-motion";
+import { Carousel } from "react-bootstrap";
 
-
+const products = [
+    { id: 1, name: "Counting Tool", image: "./material-1.jpg" },
+    { id: 2, name: "Bag", image: "./material-2.jpg" },
+    { id: 3, name: "T-shirt", image: "./material-3.jpeg" },
+    { id: 4, name: "Watch", image: "./material-4.jpeg" },
+];
 function Home() {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
+    const duplicatedProducts = [...products, ...products];
 
     const handleImageClick = () => {
         setIsPlaying(true); // Show the video and hide the image
@@ -52,9 +61,9 @@ function Home() {
         } catch (error) {
             console.error("Error sending WhatsApp message:", error.response || error.message);
             toast.error("Failed to send WhatsApp message.");
-        }finally {
+        } finally {
             setIsSending(false); // Reset the loading state
-          }
+        }
     };
     return (
         <>
@@ -266,7 +275,7 @@ function Home() {
                                     <img src="/Clock.png" alt="" />
                                 </div>
                                 <div className="about_card_content">
-                                    <h5 className="mb-4p">Leatest Course</h5>
+                                    <h5 className="mb-4p">Latest Course</h5>
                                     <p>Our latest courses are designed to provide an engaging and effective approach to mastering essential mathematical skills for learners of all levels.</p>
                                 </div>
                             </div>
@@ -282,20 +291,9 @@ function Home() {
                                 </div>
                             </div>
 
-                            {/* About card 3 */}
-                            {/* <div className="about_card mb-24">
-                                <div className="about_card_icon">
-                                    <img src="/star.png" alt="" />
-                                </div>
-                                <div className="about_card_content">
-                                    <h5 className="mb-4p">Leatest Course</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur voluptate necessitatibus, odit voluptatem beatae, labore ex nulla dolores eligendi harum voluptatum dolore ad!</p>
-                                </div>
-                            </div> */}
-
                             {/* Learn more button in home page */}
-                            <div className="text-end wow fadeInUp animated">
-                                <Link to="/about-us" className='educate-btn'>
+                            <div className="text-end">
+                                <Link to="/about" className='educate-btn'>
                                     <span className='educate-btn_text'>
                                         Learn More..
                                     </span>
@@ -332,31 +330,38 @@ function Home() {
 
             {/* Product sliding section start */}
 
-            <div class="container">
-                <div class="marquee row p-4">
-                    <div class="marquee-content d-flex">
-                        <div class="marquee-item col-auto">
-                            <img src="../material-1.jpeg" class="img-fluid" alt="01" />
-                        </div>
-                        <div class="marquee-item col-auto">
-                            <img src="../material-2.jpeg" class="img-fluid" alt="02" />
-                        </div>
-                        <div class="marquee-item col-auto">
-                            <img src="../material-4.jpeg" class="img-fluid" alt="03" />
-                        </div>
-                        <div class="marquee-item col-auto">
-                            <img src="../material-5.jpeg" class="img-fluid" alt="04" />
-                        </div>
-                        <div class="marquee-item col-auto">
-                            <img src="../material-1.jpeg" class="img-fluid" alt="01" />
-                        </div>
-                        <div class="marquee-item col-auto">
-                            <img src="../material-2.jpeg" class="img-fluid" alt="02" />
-                        </div>
-                    </div>
+            <div className="slider-container">
+                <div className="slider_tittle text-center p-4">
+                    <span className="slider_section_tittle"> Buy Our Products</span>
+                    <p className="line"></p>
                 </div>
-            </div>
 
+                <motion.div
+                    className="slider"
+                    animate={{
+                        x: isPaused ? 0 : ["0%", "-100%"], // If paused, keep at 0%
+                    }}
+                    transition={{
+                        repeat: Infinity,
+                        duration: 25, // Increased duration for slower speed
+                        ease: "linear", // Ensures smooth continuous flow
+                    }}
+                    onMouseEnter={() => setIsPaused(true)} // Stop animation when mouse enters
+                    onMouseLeave={() => setIsPaused(false)} // Resume animation when mouse leaves
+                >
+                    {products.map((product) => (
+                        <div className="product-card" key={product.id}>
+                            <h6 className="text-center mt-2">{product.name}</h6>
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className="product-image"
+                            />
+                            <Link to="/buymaterials"><button className="order-btn">Order Now</button></Link>
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
             {/* Product sliding section end*/}
 
         </>

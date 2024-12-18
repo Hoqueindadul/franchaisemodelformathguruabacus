@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
+
 import './stud_style.css'
 
 import Header_dash from './common/Header_dash';
@@ -9,8 +10,10 @@ import CourseTable from './dashboard/CourseTable';
 import MainContent from './dashboard/MainContent';
 import StatsCard from './dashboard/StatsCard';
 import ToppersList from './dashboard/ToppersList';
+import { useAuth } from '../../../context/AuthProvider';
 
 const Dashboard = () => {
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

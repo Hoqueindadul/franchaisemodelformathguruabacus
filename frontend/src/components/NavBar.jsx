@@ -36,36 +36,41 @@ function NavBar() {
             <div className="container-fluid">
                 <div className="row pt-0 py-3 py-md-2 py-sm-1 top-header align-items-center">
                     {/* Left Column with Phone Number */}
-                    <div className="col-6 col-md-4 d-flex align-items-center">
-                        <div className="phoneNumber text-nowrap">
-                            {/* <img src="../new_blink_gif.gif" className="gif  me-2" alt="Blink GIF" /> */}
-                            <div className="text">
-                                <h6 className="mb-0 text-item">
-                                    Need Franchise?  +91 9735 2333 808
-                                </h6>
-                            </div>
+                    <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-start align-items-center mb-2 mb-md-0">
+                        <div className="phoneNumber text-nowrap text-center text-md-start">
+                            <h6 className="mb-0 text-item">
+                                Need Franchise? +91 9735 2338 08
+                            </h6>
                         </div>
                     </div>
 
                     {/* Center Column with Heading */}
-                    <div className="col-6 col-md-5 text-center my-2 my-md-0">
-                        <h5 className="heading-tagline">🎉 Get Ready for the Adacus Mega Competition! 🎉</h5>
+                    <div className="col-12 col-md-5 text-center mb-2 mb-md-0">
+                        <h5 className="heading-tagline mb-0">
+                            🎉 Get Ready for the Abacus Mega Competition! 🎉
+                        </h5>
                     </div>
 
                     {/* Right Column with Social Icons */}
-                    <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2 mt-2 mt-md-0">
+                    <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2">
                         <div className="icons">
-                            <Link to="https://www.facebook.com/profile.php?id=61566500032820" className="iconimage me-2">
+                            <Link
+                                to="https://www.facebook.com/profile.php?id=61566500032820"
+                                className="iconimage me-2"
+                            >
                                 <FaFacebook className="header-social-icon facebook" />
                             </Link>
-                            <Link to="https://www.youtube.com/@mathguruabacusho" className="iconimage">
+                            <Link
+                                to="https://www.youtube.com/@mathguruabacusho"
+                                className="iconimage"
+                            >
                                 <FaYoutube className="header-social-icon youtube" />
                             </Link>
                         </div>
                     </div>
 
                     {/* Login Button */}
-                    <div className="col-6 col-md-1 d-flex justify-content-end order-4 mt-2 mt-md-0">
+                    <div className="col-6 col-md-1 d-flex justify-content-end order-4">
                         <div className="login-btn">
                             {isAuthenticated ? (
                                 <button
@@ -77,7 +82,10 @@ function NavBar() {
                                 </button>
                             ) : (
                                 <Link to="/login">
-                                    <button type="button" className="btn btn-primary fw-semibold login">
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary fw-semibold login"
+                                    >
                                         Login
                                     </button>
                                 </Link>
@@ -91,7 +99,7 @@ function NavBar() {
             <div className="mainabar navbar-container">
                 <Navbar expand="xl" className="navbar-custom bg-warning">
                     <Container fluid>
-                        <Navbar.Toggle aria-controls="navbarScroll" className='ms-auto'/>
+                        <Navbar.Toggle aria-controls="navbarScroll" className='ms-auto' />
                         <Navbar.Collapse id="navbarScroll">
                             <Nav className="me-auto my-2 my-lg-0 navi" navbarScroll>
                                 <Nav.Link as={Link} to="/" className="active">Home</Nav.Link>
