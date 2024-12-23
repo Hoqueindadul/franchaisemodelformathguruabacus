@@ -1071,9 +1071,50 @@ footer .footer_main .footer_widget .list li {
     height: 15rem;
     width: 10rem;
 }
-.addtocard{
-    background-color: red;
-    font-weight: 600;
+.addtocart{
+    background-color: red !important;
+    font-weight: 600 !important;
+    color: white !important;
 }
 
+
+.yourCart{
+    margin: 12px 0;
+    padding: 6px;
+    background-color: #df1b1b;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+}
+.buymaterialMain{
+    display: flex !important;
+    flex-direction: column !important;
+}
 /* Buy material page design end */
+
+/* Add to Cart design start */
+
+.row {
+    margin: 0px -12px;
+    padding: 15px 0;
+}
+.orderNow{
+    margin-left: 0 !important;
+    background-color: #df1b1b !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+.backMaterialsPage{
+    text-decoration: none;
+    font-weight: 500;
+}
+.removeItem{
+    background-color: #df1b1b !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+.btn-secondary{
+    margin-left: 2.4rem !important;
+}
+/* Add to Cart design end */
