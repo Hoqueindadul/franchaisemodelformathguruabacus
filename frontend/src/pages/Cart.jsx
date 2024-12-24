@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FaCartArrowDown } from "react-icons/fa";
+
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -19,6 +21,8 @@ export default function Cart() {
     useEffect(() => {
         if (cart.length > 0) {
             localStorage.setItem("cart", JSON.stringify(cart));
+        } else {
+            localStorage.removeItem("cart");
         }
     }, [cart]);
 
@@ -48,7 +52,8 @@ export default function Cart() {
 
     return (
         <div className="container my-4">
-            <h2>Your Cart</h2>
+            <h2 className="cartTittle"> <span>Your</span>Cart <FaCartArrowDown className="fs-2 cartIcon"/></h2>
+            <div className="tittleBorder"></div>
             {cart.length === 0 ? (
                 <div className="text-center my-5">
                     <h4>Your cart is empty!</h4>
@@ -89,6 +94,7 @@ export default function Cart() {
                                                     <button
                                                         className="btn btn-sm btn-secondary me-2"
                                                         onClick={() => updateQuantity(item.id, -1)}
+                                                        disabled={item.quantity === 1}
                                                     >
                                                         -
                                                     </button>
@@ -100,10 +106,7 @@ export default function Cart() {
                                                     >
                                                         +
                                                     </button>
-                                                    {/* Remove Button */}
-
                                                 </div>
-
                                             </div>
                                         </Card.Body>
                                     </Card>

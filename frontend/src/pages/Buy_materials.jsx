@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -6,10 +6,13 @@ import Row from "react-bootstrap/Row";
 import toast from 'react-hot-toast';
 
 export default function BuyMaterials() {
+  const [cart, setCart] = useState([]); // Use state to track cart
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(savedCart); // Load cart from localStorage
   }, []);
 
   const products = [
@@ -58,18 +61,21 @@ export default function BuyMaterials() {
     }
 
     localStorage.setItem("cart", JSON.stringify(savedCart));
+    setCart(savedCart); // Update cart state
     toast.success(`${product.title} added to your cart!`);
-    navigate("/cart");
+  };
+
+  // Function to check if the item is in the cart
+  const isItemInCart = (productId) => {
+    return cart.some((item) => item.id === productId); // Use state for checking if item is in cart
   };
 
   return (
     <div className="container buymaterialMain">
-        <Link to="/cart"><button className="yourCart float-end">Your Cart</button></Link>
+      <Link to="/cart"><button className="yourCart float-end">Your Cart</button></Link>
       <Row xs={1} md={2} xl={3} className="g-4">
-      
         {products.map((product) => (
           <Col key={product.id}>
-            
             <Card className="card">
               <Card.Img variant="top" className="card-image" src={product.image} />
               <Card.Body>
@@ -80,8 +86,9 @@ export default function BuyMaterials() {
                   <button
                     className="btn addtocart"
                     onClick={() => addToCart(product)}
+                    disabled={isItemInCart(product.id)} // Disable button if item is in the cart
                   >
-                    Add to Cart
+                    {isItemInCart(product.id) ? "Already in Cart" : "Add to Cart"}
                   </button>
                 </div>
               </Card.Body>

@@ -9,7 +9,7 @@ export default function About() {
         <>
             {/* page title banner start */}
 
-            <section className="about_page_banner">
+            {/* <section className="about_page_banner">
                 <div className="container h-100">
                     <div className="row h-100 align-items-center justify-content-between">
                         <div className="col-lg-6 col-md-6 text-md-left text-center position-relative">
@@ -25,7 +25,7 @@ export default function About() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* page title banner end */}
 

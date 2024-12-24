@@ -25,10 +25,6 @@ function Footer() {
                                     <Link to="/" className="mb-8 footer_logo">
                                         <img src="/logo.png" alt="" />
                                     </Link>
-                                    <p className="description_text">
-                                        From zero to hero, no need for speed,
-                                        MathGuru Abacus gives you all you need.
-                                    </p>
                                 </div>
                             </div>
 
@@ -78,7 +74,7 @@ function Footer() {
                                     <ul className="unstyled list">
                                         <li key="link10">
                                             <Link to="#" className="items " target="_blank"
-                                                rel="noopener noreferrer"><BiLogoGmail className='text-danger'/> example123@gmail.com</Link>
+                                                rel="noopener noreferrer"><BiLogoGmail className='text-danger'/> rabinsahaknd1@gmail.com</Link>
                                         </li>
                                         <li key="link10">
                                             <Link to="#" className="items"><FaPhoneAlt className='text-warning'/> +91 9735 2338 08</Link>

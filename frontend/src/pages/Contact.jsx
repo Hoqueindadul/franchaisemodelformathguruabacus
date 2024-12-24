@@ -32,7 +32,8 @@ export default function Contact() {
 
     return (
         <>
-            <section className="about_page_banner">
+            {/* page tittle banner start */}
+            {/* <section className="about_page_banner">
                 <div className="container h-100">
                     <div className="row h-100 align-items-center justify-content-between">
                         <div className="col-lg-6 col-md-6 text-md-left text-center position-relative">
@@ -48,19 +49,19 @@ export default function Contact() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* page title banner end */}
 
             {/* Contact form start */}
             <div className="container-xxl py-5">
                 <div className="container">
-                    <div className="text-center mx-auto mb-5" style={{ maxWidth: "600px" }}>
+                    {/* <div className="text-center mx-auto mb-5" style={{ maxWidth: "600px" }}>
                         <h1 className="mb-3">Get In Touch</h1>
                         <p>
                             Have a question or need assistance? Our team is ready to support you with any inquiries, feedback, or issues. Reach out through the form below or via our contact details!
                         </p>
-                    </div>
+                    </div> */}
                     <div className="bg-light rounded contact-form">
                         <div className="row g-0">
                             <div className="col-lg-6">
@@ -121,7 +122,7 @@ export default function Contact() {
                                                 </div>
                                             </div>
                                             <div className="col-12">
-                                                <button className="btn btn-primary w-100 py-3" type="submit">
+                                                <button className="btn sendMessage w-100 py-3" type="submit">
                                                     Send Message
                                                 </button>
                                             </div>
@@ -131,15 +132,15 @@ export default function Contact() {
                             </div>
                             <div className="col-lg-6 map" style={{ minHeight: "400px" }}>
                                 <div className="position-relative h-100">
-                                    <iframe
-                                        className="position-relative rounded w-100 h-100"
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3642.348222672521!2d88.26120430947326!3d24.089246675596257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f97d8263062099%3A0x9d908195cfb76101!2sBerhampore%20Court%20Railway%20Station!5e0!3m2!1sen!2sin!4v1729810966406!5m2!1sen!2sin"
-                                        frameBorder="0"
-                                        style={{ minHeight: "400px", border: 0 }}
-                                        allowFullScreen=""
-                                        aria-hidden="false"
-                                        tabIndex="0"
-                                    ></iframe>
+                                        <iframe
+                                            className="position-relative rounded w-100 h-100"
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3645.793934557373!2d88.03686867402793!3d23.967725878522746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f985fcd3f8a2cd%3A0x8811267692987b4b!2sMath%20Guru%20Abacus!5e0!3m2!1sen!2sin!4v1734947538986!5m2!1sen!2sin"
+                                            frameBorder="0"
+                                            style={{ minHeight: "400px", border: 0 }}
+                                            allowFullScreen=""
+                                            aria-hidden="false"
+                                            tabIndex="0"
+                                        ></iframe>
                                 </div>
                             </div>
                         </div>

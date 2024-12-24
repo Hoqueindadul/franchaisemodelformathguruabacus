@@ -825,7 +825,12 @@ option{
     }
 }
 
-
+.sendMessage {
+    background-color: #df1b1b !important;
+    color: white !important;
+    margin-left: 0 !important;
+    font-weight: 600 !important;
+}
 
 /* What we do page design start */
 
@@ -1099,6 +1104,7 @@ footer .footer_main .footer_widget .list li {
     margin: 0px -12px;
     padding: 15px 0;
 }
+
 .orderNow{
     margin-left: 0 !important;
     background-color: #df1b1b !important;
@@ -1116,5 +1122,22 @@ footer .footer_main .footer_widget .list li {
 }
 .btn-secondary{
     margin-left: 2.4rem !important;
+}
+.cartIcon{
+    color: #4bf708;
+}
+.cartTittle{
+    font-weight: 800;
+    color: violet;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.tittleBorder{
+    max-width: 4rem;
+    border: 2px solid orange;
+    border-radius: 15px;
+}
+.cartTittle span{
+    font-weight: 600;
+    color: #4e4b4b;
 }
 /* Add to Cart design end */
