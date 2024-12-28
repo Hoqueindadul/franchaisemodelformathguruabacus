@@ -269,6 +269,7 @@ body {
 } 
 .form{
   border: 1px solid #df1b1b;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 @media (max-width: 455px) {
@@ -276,9 +277,11 @@ body {
         border: none;
     }
 } 
-.video-full{
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+.homeVideo{
+    width: 100%;
+    height: 50vh;
+    
 }
 
 .limited-seat{
@@ -897,6 +900,80 @@ option{
 
 /* Course pages design start */
 /* Abacus page  */
+
+.abacusCourse{
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Header Section */
+.courseHeader{
+    background: linear-gradient(90deg, #4e54c8, #8f94fb);
+    color: #fff;
+    padding: 30px 15px;
+    border-radius: 8px;
+}
+
+.courseH1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.coursePara {
+    font-size: 1.2rem;
+}
+
+/* Section Headings */
+section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    border-left: 5px solid #4e54c8;
+    padding-left: 10px;
+}
+
+/* List Group Styling */
+.list-group-item {
+    font-size: 1.1rem;
+    border: none;
+    padding: 10px 15px;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0;
+    border-radius: 6px;
+}
+
+/* Accordion Styling */
+.accordion-item {
+    margin-bottom: 10px;
+}
+
+.accordion-button {
+    background-color: #4e54c8;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #8f94fb;
+}
+
+.accordion-button:hover {
+    background-color: #6f78e3;
+}
+
+.accordion-body {
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+
 .page-banner{
     width: 58px;
      height: 58px;

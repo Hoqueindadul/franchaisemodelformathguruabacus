@@ -102,34 +102,34 @@ function NavBar() {
                         <Navbar.Toggle aria-controls="navbarScroll" className='ms-auto' />
                         <Navbar.Collapse id="navbarScroll">
                             <Nav className="me-auto my-2 my-lg-0 navi" navbarScroll>
-                                <Nav.Link as={Link} to="/" className="active">Home</Nav.Link>
-                                <Nav.Link as={Link} to="/about">About Us</Nav.Link>
-                                <Nav.Link as={Link} to="/whatwedo">What we do</Nav.Link>
+                                <Nav.Link as={Link} to="/" className="active mainNavbar">Home</Nav.Link>
+                                <Nav.Link as={Link} to="/about" className="mainNavbar">About Us</Nav.Link>
+                                <Nav.Link as={Link} to="/whatwedo" className="mainNavbar">What we do</Nav.Link>
 
-                                <NavDropdown title="Courses" id="navbarScrollingDropdown">
+                                <NavDropdown title="Courses" className="mainNavbar" id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/abacus">Abacus</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/kidsenglish">Kids English</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/vedicmath">Vedic Math</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/handwritting">Handwriting</NavDropdown.Item>
                                 </NavDropdown>
 
-                                <Nav.Link as={Link} to="/studycenter">Study Center</Nav.Link>
+                                <Nav.Link as={Link} to="/studycenter" className="mainNavbar">Study Center</Nav.Link>
 
-                                <NavDropdown title="Franchise" id="navbarScrollingDropdown">
+                                <NavDropdown title="Franchise" className='mainNavbar' id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/action1">Benefit</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/action2">Criteria</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/action2">Registration</NavDropdown.Item>
                                 </NavDropdown>
 
-                                <Nav.Link as={Link} to="/school-tieup">School Tie-up</Nav.Link>
+                                <Nav.Link as={Link} to="/school-tieup" className="mainNavbar">School Tie-up</Nav.Link>
 
                                 <NavDropdown title="Trainer" id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/action1">Become a Trainer</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/action2">Our Certified Trainer</NavDropdown.Item>
                                 </NavDropdown>
 
-                                <Nav.Link as={Link} to="/buymaterials">Buy Materials</Nav.Link>
-                                <Nav.Link as={Link} to="/contact">Contact us</Nav.Link>
+                                <Nav.Link as={Link} to="/buymaterials" className="mainNavbar">Buy Materials</Nav.Link>
+                                <Nav.Link as={Link} to="/contact" className="mainNavbar">Contact us</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

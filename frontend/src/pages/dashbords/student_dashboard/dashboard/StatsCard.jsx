@@ -26,4 +26,4 @@ StatsCard.propTypes = {
   color: PropTypes.string.isRequired,
 };
 
-export default StatsCard;
+export default StatsCard;  // Ensure default export

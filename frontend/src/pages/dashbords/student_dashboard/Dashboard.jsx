@@ -1,41 +1,37 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './stud_style.css'
 
-import Header_dash from './common/Header_dash';
-import Sidebar from './common/Sidebar';
-import CourseTable from './dashboard/CourseTable';
-import MainContent from './dashboard/MainContent';
-import StatsCard from './dashboard/StatsCard';
-import ToppersList from './dashboard/ToppersList';
-import { useAuth } from '../../../context/AuthProvider';
+import './stud_style.css';
+
+import Header_dash from '../student_dashboard/common/Header_dash';
+import Sidebar from '../student_dashboard/common/Sidebar';
+import CourseTable from '../student_dashboard/dashboard/CourseTable';
+import MainContent from '../student_dashboard/dashboard/MainContent';
+
+import ToppersList from '../student_dashboard/dashboard/ToppersList';
 
 const Dashboard = () => {
-  
   useEffect(() => {
+    // Scroll to the top of the page when the component loads
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <>
-      {/* Header and Sidebar are typically not route-specific */}
+      {/* Header and Sidebar are static and visible on the dashboard */}
       <Header_dash />
-      <Sidebar />
 
-      {/* Main content */}
+      {/* Main Dashboard Content */}
       <div className="dashboard-container">
-        <Routes>
-          {/* Define your routes here */}
-          <Route path="courses" element={<CourseTable />} />
-          <Route path="main" element={<MainContent />} />
-          <Route path="toppers" element={<ToppersList />} />
-          <Route path="stats" element={<StatsCard />} />
-        </Routes>
+        <div className="main-content">
+          <MainContent />
+        </div>
+        
       </div>
     </>
   );
 };
 
 export default Dashboard;
+

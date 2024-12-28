@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
@@ -63,7 +65,7 @@ function App() {
         <Route path="/kidsenglish" element={<CourseKidsEnglish />} />
         {/* Universal route */}
         <Route path="*" element={<NotFound />} />
-        <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Toaster />
       {!hideNavbarFooter && <Footer />}

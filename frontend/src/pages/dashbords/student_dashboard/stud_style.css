@@ -22,7 +22,12 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-}
+
+
+
+
+
+
 
 /* Header Styles */
 .main-header {
@@ -138,22 +143,67 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.nav-link {
+.sidebartab {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
-    color: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem;
+    padding: 10px 0 !important;
     text-decoration: none;
     transition: 0.3s;
 }
+.subbar-link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 4px;
+    text-decoration: none;
+    color: rgb(69, 73, 76);
+}
+.subbar-link:hover{
+    background-color: rgb(245, 248, 255);
+    color: #347cdb ;
+}
+.subbar-link:hover .sidebarIcon{
+    color: #347cdb;
+}
+.subbar-items{
+    padding: 8px;
+}
+.sidebarActive{
+    color: rgb(69, 73, 76);
+}
+/* Hover effect for nav-link */
+/* Hover effect for nav-link */
+.sidebartab:hover {
+    background-color: rgb(245, 248, 255) !important;
+    color: #347cdb !important;
+  }
+  
+  .sidebartab span {
+    color: rgb(69, 73, 76);
+  }
+  
+  .sidebartab:hover span {
+    color: #347cdb !important; /* Change the span text color on hover */
+  }
+  
+  .sidebarIcon {
+    color: rgb(69, 73, 76);
+  }
+  
+  .sidebartab:hover .sidebarIcon {
+    color: #347cdb !important; /* Change the icon color on hover */
+  }
+  
+  
 
-.nav-link:hover,
-.nav-link.active {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.1);
+
+.sidebartab:hover,
+.sidebartab.active {
+    color: rgb(69, 73, 76);
 }
 
-.nav-link svg {
+.sidebartab svg {
     margin-right: 0.75rem;
     font-size: 1.2rem;
 }
@@ -168,7 +218,7 @@ body {
 /* Header */
 .main-header {
     height: var(--header-height);
-    background-color: white;
+    background-color: white !important;
     border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
@@ -435,5 +485,4 @@ td {
         margin-left: 0;
     }
 }
-
-/* Sidebar and Header styles remain the same */
+}
