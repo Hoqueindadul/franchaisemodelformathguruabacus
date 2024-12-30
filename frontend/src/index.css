@@ -319,14 +319,12 @@ body {
     animation: animation-upDown-2 3s linear 0s infinite alternate;
 }
 
-.tittle h1 {
-    font-weight: bold;
-}
 
 .about-tittle {
     color: #007bff;
     font-weight: 700;
-    font-size: 19px;
+    font-size: 2rem;
+    padding-bottom: 23px;
 }
 
 .img-fluid {
@@ -837,7 +835,13 @@ option{
 
 /* What we do page design start */
 
+.whatwedo-tittle{
+        color: #007bff;
+        font-weight: 700;
+        font-size: 2rem;
+        padding-bottom: 15px;
 
+}
 
 .service-card {
     transition: transform 0.3s, box-shadow 0.3s;
@@ -845,7 +849,7 @@ option{
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -854,36 +858,27 @@ option{
     font-weight: bold;
     display: flex;
     align-items: center;
-    /* Align items vertically */
 }
 
 .card-title svg {
     margin-right: 8px;
-    /* Space between icon and text */
     font-size: 1.5em;
-    /* Adjust icon size */
-    color: #007bff;
+    color: orange;
 }
-
 .card-text {
     display: block;
-    /* Use block display */
     overflow: hidden;
-    /* Hide overflow */
     text-overflow: ellipsis;
-    /* Add ellipsis (...) */
-    max-height: 3em;
-    /* Approximate height for 2 lines */
-    line-height: 1.5em;
-    /* Set line height */
-    transition: max-height 0.3s ease;
-    /* Smooth transition */
+    max-height: 3em; /* Initial height to show limited lines */
+    line-height: 1.5em; /* Line height to calculate visible lines */
+    transition: max-height 0.9s ease; /* Smooth transition for height change */
 }
 
 .card-text:hover {
-    overflow: visible;
-    max-height: fit-content;
+    max-height: 20em; /* Set a large enough height to reveal the full text */
+    overflow: visible; /* Allow content to display */
 }
+
 
 .tittle {
     font-size: 1.2rem;
@@ -917,13 +912,94 @@ option{
 }
 
 .courseH1 {
+    background: #F6F8F9;
+background: radial-gradient(circle farthest-corner at center center, #F6F8F9 0%, #E5EBEE 30%, #D7DEE3 60%, #F5F7F9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 2.5rem;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     margin-bottom: 10px;
 }
 
 .coursePara {
     font-size: 1.2rem !important;
+    font-weight: 500 !important;
+    color: yellow;
+}
+.lgi1{
+    background-color: #fff4d6 !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi2{
+    background-color: #ffe6e9 !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi3{
+    background-color: #fff4d6 !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi4{
+    background-color: #ffe6e9 !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi5{
+    background-color: #fff4d6 !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi6{
+    background-color: #fefacd !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi7{
+    background-color: #e6fdff !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi8{
+    background-color: #fefacd  !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi9{
+    background-color: #e6fdff  !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+.lgi10{
+    background-color: #fefacd  !important;
+    margin: 3px;
+    border-radius: 5px;
+    transition: all 0.7s ease;
+}
+
+.lgi1:hover, .lgi2:hover,
+.lgi3:hover, .lgi4:hover,
+.lgi5:hover, .lgi6:hover,
+.lgi7:hover, .lgi8:hover,
+.lgi9:hover, .lgi10:hover{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transform: scale(1);
+}
+
+
+.courseIcon{
+    color: orange;
+    padding-right: 4px;
 }
 
 /* Section Headings */
@@ -985,6 +1061,47 @@ section h2 {
     position: relative;
     top: 35px;
 
+}
+.handwrittingBtn{
+    background-color: red !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+/* vedic math */
+
+.addCard{
+    background-image: linear-gradient(to right, #6610f1 0%, #fd7e15 100%);
+}
+.subtractCard{
+    background-image: linear-gradient(to right, #6610f1 0%, #f4f6f5 100%);
+}
+.diviCard{
+    background-image: linear-gradient(to right, #17a2b6 0%, #d5d7dd 100%);
+}
+.multiCard{
+    background-image: linear-gradient(to right, #17a2b6 0%, #6610f1 100%);
+}
+.level1{
+    background-image: linear-gradient(to right, #e93e8c 0%, #ffa420 100%);
+}
+.level2{
+    background-image: linear-gradient(to right, #e93e8c 0%, #ffa420 100%);
+}
+.level3{
+    background-image: linear-gradient(to right, #e93e8c 0%, #ffa420 100%);
+}
+.level4{
+    background-image: linear-gradient(to right, #e93e8c 0%, #ffa420 100%);
+}
+
+.card {
+    transition: all 0.7s ease; /* Apply transition to the base state */
+}
+
+.card:hover {
+    background-color: #f0f8ff; /* Light blue background on hover */
+    transform: scale(1.03);   /* Slightly increase the size on hover */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 
@@ -1218,3 +1335,16 @@ footer .footer_main .footer_widget .list li {
     color: #4e4b4b;
 }
 /* Add to Cart design end */
+
+
+
+/* Franchise pages design start */
+img, svg {
+    vertical-align: middle;
+    color: #1eef07;
+}
+
+
+
+
+/* Franchise pages design end */

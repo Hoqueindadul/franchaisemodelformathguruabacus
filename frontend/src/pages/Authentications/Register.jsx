@@ -1,11 +1,11 @@
 
-import { useAuth } from '../context/AuthProvider';
+import { useAuth } from '../../context/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { BACKEND_URL } from '../utils';
-import { LOCAL_BACKEND_URL } from '../local_backend_url';
+import { BACKEND_URL } from '../../utils';
+import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 import { FaAngleRight } from "react-icons/fa6";
 
 

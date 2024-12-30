@@ -108,24 +108,24 @@ function NavBar() {
 
                                 <NavDropdown title="Courses" className="mainNavbar" id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/abacus">Abacus</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/kidsenglish">Kids English</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/kids-english">Kids English</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/vedicmath">Vedic Math</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/handwritting">Handwriting</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/hand-writing">Handwriting</NavDropdown.Item>
                                 </NavDropdown>
 
                                 <Nav.Link as={Link} to="/studycenter" className="mainNavbar">Study Center</Nav.Link>
 
                                 <NavDropdown title="Franchise" className='mainNavbar' id="navbarScrollingDropdown">
-                                    <NavDropdown.Item as={Link} to="/action1">Benefit</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/action2">Criteria</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/action2">Registration</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/benifit">Benefit</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/criteria">Criteria</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/franchise-registraion">Registration</NavDropdown.Item>
                                 </NavDropdown>
 
                                 <Nav.Link as={Link} to="/school-tieup" className="mainNavbar">School Tie-up</Nav.Link>
 
                                 <NavDropdown title="Trainer" id="navbarScrollingDropdown">
-                                    <NavDropdown.Item as={Link} to="/action1">Become a Trainer</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/action2">Our Certified Trainer</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/become-trainer">Become a Trainer</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/trainers">Our Certified Trainer</NavDropdown.Item>
                                 </NavDropdown>
 
                                 <Nav.Link as={Link} to="/buymaterials" className="mainNavbar">Buy Materials</Nav.Link>

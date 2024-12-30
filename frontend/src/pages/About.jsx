@@ -39,7 +39,7 @@ export default function About() {
                             {/* About description start */}
 
                             <div className='heading mb-16'>
-                                <h6 className="color-primary about-tittle mb-8">---About Us</h6>
+                                <h6 className="color-primary about-tittle mb-8">About Us</h6>
                                 <h2>Building a Digital Learning <span className='fm-sec'>Ecosystem</span></h2>
                             </div>
                             <p className="mb-32">

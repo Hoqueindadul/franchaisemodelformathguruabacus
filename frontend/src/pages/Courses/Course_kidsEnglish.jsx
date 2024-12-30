@@ -1,10 +1,35 @@
-// Import necessary dependencies
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useEffect } from 'react'
 
-const CoursePage = () => {
-    return (
-        <div className="container abacusCourse mt-5">
+export default function Course_kidsEnglish() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+  return (
+    <div>
+        {/* page title banner start */}
+
+        {/* <section className="about_page_banner">
+                <div className="container h-100">
+                    <div className="row h-100 align-items-center justify-content-between">
+                        <div className="col-lg-6 col-md-6 text-md-left text-center position-relative">
+                            <div className="tittle">
+                                <h1 className="display-4 page-tittle">Course Details</h1>
+                                <img src="/tag-2.png" alt="loading" className="position-absolute page-banner"/>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 col-md-6 d-none d-md-block">
+                            <div className="educate-tilt">
+                                <img src="/page_title.png" alt="Educate Tilt" className="img-fluid" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> */}
+
+            {/* page title banner end */}
+
+
+            <div className="container abacusCourse mt-5">
             {/* Header Section */}
             <header className="text-center courseHeader mb-5">
                 <h1 className="display-4 courseH1">Welcome to Our Math Enrichment Program</h1>
@@ -16,11 +41,11 @@ const CoursePage = () => {
                 <h2 className="text-primary">Course Objectives</h2>
                 <p>Our program is designed to help students:</p>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">✔ Improve math accuracy and speed</li>
-                    <li className="list-group-item">✔ Enhance concentration and focus</li>
-                    <li className="list-group-item">✔ Develop problem-solving skills</li>
-                    <li className="list-group-item">✔ Boost confidence in math abilities</li>
-                    <li className="list-group-item">✔ Prepare for competitive exams and academic success</li>
+                    <li className="list-group-item"> <span className='courseIcon'>✔</span>Improve math accuracy and speed</li>
+                    <li className="list-group-item"> <span className='courseIcon'>✔</span>Enhance concentration and focus</li>
+                    <li className="list-group-item"> <span className='courseIcon'>✔</span>Develop problem-solving skills</li>
+                    <li className="list-group-item"> <span className='courseIcon'>✔</span>Boost confidence in math abilities</li>
+                    <li className="list-group-item"> <span className='courseIcon'>✔</span>Prepare for competitive exams and academic success</li>
                 </ul>
             </section>
 
@@ -180,7 +205,6 @@ const CoursePage = () => {
             </section>
 
         </div>
-    );
-};
-
-export default CoursePage;
+    </div>
+  )
+}

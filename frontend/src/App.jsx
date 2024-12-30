@@ -9,23 +9,46 @@ import NavBar from "../src/components/NavBar";
 import Home from "../src/components/Home";
 import Footer from "../src/components/Footer";
 
-import Contact from "./pages/Contact";
 import About from "./pages/About";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Whatwedo from "./pages/Whatwedo";
-import Trainers from "./pages/Trainers";
-import NotFound from "./pages/NotFound";
-import CourseAbacus from "./pages/Course_abacus";
-import CourseKidsEnglish from "./pages/Course_kidsEnglish";
-import CourseHandwriting from "./pages/Course_handwritting";
-import CourseVedicMath from "./pages/Course_vedicMath";
+
+// Courses routes start
+import CourseAbacus from "./pages/Courses/Course_abacus";
+import CourseKidsEnglish from "./pages/Courses/Course_kidsEnglish";
+import CourseHandwriting from "./pages/Courses/Course_handwritting";
+import CourseVedicMath from "./pages/Courses/Course_vedicMath";
+// Courses routes end
+
 import StudyCenter from "./pages/Study_Center";
+
+// Franchise route start
+import Benifit from "./pages/Franchise/Benifit"
+import Criteria from "./pages/Franchise/Criteria"
+import FranchiseRegistraion from "./pages/Franchise/FranchiseRegistraion"
+// Franchise route end
+
 import SchoolTieup from "./pages/School_tieup";
+
+// Trainer routes start
+import BecomeTrainer from "./pages/Trainer/BecomeTrainer";
+import Trainers from "./pages/Trainer/Trainers";
+// Trainer routes end
+
 import BuyMaterials from "./pages/Buy_materials";
+import Contact from "./pages/Contact";
+
+// Authentication routes start
+import Login from "./pages/Authentications/Login";
+import Register from "./pages/Authentications/Register";
+// Authentication routes end
+
+// Others routes
+import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 
+/* DashBoard Route */
 import Dashboard from "./pages/dashbords/student_dashboard/Dashboard";
+
 
 function App() {
   const location = useLocation();
@@ -51,7 +74,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/whatwedo" element={<Whatwedo />} />
+        <Route path="/becomeatrainer" element={<BecomeTrainer />} />
+
+        {/* franchise routes */}
+
+        <Route path="/benifit" element={<Benifit />} />
+        <Route path="/criteria" element={<Criteria />} />
+        <Route path="/franchise-registraion" element={<FranchiseRegistraion />} />
+
+        {/* Trainers route */}
+
+        <Route path="/become-trainer" element={<Trainers />} />
         <Route path="/trainers" element={<Trainers />} />
+        
         <Route path="/studycenter" element={<StudyCenter />} />
         <Route path="/school-tieup" element={<SchoolTieup />} />
         <Route
@@ -59,10 +94,13 @@ function App() {
           element={<BuyMaterials addToCart={addToCart} />}
         />
         <Route path="/cart" element={<Cart cartItems={cartItems} />} />
+
+        {/* Courses route */}
         <Route path="/vedicmath" element={<CourseVedicMath />} />
         <Route path="/abacus" element={<CourseAbacus />} />
-        <Route path="/handwriting" element={<CourseHandwriting />} />
-        <Route path="/kidsenglish" element={<CourseKidsEnglish />} />
+        <Route path="/hand-writing" element={<CourseHandwriting />} />
+        <Route path="/kids-english" element={<CourseKidsEnglish />} />
+
         {/* Universal route */}
         <Route path="*" element={<NotFound />} />
         <Route path="/dashboard" element={<Dashboard />} />

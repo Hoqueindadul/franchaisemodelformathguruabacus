@@ -70,7 +70,7 @@ export default function Whatwedo() {
             {/* what we do page content */}
             <div className="whatwedo">
                 <Container className="mt-5">
-                    <h2 className="text-left tittle mb-4">---What We Do</h2>
+                    <h2 className="text-left whatwedo-tittle mb-4">What We Do</h2>
                     <p className="text-left summary mb-4">
                         At MathGuruAbacus, we are dedicated to enhancing children's cognitive abilities through innovative learning methods. Our programs focus on interactive learning, step-by-step guidance, and a comprehensive curriculum designed to foster a love for learning and improve mental agility.
                     </p>

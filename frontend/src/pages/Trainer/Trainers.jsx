@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-export default function Trainers() {
+export default function Trainer() {
   useEffect(() => {
     window.scrollTo(0, 0)
 }, [])
