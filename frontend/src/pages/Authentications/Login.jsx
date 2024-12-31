@@ -131,7 +131,7 @@ export default function Login() {
                                             />
                                         </div>
                                         <button type="submit" className="b-unstyle educate-btn w-100 mb-24">
-                                            <span className="educate-btn__curve"></span>Login to Account
+                                            <span className="educate-btn__curve text-light"></span>Login to Account
                                         </button>
                                     </form>
                                     <div className="bottom-row">

@@ -84,7 +84,7 @@ function App() {
 
         {/* Trainers route */}
 
-        <Route path="/become-trainer" element={<Trainers />} />
+        <Route path="/become-trainer" element={<BecomeTrainer />} />
         <Route path="/trainers" element={<Trainers />} />
         
         <Route path="/studycenter" element={<StudyCenter />} />

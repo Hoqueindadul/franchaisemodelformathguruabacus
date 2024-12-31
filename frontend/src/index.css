@@ -684,12 +684,14 @@ body {
     border: 2px;
     border-radius: 7px;
     transition: all 0.7s ease;
+    color: white;
+    font-weight: bold;
     /* Smooth transition */
 }
 
 
 .educate-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.02);
 }
 
 .form-control {
@@ -1344,7 +1346,26 @@ img, svg {
     color: #1eef07;
 }
 
+.franchieNoteInp {
+    height: 6rem;
+    padding: 80px 0;
+}
 
+.row {
+    margin: 0px -12px !important;
+    padding: 1px 0 !important;
+}
 
 
 /* Franchise pages design end */
+
+/* Trainer pages design start */
+
+.trainerSubmitbtn{
+    background-color: #df1b1b !important;
+    color: white !important;
+    font-weight: bold !important;
+    display: flex;
+    margin: auto;
+}
+/* Trainer pages design end */

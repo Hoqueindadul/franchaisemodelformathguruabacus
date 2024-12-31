@@ -42,9 +42,9 @@ export default function Criteria() {
     return (
         <div className="container mt-5">
             {/* Header Section */}
-            <header className="text-center mb-4">
-                <h1 className="display-4 text-primary">Franchise Criteria</h1>
-                <p className="lead text-muted">Explore the different types of franchises we offer and their requirements.</p>
+            <header className="text-center courseHeader mb-5">
+                <h1 className="display-4 courseH1">Franchise Criteria</h1>
+                <p className="lead coursePara">Explore the different types of franchises we offer and their requirements</p>
             </header>
 
             {/* Criteria Section */}

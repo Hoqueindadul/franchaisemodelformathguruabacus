@@ -157,7 +157,7 @@ export default function Register() {
                                             />
                                         </div>
                                         <button type="submit" className="b-unstyle educate-btn w-100 mt-3">
-                                            <span className="educate-btn__curve">Create Account</span>
+                                            <span className="educate-btn__curve text-light">Create Account</span>
                                         </button>
                                     </form>
                                     <div className="text-end">
