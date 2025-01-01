@@ -466,6 +466,10 @@ body {
 /* Home page design start */
 /* Home class booking */
 
+.home-section{
+    padding: 20px 0;
+}
+
 .book-btn{
     padding: 12px 14px;
     border: 2px solid violet;
@@ -483,7 +487,7 @@ body {
 
 /* Features style */
 .feature {
-    padding: 25px 0;
+    padding: 40px 0;
 }
 
 .feature-content {

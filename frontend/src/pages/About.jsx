@@ -89,16 +89,16 @@ export default function About() {
                         <div className="col-lg-6">
                             <div className="row g-3 mt-5">
                                 <div className="col-6 text-start">
-                                    <img className="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.1s" src="/about2.jpg" alt="About 1" />
+                                    <img className="img-fluid rounded w-100 h-100 wow zoomIn" data-wow-delay="0.1s" src="/img1.jpg" alt="About 1" />
                                 </div>
                                 <div className="col-6 text-start">
-                                    <img className="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.3s" src="/about2.jpg" style={{ marginTop: '25%' }} alt="About 2" />
+                                    <img className="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.3s" src="/img2.jpg" style={{ marginTop: '25%' }} alt="About 2" />
                                 </div>
                                 <div className="col-6 text-end">
-                                    <img className="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.5s" src="/about2.jpg" alt="About 3" />
+                                    <img className="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.5s" src="/img3.jpg" alt="About 3" />
                                 </div>
                                 <div className="col-6 text-end">
-                                    <img className="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.7s" src="/about2.jpg" alt="About 4" />
+                                    <img className="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.7s" src="/img5.jpeg" alt="About 4" />
                                 </div>
                             </div>
                         </div>
