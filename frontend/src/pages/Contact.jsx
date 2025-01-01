@@ -32,26 +32,6 @@ export default function Contact() {
 
     return (
         <>
-            {/* page tittle banner start */}
-            {/* <section className="about_page_banner">
-                <div className="container h-100">
-                    <div className="row h-100 align-items-center justify-content-between">
-                        <div className="col-lg-6 col-md-6 text-md-left text-center position-relative">
-                            <div className="tittle">
-                                <h1 className="display-4">Contact Us</h1>
-                                <img src="/tag-2.png" alt="loading" className="position-absolute" style={{ width: '58px', height: '58px', top: '-60px', left: '350px', animation: 'upDown 3s linear infinite alternate' }} />
-                            </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6 d-none d-md-block">
-                            <div className="educate-tilt">
-                                <img src="/page_title.png" alt="Educate Tilt" className="img-fluid" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section> */}
-
-            {/* page title banner end */}
 
             {/* Contact form start */}
             <div className="container-xxl py-5">
