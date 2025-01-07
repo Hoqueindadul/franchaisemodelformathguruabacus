@@ -2,7 +2,6 @@
 
 
 
-
 :root {
     --title-color: #0d0d0d;
     --para-color: #f2f4f3;
@@ -86,7 +85,7 @@ body {
 
 .login {
     background-image: linear-gradient(-60deg, #2e17fc 0%, #2e17fc 100%);
-    font-size: 2rem;
+    font-size: 1rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .login:hover {
