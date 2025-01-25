@@ -47,6 +47,7 @@ export default function FranchiseRegistration() {
                 },
             })
             toast.success("You are registered successfully.")
+            localStorage.setItem('fullName', fullName);
             console.log(response.data);
 
 

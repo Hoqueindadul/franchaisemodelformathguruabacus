@@ -37,12 +37,13 @@ export default function Register() {
         
 
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
+            const response = await axios.post(`${LOCAL_BACKEND_URL}/api/users/register`, formData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
             toast.success("User register successfully.")
+            localStorage.setItem('firstName', firstName);
             console.log(response.data);
             
             

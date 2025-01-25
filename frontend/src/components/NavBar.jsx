@@ -1,34 +1,31 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAuth } from '../context/AuthProvider';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import axios from 'axios';
-import { FaFacebook, FaTwitterSquare, FaYoutube, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaYoutube, FaUserCircle } from "react-icons/fa";
 import Header from './Header';
 import toast from 'react-hot-toast';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { BACKEND_URL } from '../utils';
 
 function NavBar() {
-    const { isAuthenticated, setIsAuthenticated } = useAuth(); // Retrieve auth status
-
+    const { isAuthenticated, setIsAuthenticated, loggedInUsername } = useAuth(); // Retrieve auth status and username
     const location = useLocation();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-
         // Clear local storage and update auth state
         localStorage.removeItem("jwt");
-
         setIsAuthenticated(false);
-
         toast.success("Logout Successfully");
         setTimeout(() => {
             navigate("/login");
-        }, 2000)
+        }, 2000);
+    };
 
+    const handleDashboard = () => {
+        navigate("/dashboard");
     };
 
     return (
@@ -54,44 +51,59 @@ function NavBar() {
                     {/* Right Column with Social Icons */}
                     <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2">
                         <div className="icons">
-                            <Link
-                                to="https://www.facebook.com/profile.php?id=61566500032820"
+                            <a
+                                href="https://www.facebook.com/profile.php?id=61566500032820"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="iconimage me-2"
                             >
                                 <FaFacebook className="header-social-icon facebook" />
-                            </Link>
-                            <Link
-                                to="https://www.youtube.com/@mathguruabacusho"
+                            </a>
+                            <a
+                                href="https://www.youtube.com/@mathguruabacusho"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="iconimage"
                             >
                                 <FaYoutube className="header-social-icon youtube" />
-                            </Link>
+                            </a>
                         </div>
                     </div>
 
-                    {/* Login Button */}
+                    {/* User Dropdown */}
                     <div className="col-6 col-md-1 d-flex justify-content-end order-4">
-                        <div className="login-btn">
-                            {isAuthenticated ? (
-                                <button
-                                    type="button"
-                                    className="btn btn-primary fw-semibold login"
-                                    onClick={handleLogout}
-                                >
-                                    Logout
-                                </button>
-                            ) : (
-                                <Link to="/login">
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary fw-semibold login"
-                                    >
-                                        Login
-                                    </button>
-                                </Link>
-                            )}
-                        </div>
-                    </div>
+    <div className="login-btn">
+        {isAuthenticated ? (
+            <NavDropdown
+                title={
+                    <span>
+                        <FaUserCircle className="me-2" />
+                        {loggedInUsername
+                            ? loggedInUsername.split(' ')[0].charAt(0).toUpperCase() +
+                              loggedInUsername.split(' ')[0].slice(1)
+                            : 'User'}
+                    </span>
+                }
+                id="user-dropdown"
+                className="z-5"
+                align="end"
+                data-bs-display="static"
+            >
+                <NavDropdown.Item onClick={handleDashboard}>Dashboard</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+            </NavDropdown>
+        ) : (
+            <Link to="/login">
+                <button
+                    type="button"
+                    className="btn btn-primary fw-semibold login"
+                >
+                    Login
+                </button>
+            </Link>
+        )}
+    </div>
+</div>
                 </div>
             </div>
 
@@ -99,7 +111,7 @@ function NavBar() {
             <div className="mainabar navbar-container">
                 <Navbar expand="xl" className="navbar-custom bg-warning">
                     <Container fluid>
-                        <Navbar.Toggle aria-controls="navbarScroll" className='ms-auto' />
+                        <Navbar.Toggle aria-controls="navbarScroll" className="ms-auto" />
                         <Navbar.Collapse id="navbarScroll">
                             <Nav className="me-auto my-2 my-lg-0 navi" navbarScroll>
                                 <Nav.Link as={Link} to="/" className="active mainNavbar">Home</Nav.Link>
@@ -115,7 +127,7 @@ function NavBar() {
 
                                 <Nav.Link as={Link} to="/studycenter" className="mainNavbar">Study Center</Nav.Link>
 
-                                <NavDropdown title="Franchise" className='mainNavbar' id="navbarScrollingDropdown">
+                                <NavDropdown title="Franchise" className="mainNavbar" id="navbarScrollingDropdown">
                                     <NavDropdown.Item as={Link} to="/benifit">Benefit</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/criteria">Criteria</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/franchise-registraion">Registration</NavDropdown.Item>
@@ -135,7 +147,6 @@ function NavBar() {
                     </Container>
                 </Navbar>
             </div>
-
         </>
     );
 }

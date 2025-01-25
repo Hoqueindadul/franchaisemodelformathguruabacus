@@ -217,7 +217,10 @@ body {
 }
 
 
-
+.dropdown-menu {
+    position: absolute !important; /* Ensure it is positioned correctly */
+    z-index: 1050 !important;      /* Override any conflicting z-index */
+}
 .nav-link {
   
     color: blue !important;
