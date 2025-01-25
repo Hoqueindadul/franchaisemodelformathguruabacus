@@ -68,7 +68,7 @@ export default function Register() {
     return (
         <div>
             <div className="form_page">
-                <div className="container">
+                <div className="container studentRegister">
                     <div className="row">
                         <div className="col-xl-6">
                             <div className="form_block">
@@ -112,10 +112,10 @@ export default function Register() {
                                             </div>
                                         </div>
                                         <div className="mb-24">
-                                            <select name="role" id="role" value={role} onChange={(e) => setRole(e.target.value)} className='p_lg w-100 p-3 role'>
+                                            <select name="role" id="role" value={role} onChange={(e) => setRole(e.target.value)} className='p_lg w-100 p-3 role mt-3'>
                                                 <option value="" className='op'>Select a Role</option>
-                                                <option value="franchise">Franchise</option>
-                                                <option value="student">Student</option>
+                                                <option value="franchise">Student or Parent</option>
+                                                <option value="student">Visitor</option>
                                             </select>
                                         </div>
 

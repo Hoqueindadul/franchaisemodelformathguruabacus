@@ -3,15 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { BACKEND_URL } from '../../utils';
-import { LOCAL_BACKEND_URL } from '../../local_backend_url';
+import { BACKEND_URL } from '../../utils.js';
+import { LOCAL_BACKEND_URL } from '../../local_backend_url.js';
 import { FaAngleRight } from "react-icons/fa6";
 
 const isProduction = process.env.NODE_ENV === 'production';
 const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
 
-export default function Login() {
-    const [role, setRole] = useState("");
+export default function FranchiseLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { setIsAuthenticated } = useAuth(); // Access setIsAuthenticated from Auth context
@@ -25,15 +24,14 @@ export default function Login() {
         e.preventDefault();
 
         // Validation
-        if (!role || !email || !password) {
+        if (!email || !password) {
             toast.error("Please fill in all required fields.");
             return;
         }
 
         try {
             // Make API call to login endpoint
-            const { data } = await axios.post(`${BACKEND_URL}/api/users/login`, {
-                role,
+            const { data } = await axios.post(`${BACKEND_URL}/api/franchises/franchiseLogin`, {
                 email,
                 password,
             }, {
@@ -66,7 +64,7 @@ export default function Login() {
     return (
         <div>
             <div className="form_page">
-                <div className="container studentLogin">
+                <div className="container">
                     <div className="row">
                         <div className="col-xl-6">
                             <div className="form_block">
@@ -95,19 +93,6 @@ export default function Login() {
                                         <h6 className="mb-24">Login with your email address</h6>
                                     </div> */}
                                     <form onSubmit={handleLogin} className="form-validator">
-                                        <div className="mb-24">
-                                            <select
-                                                name="role"
-                                                id="role"
-                                                className="p_lg w-100 p-3 role"
-                                                value={role}
-                                                onChange={(e) => setRole(e.target.value)}
-                                            >
-                                                <option value="" className="op">Select a Role</option>
-                                                <option value="franchise">Student or Parent</option>
-                                                <option value="student">Visitor</option>
-                                            </select>
-                                        </div>
                                         <div className="mb-24 another">
                                             <input
                                                 type="email"
@@ -136,7 +121,7 @@ export default function Login() {
                                     </form>
                                     <div className="bottom-row">
                                         <h6>
-                                            Don't have an account? <Link to="/register" className="color-primary">Register</Link>
+                                            Don't have an account? <Link to="/franchise-registraion" className="color-primary">Register</Link>
                                         </h6>
                                         <h6>
                                             <Link to="/forgot-password" className="color-primary">Forgot Password</Link>

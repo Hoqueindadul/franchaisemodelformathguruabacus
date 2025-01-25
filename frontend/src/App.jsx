@@ -25,6 +25,7 @@ import StudyCenter from "./pages/Study_Center";
 import Benifit from "./pages/Franchise/Benifit"
 import Criteria from "./pages/Franchise/Criteria"
 import FranchiseRegistraion from "./pages/Franchise/FranchiseRegistraion"
+import FranchiseLogin from "./pages/Franchise/FranchiseLogin";
 // Franchise route end
 
 import SchoolTieup from "./pages/School_tieup";
@@ -52,7 +53,7 @@ import Dashboard from "./pages/dashbords/student_dashboard/Dashboard";
 
 function App() {
   const location = useLocation();
-  const hideNavbarFooter = ["/dashboard", "/register", "/login"].includes(
+  const hideNavbarFooter = ["/dashboard", "/register", "/login", "/franchise-registraion", "/franchise-login"].includes(
     location.pathname
   );
 
@@ -81,6 +82,7 @@ function App() {
         <Route path="/benifit" element={<Benifit />} />
         <Route path="/criteria" element={<Criteria />} />
         <Route path="/franchise-registraion" element={<FranchiseRegistraion />} />
+        <Route path="/franchise-login" element={<FranchiseLogin />} />
 
         {/* Trainers route */}
 

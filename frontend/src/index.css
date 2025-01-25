@@ -658,6 +658,11 @@ body {
     width: 100%;
 }
 
+@media (max-width: 1024px) {
+    .studentLogin{
+        padding: 2rem 0;
+    }
+}
 /* Login page design End */
 
 /* Registration page design start */
@@ -808,6 +813,11 @@ option{
 }
 .account{
     font-weight: 800;
+}
+@media (max-width: 1024px) {
+    .studentRegister{
+        padding: 5rem 0;
+    }
 }
 /* Regestration page design end */
 
@@ -1360,6 +1370,13 @@ img, svg {
     margin: 0px -12px !important;
     padding: 1px 0 !important;
 }
+
+@media (max-width: 1024px) {
+    .franchise{
+        padding: 5rem 0;
+    }
+}
+
 
 
 /* Franchise pages design end */
