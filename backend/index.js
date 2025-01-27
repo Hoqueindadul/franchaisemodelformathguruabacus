@@ -4,6 +4,7 @@ import connectDatabase from "./connection/dbConnection.js";
 
 import userRoute from "./routes/user.route.js";
 import franchiseRoute from "./routes/franchise.route.js"
+import courseRoute from "./routes/courses.route.js"
 import otpRoute from "./routes/otp.route.js"
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
@@ -36,6 +37,7 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/franchises", franchiseRoute)
 app.use("/api/otpValidator", otpRoute)
+app.use("/api/courses", courseRoute)
 
 app.use(
   fileUpload({

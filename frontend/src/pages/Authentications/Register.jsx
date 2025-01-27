@@ -70,7 +70,7 @@ export default function Register() {
         <div>
             <div className="form_page">
                 <div className="container studentRegister">
-                    <div className="row">
+                    <div className="row ">
                         <div className="col-xl-6">
                             <div className="form_block">
                                 <div className="text_block">

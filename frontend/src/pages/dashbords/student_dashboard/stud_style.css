@@ -6,6 +6,7 @@
 }
 
 
+
 :root {
     --primary-color: #3498db;
     --sidebar-width: 260px;
@@ -22,10 +23,7 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-
-
-
-
+}
 
 
 
@@ -47,19 +45,26 @@ body {
 }
 
 .dropdown-menu-custom {
-    width: 200px;
-    /* Adjust width as needed */
-    text-align: center;
     position: absolute;
-    top: 100%;
+    padding: 5px 20px;
+    top: 150%;
     right: 0;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+   
 }
 
+.dashHeaderBtn{
+    color: #5b5e64;
+    padding: 4px 8px;
+    margin: 4px
+}.dashHeaderBtn:hover{
+    background-color: rgb(245, 248, 255);
+    padding: 4px 8px;
+}
 @media (max-width: 992px) {
 
     /* Hide notifications, messages, and profile by default on tablet and mobile */
@@ -70,7 +75,7 @@ body {
     /* Dropdown menu styles for small screens */
     .dropdown-menu-custom {
         display: flex !important;
-        flex-direction: row !important;
+        flex-direction: column !important;
     }
 }
 
@@ -89,6 +94,19 @@ body {
     min-height: 100vh;
 }
 
+/* Hide hamburger icon on large screens */
+@media (min-width: 992px) {
+    .hamburger-icon {
+        display: none;
+    }
+}
+
+/* Show hamburger icon only on small and medium screens */
+@media (max-width: 991px) {
+    .hamburger-icon {
+        display: inline-block;
+    }
+}
 
   
 .sidebar {
@@ -98,10 +116,15 @@ body {
     position: fixed;
     height: 100vh;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    transition: transform 0.3s ease;
     z-index: 1000;
+    transition: width 0.3s ease-in-out;
 }
-
+.subbar{
+    margin-left: 20px;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
 .sidebar-header {
     height: var(--header-height);
     padding: 1rem;
@@ -189,6 +212,7 @@ body {
   
   .sidebarIcon {
     color: rgb(69, 73, 76);
+    margin-right: 8px;
   }
   
   .sidebartab:hover .sidebarIcon {
@@ -208,11 +232,45 @@ body {
     font-size: 1.2rem;
 }
 
+
+
+  
+  .hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    z-index: 1100;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .hamburger-menu svg {
+    color: #000;
+  }
+  
+  .sidebar.open {
+    width: 250px;
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 0;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hamburger-menu {
+      display: none;
+    }
+  }
+  
+  
+
 /* Main Content */
 .main-content {
     flex: 1;
-    margin-left: var(--sidebar-width);
-    transition: margin-left 0.3s ease;
+    margin-left: 8rem;
+    
 }
 
 /* Header */
@@ -220,9 +278,7 @@ body {
     height: var(--header-height);
     background-color: white !important;
     border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+   
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 0 1.5rem;
     position: sticky;
@@ -231,6 +287,17 @@ body {
 
 }
 
+
+@media (max-width: 375px) {
+    .main-header {
+        width: 114%;
+    }
+}
+@media (max-width: 320px) {
+    .main-header {
+        width: 134%;
+    }
+}
 .header-left {
     display: flex;
     align-items: center;
@@ -304,9 +371,7 @@ body {
         margin-left: 0;
     }
 
-    .main-content.sidebar-open {
-        margin-left: var(--sidebar-width);
-    }
+    
 }
 
 @media (max-width: 768px) {
@@ -314,7 +379,7 @@ body {
         display: none;
     }
 
-    .main-content.sidebar-open {
+    .main-content .sidebar-open {
         margin-left: 0;
     }
 
@@ -485,4 +550,19 @@ td {
         margin-left: 0;
     }
 }
+
+
+/* Add course design start  */
+
+.addCoursebtn{
+    padding: 0px 4;
+    text-wrap: nowrap;
 }
+/* Add course design end */
+
+/* Students form design start */
+
+.table-striped{
+    overflow-x: scroll;
+}
+/* Students form design end */

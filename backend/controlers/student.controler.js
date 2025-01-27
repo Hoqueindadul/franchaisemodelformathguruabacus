@@ -109,8 +109,10 @@ export const logout = async (req, res) => {
 
 export const allUsers = async (req, res) => {
     try {
-        const users = await Students.find()
-        res.status(200).json(users)
+        const students = await Students.find()
+        const totalStudents = students.length;
+        
+        res.status(200).json(students)
     } catch (error) {
         console.log(error);
         res.status(500).json({error: "An error occurred while fetching users" })

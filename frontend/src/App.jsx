@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import ProtectedRoute from "./ProtectRoute";
 
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -105,6 +106,7 @@ function App() {
 
         {/* Universal route */}
         <Route path="*" element={<NotFound />} />
+        {/* <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Toaster />

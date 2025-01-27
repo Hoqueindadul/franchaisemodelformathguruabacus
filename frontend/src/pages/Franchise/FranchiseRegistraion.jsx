@@ -80,7 +80,7 @@ export default function FranchiseRegistration() {
         <div>
             <div className="form_page">
                 <div className="container franchise">
-                    <div className="row">
+                    <div className="row franchiseRow">
                         <div className="col-xl-6">
                             <div className="form_block">
                                 <div className="text_block">

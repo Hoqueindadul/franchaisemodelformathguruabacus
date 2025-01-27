@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from "../../../../context/AuthProvider";
 import toast from 'react-hot-toast';
 
@@ -35,8 +35,8 @@ const Header = () => {
                 <div className="user-profile ms-3" onClick={toggleDropdown}>
                     <img
                         src="/team-1.jpg"  // Correct path to the image
-                        alt="profile"
-                        className="avatar rounded-circle"
+                        
+                        className="avatar rounded-circle bg-warning"
                         style={{ width: '35px', height: '35px' }}
                     />
                 </div>
@@ -44,22 +44,26 @@ const Header = () => {
                 {/* Profile Dropdown - Mobile/Tablet/Desktop (For All Screens) */}
                 {showDropdown && (
                     <div
-                        className="dropdown-menu-custom d-flex flex-column align-items-center p-2"
-                        style={{
-                            position: 'absolute',
-                            top: '150%',
-                            right: '0',
-                            backgroundColor: '#fff',
-                            border: '1px solid #ddd',
-                            borderRadius: '8px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                            zIndex: 1000,
-                        }}
+                        className="dropdown-menu-custom headerDropdown d-flex flex-column align-items-center"
+                        
                     >
                         {/* Logout Button */}
-                        <button className="btn btn-link p-0" onClick={handleLogout}>
-                            Logout
-                        </button>
+                        <Link to="/">
+                            <button className="btn btn-link text-decoration-none m-auto dashHeaderBtn">
+                                <span>Home</span>
+                            </button>
+                        </Link>
+                        <Link to="">
+                            <button className="btn btn-link text-decoration-none m-auto dashHeaderBtn">
+                                <span>Profile</span>
+                            </button>
+                        </Link>
+                        <Link to="">
+                            <button className="btn btn-link text-decoration-none m-auto dashHeaderBtn" onClick={handleLogout}>
+                                <span>Logout</span>
+                            </button>
+                        </Link>
+                        
                     </div>
                 )}
             </div>

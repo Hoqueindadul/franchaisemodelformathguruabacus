@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Route, Routes, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -8,7 +9,7 @@ import Header_dash from '../student_dashboard/common/Header_dash';
 import Sidebar from '../student_dashboard/common/Sidebar';
 import CourseTable from '../student_dashboard/dashboard/CourseTable';
 import MainContent from '../student_dashboard/dashboard/MainContent';
-
+import AddCourse from './dashboard/courseSubTab/AddCourse';
 import ToppersList from '../student_dashboard/dashboard/ToppersList';
 
 const Dashboard = () => {
