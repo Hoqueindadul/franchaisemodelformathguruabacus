@@ -1,6 +1,24 @@
 import React, { useEffect } from 'react'
+import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function Course_handwritting() {
+    const { setIsAuthenticated } = useAuth(); // Get login status
+    const navigate = useNavigate();
+
+    // Function to handle enroll button click
+    const handleEnroll = () => {
+        if (setIsAuthenticated) {
+            navigate('/'); // Redirect to dashboard if logged in
+        } else {
+            toast.success("Please login to your account first");
+            setTimeout(() => {
+                navigate('/login'); // Redirect to login after 3 seconds
+            }, 2000);
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -43,11 +61,13 @@ export default function Course_handwritting() {
             </section>
 
             {/* Call to Action Section */}
-            <section className="text-center">
+            <div className="text-center">
                 <h2 className="text-primary">Ready to Improve Your Handwriting?</h2>
                 <p>Join Winaum Learning today and discover the joy of writing confidently and creatively!</p>
-                <button className="btn handwrittingBtn btn-lg">Enroll Now</button>
-            </section>
+                <button className="btn handwrittingBtn btn-lg" onClick={handleEnroll}>
+                    Enroll Now
+                </button>
+            </div>
         </div>
             
     </div>

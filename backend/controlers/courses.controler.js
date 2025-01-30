@@ -1,4 +1,5 @@
 import Courses from "../models/courses.model.js";
+import mongoose from "mongoose";
 
 export const addCourse = async (req, res) => {
     try {
@@ -41,28 +42,27 @@ export const addCourse = async (req, res) => {
     }
 };
 
-
 export const deleteCourse = async (req, res) => {
     try {
-        const { courseTittle } = req.body;
+        const { id } = req.params;
 
-        if (!courseTittle){
-            return res.status(400).json({ message: "Course Name or Tittle required."})
+        // Validate ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Invalid course ID format" });
         }
 
-        const delete_course = await Courses.findOneAndDelete(courseTittle)
-
-        if(!delete_course){
-           return res.status(404).json({ message: "Course not found."})
+        const deletedCourse = await Courses.findByIdAndDelete(id);
+        if (!deletedCourse) {
+            return res.status(404).json({ error: "Course not found" });
         }
-        
-        return res.status(200).json({ message: "Course deleted successfully.", delete_course})
+
+        // Optional: Send back deleted course data for confirmation
+        res.json({ message: "Course deleted successfully", deletedCourse });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: "Faild to delete course."})
-        
+        console.error("Error deleting course:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+};
 
 export const allCourse = async (req, res) => {
     try {
@@ -71,17 +71,20 @@ export const allCourse = async (req, res) => {
 
         if (totalCourse === 0) {
             // If no courses found, return this message
-            return res.status(404).json({ message: "No courses available." });
+            return res.status(404).json({ error: "No courses available." });
         }
 
         // If courses exist, return them
-        return res.status(200).json({ 
-            message: `All ${totalCourse} courses fetched successfully.`,
-            courses: all_courses ,
-            Total_Course: totalCourse
+        return res.status(200).json({
+            courses: all_courses,
+            totalCourses: totalCourse,
+            message: `All ${totalCourse} courses fetched successfully.`
         });
     } catch (error) {
         // Handle any unexpected errors
-        return res.status(500).json({ message: "An error occurred while fetching courses.", error: error.message });
+        return res.status(500).json({
+            error: "An error occurred while fetching courses.",
+            details: error.message
+        });
     }
 };

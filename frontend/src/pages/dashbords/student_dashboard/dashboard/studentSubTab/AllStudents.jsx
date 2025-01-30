@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { MdDelete } from "react-icons/md";
+import toast from 'react-hot-toast';
 
 export default function AllStudents() {
   const [students, setStudents] = useState([]);
-  const [error, setError] = useState('');  // State to store error message
-  const [totalStudents, setTotalStudents] = useState(0);  // State to store total number of students
+  const [error, setError] = useState('');
+  const [totalStudents, setTotalStudents] = useState(0);
 
   useEffect(() => {
-    // Fetch student data from the API
     const fetchStudents = async () => {
       try {
-        // Replace with your API URL
-        const response = await fetch('http://localhost:4000/api/users/all-users');
-        const data = await response.json();
-        console.log("Fetched Data:", data); // Debugging: Log the full response
-
-        // Ensure data is an array and contains student objects
-        if (Array.isArray(data)) {
-          console.log("Students Array:", data); // Log the students array
-          setStudents(data);  // Set the array of students
-          setTotalStudents(data.length); // Set total students count
+        const response = await axios.get('http://localhost:4000/api/users/all-users'); // Replace with your backend URL
+        if (Array.isArray(response.data)) {
+          setStudents(response.data);
+          setTotalStudents(response.data.length);
         } else {
           setError('API did not return an array.');
         }
@@ -32,48 +27,60 @@ export default function AllStudents() {
     fetchStudents();
   }, []);
 
-  // Log students data before rendering
-  console.log("Students State:", students);
+  // ✅ Function to delete a student
+  const handleDelete = async (studentId) => {
+    if (!window.confirm("Are you sure you want to delete this student?")) return;
+
+    try {
+      await axios.delete(`http://localhost:4000/api/users/delete/${studentId}`); // Replace with actual DELETE API
+      setStudents(students.filter((student) => student._id !== studentId));
+      setTotalStudents(prev => prev - 1);
+      toast.success("Student deleted successfully!");
+    } catch (error) {
+      console.error("Delete Error:", error);
+      toast.error("Failed to delete student.");
+    }
+  };
 
   return (
     <div className="container mt-4">
       <h2 className="mb-4">All Students</h2>
-
-      {/* Display total student count */}
       <p>Total Students: {totalStudents}</p>
-
-      {/* Display error if any */}
       {error && <p className="text-danger">{error}</p>}
 
-      {/* Render the list of students */}
       {students.length > 0 ? (
-        <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student._id}> {/* Using _id as the key */}
-                  <td>{student.firstName}</td>
-                  <td>{student.lastName}</td>
-                  <td>{student.phone}</td>
-                  <td>{student.email}</td> 
-                  <td>
-                    <button className="btn btn-link p-0" onClick={() => console.log("Delete", student._id)}>
-                      <MdDelete />
-                    </button>
-                  </td>
+        <div className="table-container">
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {students.map((student) => (
+                  <tr key={student._id}>
+                    <td>{student.firstName}</td>
+                    <td>{student.lastName}</td>
+                    <td>{student.phone}</td>
+                    <td>{student.email}</td>
+                    <td>
+                      <button
+                        className="btn btn-link p-0 text-danger"
+                        onClick={() => handleDelete(student._id)}
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         <p>No students available.</p>

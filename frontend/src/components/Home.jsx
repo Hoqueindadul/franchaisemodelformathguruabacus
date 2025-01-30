@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { GoPeople } from "react-icons/go";
 import React, { useState } from 'react';
 import axios from 'axios'
-import { BACKEND_URL } from '../utils';
+import { BACKEND_URL } from '../utils.js';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
 import toast from 'react-hot-toast';
 import { motion } from "framer-motion";
@@ -38,34 +38,48 @@ function Home() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSending(true);
+    
+        // Basic phone number validation
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(formData.phone)) {
+            toast.error("Please enter a valid 10-digit phone number");
+            setIsSending(false);
+            return;
+        }
+    
         try {
-            console.log(formData);
-
-            const response = await axios.post(
+            const response = await axios.get(
                 `${BACKEND_URL}/api/users/sendWhatsappMessage`,
-                formData,
                 {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    withCredentials: true, // Include cookies or credentials in the request
+                    program: formData.program,
+                    name: formData.name,
+                    phone: formData.phone,
+                },
+                {
+                    headers: { "Content-Type": "application/json" }, // Ensure JSON data is sent
+                    withCredentials: true,
                 }
             );
-
-            console.log("Message sent successfully:", response.data);
-            toast.success("Message sent successfully via WhatsApp!");
-            setFormData({
-                program: "",
-                name: "",
-                phone: "",
-            });
+    
+            if (response.data.success) {
+                toast.success("WhatsApp message sent successfully!");
+                setFormData({
+                    program: "",
+                    name: "",
+                    phone: "",
+                });
+                window.scrollTo(0, 0);
+            } else {
+                toast.error("Failed to send WhatsApp message");
+            }
         } catch (error) {
-            console.error("Error sending WhatsApp message:", error.response || error.message);
-            toast.error("Failed to send WhatsApp message.");
+            console.error("Error:", error);
+            toast.error(error.response?.data?.error || "Failed to send message");
         } finally {
-            setIsSending(false); // Reset the loading state
+            setIsSending(false);
         }
     };
+    
 
     return (
         <>
@@ -106,13 +120,13 @@ function Home() {
                                 )}
                                 <div className="another-item mt-3 d-flex align-items-center justify-content-center text-center">
                                     <div className="item1 mt-3">
-                                        <h2>4+ <p>Courses</p></h2>
+                                         <p><span className='count'>4+</span><br/> Courses</p>
                                     </div>
                                     <div className="item1 mt-3">
-                                        <h2>10+ <p>Trainer</p></h2>
+                                    <p><span className='count'>10+ </span><br/>Trainer</p>
                                     </div>
                                     <div className="item1 mt-3">
-                                        <h2>50+ <p>Learning Module</p></h2>
+                                         <p><span className='count'>50+</span><br/>Learning Module</p>
                                     </div>
                                 </div>
                             </div>

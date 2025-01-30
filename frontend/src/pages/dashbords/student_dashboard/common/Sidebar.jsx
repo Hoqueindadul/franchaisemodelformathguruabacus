@@ -78,12 +78,7 @@ const Sidebar = ({ setActiveTab }) => {
               >
                 <MdOutlineAddCircle className="sidebarIcon" /> Add Courses
               </button>
-              <button
-                className="btn btn-link subbar-link"
-                onClick={() => setActiveTab("deletecourse")}
-              >
-                <MdDelete className="sidebarIcon" /> Delete Courses
-              </button>
+              
               <button
                 className="btn btn-link subbar-link"
                 onClick={() => setActiveTab("allcourse")}

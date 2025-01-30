@@ -273,6 +273,11 @@ body {
     
 }
 
+@media (max-width:425px){
+    .main-content{
+        overflow-x: scroll;
+    }
+}
 /* Header */
 .main-header {
     height: var(--header-height);
@@ -288,16 +293,7 @@ body {
 }
 
 
-@media (max-width: 375px) {
-    .main-header {
-        width: 114%;
-    }
-}
-@media (max-width: 320px) {
-    .main-header {
-        width: 134%;
-    }
-}
+
 .header-left {
     display: flex;
     align-items: center;
@@ -492,9 +488,7 @@ body {
     padding: 5px;
 }
 
-.table-responsive {
-    overflow-x: auto;
-}
+
 
 table {
     width: 100%;
@@ -560,9 +554,19 @@ td {
 }
 /* Add course design end */
 
-/* Students form design start */
+/* Students form and table design start */
 
-.table-striped{
-    overflow-x: scroll;
-}
-/* Students form design end */
+
+
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling */
+  }
+  
+  .table-container .table {
+    min-width: 600px; /* Adjust this based on the number of columns */
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+  
+  
+/* Students form and table design end */

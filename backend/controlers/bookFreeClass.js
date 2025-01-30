@@ -1,47 +1,50 @@
 import axios from 'axios';
+import dotenv from "dotenv";
+dotenv.config();
 
 export const sendWhatsappMessage = async (req, res) => {
   try {
     const { program, name, phone } = req.body;
 
-
-    // Validate required fields
     if (!program || !name || !phone) {
       return res.status(400).json({ message: "Program, name, and phone number are required." });
     }
 
-    // WhatsApp API Configuration
-    const whatsappApiUrl = process.env.WHATSAPPAPIURL; // Replace with your actual API URL
-    const accessToken = process.env.ACCESSTOKEN; // Replace with your actual access token
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({ message: "Invalid phone number format. Please provide a 10-digit phone number." });
+    }
 
-    // Payload for the WhatsApp API
-    const payload = {
-      messaging_product: "whatsapp",
-      to: `91${phone}`, // Replace 91 with your country code if necessary
-      type: "text",
-      text: { 
-        body: `Hello ${name},\nThank you for your interest in the ${program} program! We will get in touch with you shortly.` 
-      }, // Customize the message format as needed
-    };
+    const token = process.env.WHATSAPP_API_TOKEN;
+    const apiUrl = process.env.WHATSAPP_API_URL;
 
-    // Log payload for debugging
-    console.log('Payload being sent to WhatsApp API:', payload);
+    if (!token || !apiUrl) {
+      return res.status(500).json({ message: "Server configuration error. Missing WhatsApp API token or API URL." });
+    }
 
-    // Make the API request
-    const response = await axios.post(whatsappApiUrl, payload, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const messageText = `Hello ${name},\nThank you for your interest in the ${program} program! We will get in touch with you shortly.`;
+    const encodedMessage = encodeURIComponent(messageText);
+
+    const whatsappApiUrl = `${apiUrl}?receiver=91${phone}&msgtext=${encodedMessage}&token=${token}`;
+
+    console.log('Constructed WhatsApp API URL:', whatsappApiUrl);
+
+    const response = await axios.get(whatsappApiUrl);
     console.log('WhatsApp API Response:', response.data);
-    // Send success response
-    res.status(200).json({
-      message: "WhatsApp message sent successfully.",
-      response: response.data,
-    });
+
+    if (response.data && response.data.success === true) {
+      return res.status(200).json({
+        message: "WhatsApp message sent successfully.",
+        response: response.data,
+      });
+    } else {
+      return res.status(500).json({
+        error: "Failed to send WhatsApp message.",
+        response: response.data,
+      });
+    }
   } catch (error) {
     console.error("Error sending WhatsApp message:", error.message);
-    res.status(500).json({ error: "Failed to send WhatsApp message" });
+    return res.status(500).json({ error: "Failed to send WhatsApp message." });
   }
 };
