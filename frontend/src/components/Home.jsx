@@ -39,42 +39,35 @@ function Home() {
         e.preventDefault();
         setIsSending(true);
     
-        // Basic phone number validation
-        const phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(formData.phone)) {
-            toast.error("Please enter a valid 10-digit phone number");
-            setIsSending(false);
-            return;
-        }
-    
         try {
+            console.log("Submitting Data:", formData); 
+    
             const response = await axios.get(
                 `${BACKEND_URL}/api/users/sendWhatsappMessage`,
                 {
-                    program: formData.program,
-                    name: formData.name,
-                    phone: formData.phone,
-                },
-                {
-                    headers: { "Content-Type": "application/json" }, // Ensure JSON data is sent
+                    params: {
+                        program: formData.program,
+                        name: formData.name,
+                        phone: formData.phone,
+                    },
                     withCredentials: true,
                 }
             );
     
-            if (response.data.success) {
+            console.log("Server Response:", response.data); 
+    
+            // Check success inside the 'response' object
+            if (response.data.response.success) {
                 toast.success("WhatsApp message sent successfully!");
-                setFormData({
-                    program: "",
-                    name: "",
-                    phone: "",
-                });
+                setFormData({ program: "", name: "", phone: "" });
                 window.scrollTo(0, 0);
             } else {
+                console.log("Unexpected Response:", response.data); 
                 toast.error("Failed to send WhatsApp message");
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(error.response?.data?.error || "Failed to send message");
+            toast.error("Failed to send message! try again");
         } finally {
             setIsSending(false);
         }

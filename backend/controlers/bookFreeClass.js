@@ -4,7 +4,8 @@ dotenv.config();
 
 export const sendWhatsappMessage = async (req, res) => {
   try {
-    const { program, name, phone } = req.body;
+    const { program, name, phone } = req.query;
+console.log(program, name, phone);
 
     if (!program || !name || !phone) {
       return res.status(400).json({ message: "Program, name, and phone number are required." });
