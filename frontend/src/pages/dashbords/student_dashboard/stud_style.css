@@ -108,6 +108,15 @@ body {
     }
 }
 
+
+.userNameShow h6{
+    background-image: linear-gradient(to right, #ffa420 0%, #7b8a82 100%);
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    font-weight: bold; 
+    display: inline-block;
+}
+
   
 .sidebar {
     width: var(--sidebar-width);
@@ -211,7 +220,7 @@ body {
   }
   
   .sidebarIcon {
-    color: rgb(69, 73, 76);
+    color: rgb(174, 219, 10);
     margin-right: 8px;
   }
   
@@ -264,8 +273,18 @@ body {
     }
   }
   
-  
-
+.sidebarLogoutBtn{
+    margin-top: 14rem !important;
+    width: 90%;
+    font-weight: 800;
+    color: #5b5e64;
+    background-color: rgb(231, 233, 236)
+}
+@media (max-width: 425px){
+    .sidebarLogoutBtn{
+        margin-top: 9rem !important;
+    }
+}
 /* Main Content */
 .main-content {
     flex: 1;
@@ -560,13 +579,13 @@ td {
 
 .table-container {
     width: 100%;
-    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-x: hidden; /* Enables horizontal scrolling */
   }
   
   .table-container .table {
-    min-width: 600px; /* Adjust this based on the number of columns */
-    white-space: nowrap; /* Prevents text wrapping */
+    min-width: 600px; 
+    white-space: wrap;
   }
-  
+
   
 /* Students form and table design end */

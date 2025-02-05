@@ -48,6 +48,11 @@ import Register from "./pages/Authentications/Register";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 
+//payment route
+import FeeForm from "./pages/feesCollection/FeeForm";
+import Invoice from "./pages/feesCollection/Invoice";
+import PaymentPage from "./pages/payments/PaymentPage";
+
 /* DashBoard Route */
 import Dashboard from "./pages/dashbords/student_dashboard/Dashboard";
 
@@ -103,6 +108,11 @@ function App() {
         <Route path="/abacus" element={<CourseAbacus />} />
         <Route path="/hand-writing" element={<CourseHandwriting />} />
         <Route path="/kids-english" element={<CourseKidsEnglish />} />
+
+        {/* payment */}
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/feesForm" element={<FeeForm />} />
+        <Route path="/invoice" element={<Invoice />} />
 
         {/* Universal route */}
         <Route path="*" element={<NotFound />} />

@@ -1,21 +1,130 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+
+import { BACKEND_URL } from '../../utils';
+import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 
 export default function Course_vedicMath() {
-    const { setIsAuthenticated } = useAuth(); // Get login status
+    const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
-    // Function to handle enroll button click
-    const handleEnroll = () => {
-        if (setIsAuthenticated) {
-            navigate('/'); // Redirect to dashboard if logged in
-        } else {
-            toast.success("Please login to your account first");
-            setTimeout(() => {
-                navigate('/login'); // Redirect to login after 3 seconds
-            }, 2000);
+    const [isEnrolled, setIsEnrolled] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchEnrollmentStatus = async () => {
+            if (!isAuthenticated){
+                setLoading(false)
+                return;
+            } 
+
+            try {
+                const student = JSON.parse(localStorage.getItem('student'));
+                if (!student || !student._id) {
+                    console.error('No valid student found in localStorage.');
+                    return;
+                }
+
+                const studentId = student._id;
+                const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
+
+                console.log("Stored Courses:", storedCourses);
+
+                const courseTitle = "Vadic Math"; // Ensure this matches exactly
+
+                const matchedCourse = storedCourses.find(course =>
+                    course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                );
+
+                if (!matchedCourse) {
+                    console.error(`Course "${courseTitle}" not found in localStorage.`);
+                    console.log("Available courses:", storedCourses.map(c => c.courseTittle));
+                    return;
+                }
+
+                const courseId = matchedCourse._id;
+                console.log("Matched Course ID:", courseId);
+
+                // Fetch enrolled courses for the student
+                const response = await axios.get(
+                    `${BACKEND_URL}/api/enrollcourse/enrolled/${studentId}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+                    }
+                );
+
+                const enrolledCourses = response.data || [];
+                console.log(" Enrolled Courses:", enrolledCourses);
+
+                // Ensure proper comparison
+                const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
+                    enrolledCourse.courseId?._id === courseId || enrolledCourse.courseId === courseId
+                );
+
+                setIsEnrolled(alreadyEnrolled);
+            } catch (error) {
+                console.error("Error checking enrollment status:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEnrollmentStatus();
+    }, [isAuthenticated]);
+
+    const handleEnroll = async () => {
+        if (!isAuthenticated) {
+            toast.error("Please log in to enroll.");
+            return navigate('/login');
+        }
+
+        if (isEnrolled) {
+            toast.error("You are already enrolled in this course.");
+            return;
+        }
+
+        try {
+            const student = JSON.parse(localStorage.getItem('student'));
+            if (!student || !student._id) {
+                toast.error("Student data missing. Please log in again.");
+                return;
+            }
+
+            const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
+            const courseTitle = "Vadic Math"; // Ensure it matches stored data
+
+            const matchedCourse = storedCourses.find(course =>
+                course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+            );
+
+            if (!matchedCourse) {
+                toast.error("Course not found.");
+                return;
+            }
+
+            const response = await axios.post(
+                `${BACKEND_URL}/api/enrollcourse/enroll`,
+                {
+                    studentId: student._id,
+                    courseId: matchedCourse._id,
+                    paymentMethod: 'Offline'
+                },
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+                }
+            );
+
+            if (response.data.message === 'Enrollment successful') {
+                toast.success("Enrollment request submitted! Visit our center to complete payment.");
+                navigate('/feesForm');
+            }
+        } catch (error) {
+            console.error('Enrollment error:', error);
+            toast.error(error.response?.data?.message || 'Enrollment failed.');
         }
     };
 
@@ -207,8 +316,12 @@ export default function Course_vedicMath() {
             <div className="text-center mt-4">
                 <h2 className="text-primary">Ready to Improve Your Handwriting?</h2>
                 <p>Join Winaum Learning today and discover the joy of writing confidently and creatively!</p>
-                <button className="btn handwrittingBtn btn-lg" onClick={handleEnroll}>
-                    Enroll Now
+                <button
+                    className="btn handwrittingBtn btn-lg"
+                    onClick={handleEnroll}
+                    disabled={isEnrolled || loading}
+                >
+                    {loading ? "Checking Enrollment..." : isEnrolled ? "Already Enrolled" : "Enroll Now"}
                 </button>
             </div>
 

@@ -3,13 +3,16 @@ import { FaBookOpen, FaClock, FaDollarSign, FaGraduationCap, FaUsers } from 'rea
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+import { BACKEND_URL } from '../../../../../utils';
+import { LOCAL_BACKEND_URL } from '../../../../../local_backend_url';
+
 export default function AddCourse() {
   const [formData, setFormData] = useState({
-    courseTittle: '', // 🔹 Renamed to match API
-    instractorName: '', // 🔹 Fixed typo & matched API
+    courseTittle: '', 
+    instractorName: '', 
     duration: '',
     price: '',
-    courseLevel: '', // 🔹 Matched API case sensitivity
+    courseLevel: '', 
     courseDescription: '',
   });
 
@@ -37,7 +40,7 @@ export default function AddCourse() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Check if any field is empty before submitting
+    // Check if any field is empty before submitting
     for (const key in formData) {
       if (formData[key].trim() === '') {
         toast.error(`Please fill in the ${key} field.`);
@@ -48,12 +51,11 @@ export default function AddCourse() {
     setIsLoading(true);
 
     try {
-      console.log("Submitting FormData:", formData); // ✅ Debugging: Check data before sending
+      console.log("Submitting FormData:", formData); // Debugging: Check data before sending
 
-      const response = await axios.post("http://localhost:4000/api/courses/addCourse", formData, {
+      const response = await axios.post(`${BACKEND_URL}/api/courses/addCourse`, formData, {
         headers: { "Content-Type": "application/json" }
       });
-
       toast.success("Course added successfully!");
       resetForm();
     } catch (error) {

@@ -11,6 +11,10 @@ import AllStudents from "./studentSubTab/AllStudents";
 import AddStuff from "./staffSubTab/AddStaff";
 import AllStaff from "./staffSubTab/AllStaff";
 import DeleteStuff from "./staffSubTab/DeleteStaff";
+import EnrolledStudents from "./EnrolledStudents";
+
+import { BACKEND_URL } from '../../../../utils';
+import { LOCAL_BACKEND_URL } from '../../../../local_backend_url';
 
 const MainContent = () => {
   const [activeTab, setActiveTab] = useState("dashboard"); // State to track the active tab
@@ -20,7 +24,7 @@ const MainContent = () => {
   useEffect(() => {
     const fetchTotalStudents = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/users/all-users");
+        const response = await axios.get(`${BACKEND_URL}/api/users/all-users`);
         
         setTotalStudents(response.data); // Update with the correct data structure from your API response
       } catch (error) {
@@ -34,7 +38,7 @@ const MainContent = () => {
   useEffect(() => {
     const fetchTotalCourse = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/courses/allCourse");
+        const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
         
         setTotalCourses(response.data.totalCourses); // Update with the correct data structure from your API response
       } catch (error) {
@@ -148,6 +152,9 @@ const MainContent = () => {
         {/* Stuff Tabs */}
         {activeTab === "addstaff" && <AddStuff />}
         {activeTab === "allstaff" && <AllStaff />}
+
+        {/* Enrolled Students */}
+        {activeTab === "enrolledStudent" && <EnrolledStudents />}
       </div>
     </div>
   );

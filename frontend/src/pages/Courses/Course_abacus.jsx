@@ -1,43 +1,148 @@
-// Import necessary dependencies
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useEffect, useState } from 'react';
+import { BACKEND_URL } from '../../utils';
+import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const CoursePage = () => {
-    const { setIsAuthenticated } = useAuth(); // Get login status
+    const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
-    // Function to handle enroll button click
-    const handleEnroll = () => {
-        if (setIsAuthenticated) {
-            navigate('/'); // Redirect to dashboard if logged in
-        } else {
-            toast.success("Please login to your account first");
-            setTimeout(() => {
-                navigate('/login'); // Redirect to login after 3 seconds
-            }, 2000);
+    const [isEnrolled, setIsEnrolled] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchEnrollmentStatus = async () => {
+            if (!isAuthenticated){
+                setLoading(false)
+                return;
+            } 
+
+            try {
+                const student = JSON.parse(localStorage.getItem('student'));
+                if (!student || !student._id) {
+                    console.error('No valid student found in localStorage.');
+                    return;
+                }
+
+                const studentId = student._id;
+                const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
+                const courseTitle = "Abacus";
+
+                const matchedCourse = storedCourses.find(course =>
+                    course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                );
+                console.log(matchedCourse);
+
+                if (!matchedCourse) {
+                    console.error('Course not found in localStorage.');
+                    return;
+                }
+
+                const courseId = matchedCourse._id;
+                console.log(courseId);
+
+
+                // Fetch enrolled courses for the student
+                const response = await axios.get(
+                    `${BACKEND_URL}/api/enrollcourse/enrolled/${studentId}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+                    }
+                );
+
+                const enrolledCourses = response.data || [];
+                console.log("Enrolled Courses:", enrolledCourses);
+
+                // Ensure we are comparing valid course IDs
+                const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
+                    enrolledCourse.courseId?._id === courseId
+                );
+
+                console.log("Is Student Already Enrolled?", alreadyEnrolled);
+
+
+                setIsEnrolled(alreadyEnrolled);
+            } catch (error) {
+                console.error("Error checking enrollment status:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEnrollmentStatus();
+    }, [isAuthenticated]); // Ensure useEffect runs when authentication status changes
+
+    const handleEnroll = async () => {
+        if (!isAuthenticated) {
+            toast.error("Please log in to enroll.");
+            return navigate('/login');
+        }
+
+        if (isEnrolled) {
+            toast.error("You are already enrolled in this course.");
+            return;
+        }
+
+        try {
+            const student = JSON.parse(localStorage.getItem('student'));
+            if (!student || !student._id) {
+                toast.error("Student data missing. Please log in again.");
+                return;
+            }
+
+            const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
+            const courseTitle = "Abacus";
+
+            const matchedCourse = storedCourses.find(course =>
+                course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+            );
+
+            if (!matchedCourse) {
+                toast.error("Course not found.");
+                return;
+            }
+
+            const response = await axios.post(
+                `${BACKEND_URL}/api/enrollcourse/enroll`,
+                {
+                    studentId: student._id,
+                    courseId: matchedCourse._id,
+                    paymentMethod: 'Offline'
+                },
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+                }
+            );
+
+            if (response.data.message === 'Enrollment successful') {
+                toast.success("Enrollment request submitted! Visit our center to complete payment.");
+                navigate('/feesForm');
+            }
+        } catch (error) {
+            console.error('Enrollment error:', error);
+            toast.error(error.response?.data?.message || 'Enrollment failed.');
         }
     };
+
     return (
         <div className="container abacusCourse mt-5">
-            {/* Header Section */}
             <header className="text-center courseHeader mb-5">
                 <h1 className="display-4 courseH1">Welcome to Our Math Enrichment Program</h1>
                 <p className="lead coursePara">Empowering young minds with the skills to excel in mathematics and beyond.</p>
             </header>
 
-            {/* Course Objective Section */}
             <section className="mb-5">
                 <h2 className="text-primary">Course Objectives</h2>
                 <p>Our program is designed to help students:</p>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item lgi1"> <span className='courseIcon'>✔</span>Improve math accuracy and speed</li>
-                    <li className="list-group-item lgi2"> <span className='courseIcon'>✔</span>Enhance concentration and focus</li>
-                    <li className="list-group-item lgi3"> <span className='courseIcon'>✔</span>Develop problem-solving skills</li>
-                    <li className="list-group-item lgi4"> <span className='courseIcon'>✔</span>Boost confidence in math abilities</li>
-                    <li className="list-group-item lgi5"> <span className='courseIcon'>✔</span>Prepare for competitive exams and academic success</li>
+                    <li className="list-group-item">✔ Improve math accuracy and speed</li>
+                    <li className="list-group-item">✔ Enhance concentration and focus</li>
+                    <li className="list-group-item">✔ Develop problem-solving skills</li>
+                    <li className="list-group-item">✔ Boost confidence in math abilities</li>
+                    <li className="list-group-item">✔ Prepare for competitive exams and academic success</li>
                 </ul>
             </section>
 
@@ -194,14 +299,18 @@ const CoursePage = () => {
                         </div>
                     </div>
                 </div>
-                {/* Call to Action Section */}
-            
             </section>
+
+            {/* call to action button  */}
             <div className="text-center">
-                <h2 className="text-primary">Ready to Improve Your Handwriting?</h2>
-                <p>Join Winaum Learning today and discover the joy of writing confidently and creatively!</p>
-                <button className="btn handwrittingBtn btn-lg" onClick={handleEnroll}>
-                    Enroll Now
+                <h2 className="text-primary">Ready to Improve Your Math Skills?</h2>
+                <p>Join Winaum Learning today and discover the joy of mathematics!</p>
+                <button
+                    className="btn handwrittingBtn btn-lg"
+                    onClick={handleEnroll}
+                    disabled={isEnrolled || loading}
+                >
+                    {loading ? "Checking Enrollment..." : isEnrolled ? "Already Enrolled" : "Enroll Now"}
                 </button>
             </div>
         </div>

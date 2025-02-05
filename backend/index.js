@@ -6,6 +6,7 @@ import userRoute from "./routes/user.route.js";
 import franchiseRoute from "./routes/franchise.route.js"
 import courseRoute from "./routes/courses.route.js"
 import otpRoute from "./routes/otp.route.js"
+import enrollRoute from "./routes/courseEnrollment.route.js"
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -38,6 +39,7 @@ app.use("/api/users", userRoute);
 app.use("/api/franchises", franchiseRoute)
 app.use("/api/otpValidator", otpRoute)
 app.use("/api/courses", courseRoute)
+app.use("/api/enrollcourse", enrollRoute)
 
 app.use(
   fileUpload({

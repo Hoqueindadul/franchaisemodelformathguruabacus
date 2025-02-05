@@ -1,51 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { MdDelete } from 'react-icons/md';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../../../../context/AuthProvider';
+
+import { BACKEND_URL } from '../../../../../utils';
+import { LOCAL_BACKEND_URL } from '../../../../../local_backend_url';
 
 export default function AllCourse() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState('');
-  const [totalCourses, setTotalCourses] = useState(0);
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [loading, setLoading] = useState(true);
+  const { isAuthenticated, fetchCourses } = useAuth(); // Use `fetchCourses` from AuthProvider
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const loadCourses = async () => {
+      if (!isAuthenticated) {
+        setCourses([]); // Clear courses on logout
+        localStorage.removeItem("courses");
+        return;
+      }
+
       try {
-        setLoading(true); // Set loading to true while fetching
-        const response = await axios.get('http://localhost:4000/api/courses/allCourse');
-
-        console.log(response.data); // Log the entire response for inspection
-
-        // Check if the API response contains courses data
-        if (response.data && Array.isArray(response.data.courses)) {
-          setCourses(response.data.courses);
-          setTotalCourses(response.data.totalCourses);  // Update with totalCourses from response
-        } else {
-          setError('API did not return an array of courses.');
-        }
+        setLoading(true);
+        await fetchCourses(); // Fetch courses from AuthProvider
+        const storedCourses = JSON.parse(localStorage.getItem("courses")) || [];
+        setCourses(storedCourses);
       } catch (error) {
-        setError('Failed to fetch course data.');
-        console.error('Fetch Error:', error);
+        setError('Failed to load course data.');
+        console.error(' Fetch Error:', error);
       } finally {
-        setLoading(false); // Set loading to false once fetching is done
+        setLoading(false);
       }
     };
 
-    fetchCourses();
-  }, []);
+    loadCourses(); // Fetch when `isAuthenticated` changes
+  }, [isAuthenticated, fetchCourses]);
 
   // Function to delete a course
   const handleDelete = async (courseId) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
 
     try {
-      await axios.delete(`http://localhost:4000/api/courses/deleteCourse/${courseId}`);
-      setCourses(courses.filter((course) => course._id !== courseId)); // Remove deleted course from state
-      setTotalCourses((prev) => prev - 1); // Update totalCourses after deletion
-      toast.success("Course deleted successfully!");
+      await axios.delete(`${BACKEND_URL}/api/courses/deleteCourse/${courseId}`);
+
+      //  Remove from state
+      const updatedCourses = courses.filter((course) => course._id !== courseId);
+      setCourses(updatedCourses);
+      setTotalCourses((prev) => prev - 1); 
+
+      //  Update `localStorage`
+      localStorage.setItem("courses", JSON.stringify(updatedCourses));
+
+      toast.success(" Course deleted successfully!");
     } catch (error) {
-      console.error("Delete Error:", error);
+      console.error(" Delete Error:", error);
       toast.error("Failed to delete course.");
     }
   };

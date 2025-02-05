@@ -3,6 +3,9 @@ import axios from 'axios';
 import { MdDelete } from "react-icons/md";
 import toast from 'react-hot-toast';
 
+import { BACKEND_URL } from '../../../../../utils';
+import { LOCAL_BACKEND_URL } from '../../../../../local_backend_url';
+
 export default function AllStudents() {
   const [students, setStudents] = useState([]);
   const [error, setError] = useState('');
@@ -11,7 +14,7 @@ export default function AllStudents() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/users/all-users'); // Replace with your backend URL
+        const response = await axios.get(`${BACKEND_URL}http://localhost:4000/api/users/all-users`);
         if (Array.isArray(response.data)) {
           setStudents(response.data);
           setTotalStudents(response.data.length);
@@ -27,12 +30,12 @@ export default function AllStudents() {
     fetchStudents();
   }, []);
 
-  // ✅ Function to delete a student
+  // Function to delete a student
   const handleDelete = async (studentId) => {
     if (!window.confirm("Are you sure you want to delete this student?")) return;
 
     try {
-      await axios.delete(`http://localhost:4000/api/users/delete/${studentId}`); // Replace with actual DELETE API
+      await axios.delete(`${BACKEND_URL}/api/users/delete/${studentId}`);
       setStudents(students.filter((student) => student._id !== studentId));
       setTotalStudents(prev => prev - 1);
       toast.success("Student deleted successfully!");
@@ -70,7 +73,7 @@ export default function AllStudents() {
                     <td>{student.email}</td>
                     <td>
                       <button
-                        className="btn btn-link p-0 text-danger"
+                        className="btn btn-link p-0 text-danger mx-3"
                         onClick={() => handleDelete(student._id)}
                       >
                         <MdDelete size={20} />

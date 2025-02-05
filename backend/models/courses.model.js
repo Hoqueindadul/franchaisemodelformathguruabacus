@@ -6,7 +6,7 @@ const coursesSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    instractorName: {
+    instructorName: {
         type: String,
         required: true,
         trim: true,

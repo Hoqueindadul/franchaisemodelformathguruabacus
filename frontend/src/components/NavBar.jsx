@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthProvider';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -10,14 +10,24 @@ import toast from 'react-hot-toast';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function NavBar() {
-    const { isAuthenticated, setIsAuthenticated, loggedInUsername } = useAuth();
+    const { isAuthenticated, logout } = useAuth();
+    const [firstInitial, setFirstInitial] = useState(""); // 🔹 Store first letter of first name
     const [dropdownStates, setDropdownStates] = useState({});
     const location = useLocation();
     const navigate = useNavigate();
 
+    // Fetch first name from localStorage and extract first letter
+    useEffect(() => {
+        const storedStudent = JSON.parse(localStorage.getItem("student"));
+        if (storedStudent && storedStudent.firstName) {
+            setFirstInitial(storedStudent.firstName.charAt(0).toUpperCase()); // 🔹 Get first letter and capitalize it
+        } else {
+            setFirstInitial("U"); // Default to 'U' (for "User") if no name is found
+        }
+    }, []);
+
     const handleLogout = async () => {
-        localStorage.removeItem("jwt");
-        setIsAuthenticated(false);
+        logout();
         toast.success("Logout Successfully");
         setTimeout(() => {
             navigate("/login");
@@ -26,14 +36,6 @@ function NavBar() {
 
     const handleDashboard = () => {
         navigate("/dashboard");
-    };
-
-    // Function to toggle dropdown visibility
-    const toggleDropdown = (dropdown, isOpen) => {
-        setDropdownStates(prev => ({
-            ...prev,
-            [dropdown]: isOpen
-        }));
     };
 
     return (
@@ -51,7 +53,7 @@ function NavBar() {
 
                     {/* Center Column with Heading */}
                     <div className="col-12 col-md-5 text-center mb-2 mb-md-0">
-                        <h5 className="heading-tagline mb-0">
+                        <h5 className="heading-tagline mb-0 text-wrap">
                             🎉 Get Ready for the Abacus Mega Competition! 🎉
                         </h5>
                     </div>
@@ -86,10 +88,7 @@ function NavBar() {
                                     title={
                                         <span>
                                             <FaUserCircle className="me-2" />
-                                            {loggedInUsername
-                                                ? loggedInUsername.split(' ')[0].charAt(0).toUpperCase() +
-                                                loggedInUsername.split(' ')[0].slice(1)
-                                                : 'User'}
+                                            {firstInitial} {/* 🔹 Show only the first letter */}
                                         </span>
                                     }
                                     id="user-dropdown"

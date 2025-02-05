@@ -15,7 +15,7 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false); // 🔹 Add loading state
-    const { setIsAuthenticated } = useAuth(); // Access setIsAuthenticated from Auth context
+    const { setIsAuthenticated , login} = useAuth(); // Access setIsAuthenticated from Auth context
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,9 +40,15 @@ export default function Login() {
             }, {
                 headers: { "Content-Type": "application/json" },
             });
-
-            localStorage.setItem("jwt", data.token);
+            const token = data.token;
+            const student = data.student
+            // store login information
+            login(token, student)
+            
+            
             setIsAuthenticated(true);
+            
+            // show success message
             toast.success(data.message || "User logged in successfully.");
 
             setEmail("");
