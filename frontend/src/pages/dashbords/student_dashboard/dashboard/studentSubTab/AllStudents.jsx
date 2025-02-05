@@ -14,7 +14,7 @@ export default function AllStudents() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}http://localhost:4000/api/users/all-users`);
+        const response = await axios.get(`${BACKEND_URL}/api/users/all-users`);
         if (Array.isArray(response.data)) {
           setStudents(response.data);
           setTotalStudents(response.data.length);

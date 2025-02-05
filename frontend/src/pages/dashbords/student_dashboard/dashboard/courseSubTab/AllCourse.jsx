@@ -2,20 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../../../../context/AuthProvider';
-
+import axios from 'axios'; // Ensure axios is imported
 import { BACKEND_URL } from '../../../../../utils';
-import { LOCAL_BACKEND_URL } from '../../../../../local_backend_url';
 
 export default function AllCourse() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [totalCourses, setTotalCourses] = useState(0); // Define totalCourses state
   const { isAuthenticated, fetchCourses } = useAuth(); // Use `fetchCourses` from AuthProvider
 
   useEffect(() => {
     const loadCourses = async () => {
       if (!isAuthenticated) {
         setCourses([]); // Clear courses on logout
+        setTotalCourses(0); // Reset total courses to 0
         localStorage.removeItem("courses");
         return;
       }
@@ -25,9 +26,10 @@ export default function AllCourse() {
         await fetchCourses(); // Fetch courses from AuthProvider
         const storedCourses = JSON.parse(localStorage.getItem("courses")) || [];
         setCourses(storedCourses);
+        setTotalCourses(storedCourses.length); // Set total courses
       } catch (error) {
         setError('Failed to load course data.');
-        console.error(' Fetch Error:', error);
+        console.error('Fetch Error:', error);
       } finally {
         setLoading(false);
       }
@@ -43,17 +45,17 @@ export default function AllCourse() {
     try {
       await axios.delete(`${BACKEND_URL}/api/courses/deleteCourse/${courseId}`);
 
-      //  Remove from state
+      // Remove from state
       const updatedCourses = courses.filter((course) => course._id !== courseId);
       setCourses(updatedCourses);
-      setTotalCourses((prev) => prev - 1); 
+      setTotalCourses(updatedCourses.length); // Update total courses count
 
-      //  Update `localStorage`
+      // Update `localStorage`
       localStorage.setItem("courses", JSON.stringify(updatedCourses));
 
-      toast.success(" Course deleted successfully!");
+      toast.success("Course deleted successfully!");
     } catch (error) {
-      console.error(" Delete Error:", error);
+      console.error("Delete Error:", error);
       toast.error("Failed to delete course.");
     }
   };
