@@ -13,14 +13,16 @@ const styles = StyleSheet.create({
     marginBottom: 20 
   },
   header: { 
-    fontSize: 20, 
+    fontSize: 22, 
     fontWeight: 'bold', 
     textTransform: 'uppercase', 
-    marginBottom: 5
+    marginBottom: 5,
+    color: '#333'  
   },
   subHeader: { 
-    fontSize: 12, 
-    color: '#555' 
+    fontSize: 14,  
+    color: '#555', 
+    marginBottom: 20
   },
   section: { 
     backgroundColor: '#fff', 
@@ -33,69 +35,87 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     paddingVertical: 5, 
-    borderBottom: '1px solid #ddd'
+    borderBottom: '1px solid #ddd',
+    marginBottom: 5
   },
   label: { 
     fontWeight: 'bold', 
-    fontSize: 13 
+    fontSize: 13,
+    color: '#333'  
   },
   value: { 
-    fontSize: 13 
+    fontSize: 13,
+    color: '#555'  
+  },
+  separator: {
+    borderTop: '2px solid #ddd', 
+    marginVertical: 15
   },
   totalAmount: { 
     fontSize: 16, 
     fontWeight: 'bold', 
     marginTop: 10, 
-    textAlign: 'right' 
+    textAlign: 'right',
+    color: '#000' 
   },
   footer: { 
     textAlign: 'center', 
     fontSize: 10, 
     marginTop: 20, 
     color: '#777'
+  },
+  invoiceContainer: {
+    border: '1px solid #ddd',  
+    padding: 20,
+    borderRadius: 8,
+    marginTop: 10
   }
 });
 
 const Invoice = ({ transaction }) => (
   <Document>
     <Page style={styles.page}>
-      {/* Header */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Official Fee Receipt</Text>
-        <Text style={styles.subHeader}>Thank you for your payment</Text>
-      </View>
+      <View style={styles.invoiceContainer}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Official Fee Receipt</Text>
+          <Text style={styles.subHeader}>Thank you for your payment</Text>
+        </View>
 
-      {/* Receipt Details */}
-      <View style={styles.section}>
-        <View style={styles.row}>
-          <Text style={styles.label}>Receipt No:</Text>
-          <Text style={styles.value}>{transaction.id}</Text>
+        {/* Receipt Details */}
+        <View style={styles.section}>
+          <View style={styles.row}>
+            <Text style={styles.label}>Receipt No:</Text>
+            <Text style={styles.value}>{transaction.id}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Date:</Text>
+            <Text style={styles.value}>{new Date(transaction.date).toLocaleDateString()}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Name:</Text>
+            <Text style={styles.value}>{transaction.name}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Email:</Text>
+            <Text style={styles.value}>{transaction.email}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Purpose:</Text>
+            <Text style={styles.value}>{transaction.purpose}</Text>
+          </View>
         </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Date:</Text>
-          <Text style={styles.value}>{new Date(transaction.date).toLocaleDateString()}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Name:</Text>
-          <Text style={styles.value}>{transaction.name}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.value}>{transaction.email}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Purpose:</Text>
-          <Text style={styles.value}>{transaction.purpose}</Text>
-        </View>
-      </View>
 
-      {/* Amount Section */}
-      <View style={styles.section}>
-        <Text style={styles.totalAmount}>Amount Paid: ₹{transaction.amount}</Text>
-      </View>
+        <View style={styles.separator} />
 
-      {/* Footer */}
-      <Text style={styles.footer}>This is a computer-generated receipt and does not require a signature.</Text>
+        {/* Amount Section */}
+        <View style={styles.section}>
+          <Text style={styles.totalAmount}>Amount Paid: ₹{transaction.amount}</Text>
+        </View>
+
+        {/* Footer */}
+        <Text style={styles.footer}>This is a computer-generated receipt and does not require a signature.</Text>
+      </View>
     </Page>
   </Document>
 );

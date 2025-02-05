@@ -19,7 +19,7 @@ const FeeForm = ({ onTransactionSubmit }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.match(/^\S+@\S+\.\S+$/)) newErrors.email = 'Invalid email';
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) newErrors.email = 'Invalid email';
     if (!formData.amount || formData.amount <= 0) newErrors.amount = 'Invalid amount';
     if (!formData.purpose) newErrors.purpose = 'Select purpose';
     setErrors(newErrors);
@@ -45,15 +45,27 @@ const FeeForm = ({ onTransactionSubmit }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+
+    // Live validation
+    let errorMessage = "";
+    if (name === "name" && !value.trim()) errorMessage = "Name is required";
+    if (name === "email" && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) errorMessage = "Invalid email";
+    if (name === "amount" && (isNaN(value) || value <= 0)) errorMessage = "Invalid amount";
+    if (name === "purpose" && !value) errorMessage = "Select a purpose";
+
+    setErrors(prev => ({ ...prev, [name]: errorMessage }));
   };
 
   const handleDownload = () => {
-    setTimeout(() => {
-      setTransaction(null); // Hide the download button
-      setIsDownloaded(true);
-      setFormData({ name: '', email: '', amount: '', purpose: '' }); // Reset form
-    }, 1000); // Small delay for better UX
+    const confirmDownload = window.confirm("Are you sure you want to download the receipt?");
+    if (confirmDownload) {
+      setTimeout(() => {
+        alert("Receipt downloaded successfully!");
+        setTransaction(null); // Hide the download button
+        setIsDownloaded(true);
+        setFormData({ name: '', email: '', amount: '', purpose: '' }); // Reset form
+      }, 1000); // Small delay for better UX
+    }
   };
 
   return (
@@ -74,6 +86,7 @@ const FeeForm = ({ onTransactionSubmit }) => {
               className={`form-control ${errors.name ? 'is-invalid' : ''}`}
               value={formData.name}
               onChange={handleChange}
+              autoFocus
             />
             {errors.name && <div className="invalid-feedback">{errors.name}</div>}
           </div>
@@ -118,7 +131,9 @@ const FeeForm = ({ onTransactionSubmit }) => {
             {errors.purpose && <div className="invalid-feedback">{errors.purpose}</div>}
           </div>
 
-          <button type="submit" className="btn btn-primary w-100 generateReceipt">Generate Receipt</button>
+          <button type="submit" className="btn btn-primary w-100 generateReceipt" disabled={!!transaction}>
+            {transaction ? "Processing..." : "Generate Receipt"}
+          </button>
         </form>
 
         {transaction && !isDownloaded && (

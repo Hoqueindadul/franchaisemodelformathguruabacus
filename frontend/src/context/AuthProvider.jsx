@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { BACKEND_URL } from '../utils';
+import { LOCAL_BACKEND_URL } from '../local_backend_url';
 
 // Create Context
 const AuthContext = createContext();
@@ -16,23 +18,23 @@ export const AuthProvider = ({ children }) => {
 
         if (token) {
             setIsAuthenticated(true);
-            fetchCourses(); // ✅ Fetch courses if authenticated
+            fetchCourses(); // Fetch courses if authenticated
         } else {
             setIsAuthenticated(false);
-            clearCourses(); // ✅ Clear courses if not authenticated
+            clearCourses(); // Clear courses if not authenticated
         }
     };
 
     // Fetch courses from API and store in localStorage
     const fetchCourses = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/courses/allCourse');
+            const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
 
             if (response.data && Array.isArray(response.data.courses)) {
                 localStorage.setItem("courses", JSON.stringify(response.data.courses));
             }
         } catch (error) {
-            console.error("❌ Fetch Courses Error:", error);
+            console.error("Fetch Courses Error:", error);
         }
     };
 
@@ -52,14 +54,14 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("student", JSON.stringify(student));
 
         setIsAuthenticated(true);
-        fetchCourses(); // ✅ Fetch courses on login
+        fetchCourses(); // Fetch courses on login
     };
 
     // Logout function
     const logout = () => {
         localStorage.removeItem("jwt");
         localStorage.removeItem("student");
-        clearCourses(); // ✅ Clear courses on logout
+        clearCourses(); // Clear courses on logout
 
         setIsAuthenticated(false);
     };

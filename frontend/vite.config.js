@@ -4,23 +4,37 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Increase chunk size warning limit
-    chunkSizeWarningLimit: 1000, // Increase limit to 1MB
-    
-    // Rollup options for manual chunking
+    chunkSizeWarningLimit: 1500, // Set appropriate limit for your needs
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Separate vendor libraries
+            // Split react and react-dom into separate chunk
+            if (id.includes('react') && (id.includes('/react-dom/') || id.includes('/react/jsx-runtime'))) {
+              return 'react-vendor';
+            }
+            
+            // Split PDF library into its own chunk
+            if (id.includes('@react-pdf/renderer')) {
+              return 'pdf-library';
+            }
+
+            // Split UI libraries
+            if (id.includes('@mui') || id.includes('@emotion')) {
+              return 'ui-vendor';
+            }
+
+            // Split remaining node_modules into vendor chunk
             return 'vendor';
           }
-          if (id.includes('chart.js')) {
-            // Example of separating a specific library
-            return 'chart';
+
+          // Split your source code into smaller chunks
+          if (id.includes('src/components')) {
+            const match = id.match(/src\/components\/(.*?)\//);
+            return match ? `component-${match[1]}` : null;
           }
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });
