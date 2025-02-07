@@ -8,8 +8,8 @@ import { LOCAL_BACKEND_URL } from '../../../../../local_backend_url';
 
 export default function AddCourse() {
   const [formData, setFormData] = useState({
-    courseTittle: '', 
-    instractorName: '', 
+    courseTitle: '', 
+    instructorName: '', 
     duration: '',
     price: '',
     courseLevel: '', 
