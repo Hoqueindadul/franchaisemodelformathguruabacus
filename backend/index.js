@@ -16,30 +16,35 @@ dotenv.config();
 
 // Load environment variables
 const mongo_url = process.env.MONGODB_URI;
-const port = process.env.PORT || 5000; // Default port fallback
-const localFrontendUrl = process.env.FRONTEND_URL_LOCAL || "http://localhost:5173";
+const port = process.env.PORT || 5000;
+const localFrontendUrl = process.env.FRONTEND_URL_LOCAL || "http://localhost:5174";
 const deploymentFrontendUrl = process.env.MAIN_FRONTEND_URL || "https://mathguruabacus.com/";
 
-// Middleware
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+console.log("Allowed Origins:", localFrontendUrl, deploymentFrontendUrl); // Debugging
 
+// ✅ CORS Middleware (MUST be before other middlewares)
 app.use(
   cors({
-    origin: [localFrontendUrl, deploymentFrontendUrl], // Allow both local and production URLs
-    credentials: true, // Allow cookies or authentication headers
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow necessary HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+    origin: [localFrontendUrl, deploymentFrontendUrl],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// end points
+app.options("*", cors()); // Allow preflight requests
+
+// Other middlewares
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Endpoints
 app.use("/api/users", userRoute);
-app.use("/api/franchises", franchiseRoute)
-app.use("/api/otpValidator", otpRoute)
-app.use("/api/courses", courseRoute)
-app.use("/api/enrollcourse", enrollRoute)
+app.use("/api/franchises", franchiseRoute);
+app.use("/api/otpValidator", otpRoute);
+app.use("/api/courses", courseRoute);
+app.use("/api/enrollcourse", enrollRoute);
 
 app.use(
   fileUpload({
@@ -48,10 +53,7 @@ app.use(
   })
 );
 
-
-
-
-// Connect to the database and start the server
+// Connect to database and start server
 connectDatabase(mongo_url)
   .then(() => {
     console.log("MongoDB is Connected");

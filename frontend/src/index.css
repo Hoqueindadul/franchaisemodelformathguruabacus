@@ -14,14 +14,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-weight: 900;
 }
 
 body {
     font-family: lato;
-    font-weight: 960;
+    font-weight: 960px;
     background-color: #f4f5f5;
     overflow-x: hidden;
-    color: #CCCCCC;
 
 }
 

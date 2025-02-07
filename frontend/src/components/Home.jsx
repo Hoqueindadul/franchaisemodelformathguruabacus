@@ -43,7 +43,7 @@ function Home() {
             console.log("Submitting Data:", formData); 
     
             const response = await axios.get(
-                `${LOCAL_BACKEND_URL}/api/users/sendWhatsappMessage`,
+                `${BACKEND_URL}/api/users/sendWhatsappMessage`,
                 {
                     params: {
                         program: formData.program,
