@@ -3,15 +3,15 @@ import mongoose from "mongoose";
 
 export const addCourse = async (req, res) => {
     try {
-        const { courseTittle, instractorName, duration, price, courseLevel, courseDescription } = req.body;
+        const { courseTitle, instructorName, duration, price, courseLevel, courseDescription } = req.body;
 
         // Check for missing fields
-        if (!courseTittle || !instractorName || !duration || !price || !courseLevel || !courseDescription) {
+        if (!courseTitle || !instructorName || !duration || !price || !courseLevel || !courseDescription) {
             return res.status(400).json({ message: "All fields are required." });
         }
 
         // Validate course level
-        const validLevels = ['Beginner', 'Intermediate', 'Advanced'];
+        const validLevels = ["Beginner", "Intermediate", "Advanced"];
         if (!validLevels.includes(courseLevel)) {
             return res.status(400).json({ message: "Invalid course level. Valid levels are Beginner, Intermediate, and Advanced." });
         }
@@ -24,9 +24,9 @@ export const addCourse = async (req, res) => {
 
         // Create a new course
         const newCourse = new Courses({
-            courseTittle,
-            instractorName,
-            duration, // Store as string (e.g., "2h" or "30min")
+            courseTitle, 
+            instructorName,
+            duration,
             price,
             courseLevel,
             courseDescription,
@@ -35,12 +35,13 @@ export const addCourse = async (req, res) => {
         // Save to database
         await newCourse.save();
 
-        res.status(200).json({ message: "Course added successfully.", newCourse });
+        res.status(201).json({ message: "Course added successfully.", course: newCourse });
     } catch (error) {
-        console.error(error);
+        console.error("Error adding course:", error);
         return res.status(500).json({ error: "Failed to add course." });
     }
 };
+
 
 export const deleteCourse = async (req, res) => {
     try {

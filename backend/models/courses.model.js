@@ -1,34 +1,38 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose from "mongoose";
 
-const coursesSchema = new mongoose.Schema({
-    courseTittle: {
-        type: String,
-        required: true,
-        trim: true,
+const coursesSchema = new mongoose.Schema(
+  {
+    courseTitle: { 
+      type: String,
+      required: true,
+      trim: true,
     },
-    instructorName: {
-        type: String,
-        required: true,
-        trim: true,
+    instructorName: { 
+      type: String,
+      required: true,
+      trim: true,
     },
-    duration:{
-        type: String,
-        required: true,
+    duration: {
+      type: String,
+      required: true,
     },
     price: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
-    courseLevel:{
-        type: String,
-        enum: ["Beginner", "Intermediate", "Advance"]
+    courseLevel: {
+      type: String,
+      enum: ["Beginner", "Intermediate", "Advanced"],
+      required: true,
     },
     courseDescription: {
-        type: String,
-        required: true,
-    }
-}, { timestamps: true });
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 const Courses = mongoose.model("courses", coursesSchema);
 
-export default Courses
+export default Courses;
