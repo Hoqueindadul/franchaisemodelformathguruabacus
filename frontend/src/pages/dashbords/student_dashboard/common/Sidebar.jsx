@@ -1,47 +1,42 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdOutlineAddCircle, MdDelete } from "react-icons/md";
+import { MdOutlineAddCircle } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
-
 import {
     FaThLarge,
     FaBook,
     FaBookOpen,
     FaUsers,
     FaChalkboardTeacher,
-    FaUserTie,
-    FaBuilding,
+    FaBuilding
 } from "react-icons/fa";
+import { IoPersonAdd } from "react-icons/io5";
 import { FiMenu } from "react-icons/fi";
-import toast from "react-hot-toast";// Import toast
+import { LuGitBranchPlus } from "react-icons/lu";
+
+import toast from "react-hot-toast";
 import { useAuth } from "../../../../context/AuthProvider";
 
 const Sidebar = ({ setActiveTab }) => {
-    const { logout } = useAuth();  // Get logout function from Auth context
+    const { logout } = useAuth();
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout(); // Clear authentication state
-
-        // Show toast message
-        toast.success("Logout Successfully");
-
-        // Redirect to login page after 2 seconds
-        setTimeout(() => {
-            navigate("/"); // Redirect to home page (login)
-        }, 2000);
-    };
-
     const [subbarVisibility, setSubbarVisibility] = useState({
+        branches: false,
         courses: false,
         students: false,
-        staff: false,
     });
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const user = JSON.parse(localStorage.getItem("student")) || {};
-    const userName = user.firstName || "Guest";  // Default to "Guest" if firstName is null
-    console.log(userName);
+    const userName = user.firstName || "Guest";
+
+    const handleLogout = () => {
+        logout();
+        toast.success("Logout Successfully");
+        setTimeout(() => {
+            navigate("/");
+        }, 2000);
+    };
 
     const toggleSubbar = (section) => {
         setSubbarVisibility((prev) => ({
@@ -50,9 +45,14 @@ const Sidebar = ({ setActiveTab }) => {
         }));
     };
 
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+        setIsSidebarOpen(false);
+    };
+
     return (
         <div>
-            {/* Hamburger Menu for Tablet and Mobile */}
+            {/* Hamburger Menu for Mobile */}
             <button
                 className="hamburger-menu"
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
@@ -81,12 +81,39 @@ const Sidebar = ({ setActiveTab }) => {
                     {/* Dashboard Tab */}
                     <div
                         className="sidebartab"
-                        onClick={() => setActiveTab("dashboard")}
+                        onClick={() => handleTabClick("dashboard")}
                         style={{ cursor: "pointer" }}
                     >
                         <FaThLarge className="sidebarIcon" />
                         <span>Dashboard</span>
                     </div>
+
+                    {/* Branch Section */}
+                    <div
+                        className="sidebartab"
+                        onClick={() => toggleSubbar("branches")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <LuGitBranchPlus className="sidebarIcon" />
+                        <span>Branch</span>
+                    </div>
+                    {subbarVisibility.branches && (
+                        <div className="subbar">
+                            <button
+                                className="btn btn-link subbar-link"
+                                onClick={() => handleTabClick("addbranch")}
+                            >
+                                <MdOutlineAddCircle className="sidebarIcon" /> Add Branch
+                            </button>
+
+                            <button
+                                className="btn btn-link subbar-link"
+                                onClick={() => handleTabClick("allbranches")}
+                            >
+                                <FaBuilding className="sidebarIcon" /> All Branches
+                            </button>
+                        </div>
+                    )}
 
                     {/* Courses Section */}
                     <div
@@ -101,14 +128,14 @@ const Sidebar = ({ setActiveTab }) => {
                         <div className="subbar">
                             <button
                                 className="btn btn-link subbar-link"
-                                onClick={() => setActiveTab("addcourse")}
+                                onClick={() => handleTabClick("addcourse")}
                             >
                                 <MdOutlineAddCircle className="sidebarIcon" /> Add Courses
                             </button>
 
                             <button
                                 className="btn btn-link subbar-link"
-                                onClick={() => setActiveTab("allcourse")}
+                                onClick={() => handleTabClick("allcourse")}
                             >
                                 <FaBookOpen className="sidebarIcon" /> All Courses
                             </button>
@@ -128,43 +155,23 @@ const Sidebar = ({ setActiveTab }) => {
                         <div className="subbar">
                             <button
                                 className="btn btn-link subbar-link"
-                                onClick={() => setActiveTab("allstudents")}
+                                onClick={() => handleTabClick("studentAdmission")}
+                            >
+                                <IoPersonAdd className="sidebarIcon flex-nowrap" />Admission Form
+                            </button>
+                            <button
+                                className="btn btn-link subbar-link"
+                                onClick={() => handleTabClick("allstudents")}
                             >
                                 <FaChalkboardTeacher className="sidebarIcon" /> All Students
                             </button>
                         </div>
                     )}
 
-                    {/* Staff Section */}
+                    {/* Enrolled Students */}
                     <div
                         className="sidebartab"
-                        onClick={() => toggleSubbar("staff")}
-                        style={{ cursor: "pointer" }}
-                    >
-                        <FaUserTie className="sidebarIcon" />
-                        <span>Staff</span>
-                    </div>
-                    {subbarVisibility.staff && (
-                        <div className="subbar">
-                            <button
-                                className="btn btn-link subbar-link"
-                                onClick={() => setActiveTab("addstaff")}
-                            >
-                                <FaChalkboardTeacher className="sidebarIcon" /> Add Staff
-                            </button>
-                            <button
-                                className="btn btn-link subbar-link"
-                                onClick={() => setActiveTab("allstaff")}
-                            >
-                                <FaUserTie className="sidebarIcon" /> All Staff
-                            </button>
-                        </div>
-                    )}
-
-                    {/* Enrolled student */}
-                    <div
-                        className="sidebartab"
-                        onClick={() => setActiveTab("enrolledStudent")}
+                        onClick={() => handleTabClick("enrolledStudent")}
                         style={{ cursor: "pointer" }}
                     >
                         <PiStudentBold className="sidebarIcon" />

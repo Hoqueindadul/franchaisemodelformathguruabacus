@@ -17,7 +17,7 @@ export default function Course_handwritting() {
     useEffect(() => {
         const fetchEnrollmentStatus = async () => {
             if (!isAuthenticated) {
-                setLoading(false); // Stop loading if not logged in
+                setLoading(false);
                 return;
             }
 
@@ -25,20 +25,22 @@ export default function Course_handwritting() {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
                     console.error('No valid student found in localStorage.');
+                    setLoading(false);
                     return;
                 }
 
                 const studentId = student._id;
                 const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
 
-                const courseTitle = "hanwrtting"; // Match stored title
+                const courseTitle = "Handwritting".toLowerCase().trim(); // Corrected spelling
 
                 const matchedCourse = storedCourses.find(course =>
-                    course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                    course.courseTitle?.toLowerCase().trim() === courseTitle
                 );
 
                 if (!matchedCourse) {
                     console.error(`Course "${courseTitle}" not found in localStorage.`);
+                    setLoading(false);
                     return;
                 }
 
@@ -56,7 +58,7 @@ export default function Course_handwritting() {
 
                 // Check if student is already enrolled
                 const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
-                    enrolledCourse.courseId?._id === courseId
+                    enrolledCourse.courseId?._id === courseId || enrolledCourse.courseId === courseId
                 );
 
                 setIsEnrolled(alreadyEnrolled);
@@ -73,7 +75,7 @@ export default function Course_handwritting() {
     const handleEnroll = async () => {
         if (!isAuthenticated) {
             toast.error("Please log in to enroll.");
-            return navigate('/login'); // Redirect to login if not logged in
+            return navigate('/login');
         }
 
         if (isEnrolled) {
@@ -89,10 +91,10 @@ export default function Course_handwritting() {
             }
 
             const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-            const courseTitle = "hanwrtting"; // Ensure it matches stored data
+            const courseTitle = "Handwritting".toLowerCase().trim();
 
             const matchedCourse = storedCourses.find(course =>
-                course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                course.courseTitle?.toLowerCase().trim() === courseTitle
             );
 
             if (!matchedCourse) {
@@ -125,7 +127,6 @@ export default function Course_handwritting() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
     return (
         <div className="container mt-5 handwritingCourse">
             <header className="text-center courseHeader mb-5">

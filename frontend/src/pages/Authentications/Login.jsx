@@ -15,7 +15,7 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false); // 🔹 Add loading state
-    const { setIsAuthenticated , login} = useAuth(); // Access setIsAuthenticated from Auth context
+    const { setIsAuthenticated, login } = useAuth(); // Access setIsAuthenticated from Auth context
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,10 +44,10 @@ export default function Login() {
             const student = data.student
             // store login information
             login(token, student)
-            
-            
+
+
             setIsAuthenticated(true);
-            
+
             // show success message
             toast.success(data.message || "User logged in successfully.");
 
@@ -118,13 +118,21 @@ export default function Login() {
                                             disabled={isLoading} // 🔹 Disable input while loading
                                         />
                                     </div>
-                                    <button 
-                                        type="submit" 
+                                    <button
+                                        type="submit"
                                         className="b-unstyle educate-btn w-100 mb-24"
                                         disabled={isLoading} // 🔹 Disable button while loading
                                     >
-                                        {isLoading ? <div className="spinner-border text-light" role="status"></div> : "Login to Account"}
+                                        {isLoading ? (
+                                            <>
+                                                <span>Logging in...</span>
+                                                <div className="spinner-border text-light ms-2" role="status"></div>
+                                            </>
+                                        ) : (
+                                            "Login to Account"
+                                        )}
                                     </button>
+
                                 </form>
                                 <div className="bottom-row">
                                     <h6>

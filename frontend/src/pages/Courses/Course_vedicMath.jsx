@@ -17,10 +17,10 @@ export default function Course_vedicMath() {
 
     useEffect(() => {
         const fetchEnrollmentStatus = async () => {
-            if (!isAuthenticated){
+            if (!isAuthenticated) {
                 setLoading(false)
                 return;
-            } 
+            }
 
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
@@ -34,15 +34,14 @@ export default function Course_vedicMath() {
 
                 console.log("Stored Courses:", storedCourses);
 
-                const courseTitle = "Vadic Math"; // Ensure this matches exactly
+                const courseTitle = "vedic math".toLowerCase().trim(); // Normalized title
 
                 const matchedCourse = storedCourses.find(course =>
-                    course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                    course.courseTitle?.toLowerCase().trim() === courseTitle
                 );
 
                 if (!matchedCourse) {
                     console.error(`Course "${courseTitle}" not found in localStorage.`);
-                    console.log("Available courses:", storedCourses.map(c => c.courseTittle));
                     return;
                 }
 
@@ -95,16 +94,12 @@ export default function Course_vedicMath() {
             }
 
             const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-            const courseTitle = "Vadic Math"; // Ensure it matches stored data
+            const courseTitle = "vedic math".toLowerCase().trim(); 
 
             const matchedCourse = storedCourses.find(course =>
-                course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                course.courseTitle?.toLowerCase().trim() === courseTitle
             );
 
-            if (!matchedCourse) {
-                toast.error("Course not found.");
-                return;
-            }
 
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
@@ -325,7 +320,7 @@ export default function Course_vedicMath() {
                 </button>
             </div>
 
-            
+
         </div>
     )
 }

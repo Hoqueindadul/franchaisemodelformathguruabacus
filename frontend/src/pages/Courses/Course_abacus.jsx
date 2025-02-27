@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { BACKEND_URL } from '../../utils';
-import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
@@ -9,17 +8,16 @@ import axios from 'axios';
 const CoursePage = () => {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
-
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchEnrollmentStatus = async () => {
             if (!isAuthenticated){
-                setLoading(false)
+                setLoading(false);
                 return;
             } 
-
+            
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
@@ -30,40 +28,27 @@ const CoursePage = () => {
                 const studentId = student._id;
                 const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
                 const courseTitle = "Abacus";
-
+                
                 const matchedCourse = storedCourses.find(course =>
-                    course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                    course.courseTitle && course.courseTitle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
                 );
                 console.log(matchedCourse);
-
+                
                 if (!matchedCourse) {
                     console.error('Course not found in localStorage.');
                     return;
                 }
-
+                
                 const courseId = matchedCourse._id;
-                console.log(courseId);
-
-
-                // Fetch enrolled courses for the student
                 const response = await axios.get(
                     `${BACKEND_URL}/api/enrollcourse/enrolled/${studentId}`,
-                    {
-                        headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
-                    }
+                    { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
                 );
-
+                
                 const enrolledCourses = response.data || [];
-                console.log("Enrolled Courses:", enrolledCourses);
-
-                // Ensure we are comparing valid course IDs
                 const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
                     enrolledCourse.courseId?._id === courseId
                 );
-
-                console.log("Is Student Already Enrolled?", alreadyEnrolled);
-
-
                 setIsEnrolled(alreadyEnrolled);
             } catch (error) {
                 console.error("Error checking enrollment status:", error);
@@ -73,7 +58,7 @@ const CoursePage = () => {
         };
 
         fetchEnrollmentStatus();
-    }, [isAuthenticated]); // Ensure useEffect runs when authentication status changes
+    }, [isAuthenticated]);
 
     const handleEnroll = async () => {
         if (!isAuthenticated) {
@@ -95,9 +80,8 @@ const CoursePage = () => {
 
             const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
             const courseTitle = "Abacus";
-
             const matchedCourse = storedCourses.find(course =>
-                course.courseTittle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                course.courseTitle && course.courseTitle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
             );
 
             if (!matchedCourse) {
@@ -298,6 +282,53 @@ const CoursePage = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* syllabus section */}
+            <section className="mb-5">
+                <h2 className="text-primary">Course Syllabus</h2>
+                <div className="card p-4 shadow">
+                    <p><strong>Abacus JUNIOR (4 Levels, 12 months, Age: 4-5 years):</strong></p>
+                    <ul>
+                        <li>Alphabet & Numbers</li>
+                        <li>Basic Addition & Subtraction</li>
+                        <li>Forming Words</li>
+                        <li>Play-based Learning</li>
+                    </ul>
+                    <p><strong>Abacus BASIC (8 Levels, 24 months, Age: 6-15 years):</strong></p>
+                    <ul>
+                        <li>Addition, Subtraction, Multiplication, Division</li>
+                        <li>Percentage (%), Simplification</li>
+                        <li>Square, Square Root, Cube, Cube Root</li>
+                        <li>HCF & LCM</li>
+                    </ul>
+                    <p><strong>Extra Curriculum (Not included in Basic Program):</strong></p>
+                    <ul>
+                        <li>Equation of Vector</li>
+                        <li>Logarithm</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section className="mb-5">
+                <h2 className="text-primary">Fees Structure</h2>
+                <div className="card p-4 shadow">
+                    <p><strong>Abacus JUNIOR:</strong></p>
+                    <ul>
+                        <li>Registration: ₹500 (one-time)</li>
+                        <li>Tuition Fee: ₹200 per month</li>
+                    </ul>
+                    <p><strong>Abacus BASIC:</strong></p>
+                    <ul>
+                        <li>Registration: ₹700 (one-time)</li>
+                        <li>Tuition Fee: ₹300 per month</li>
+                    </ul>
+                    <p><strong>Abacus Extra Curriculum:</strong></p>
+                    <ul>
+                        <li>Registration: NIL</li>
+                        <li>Tuition Fee: ₹700 per month</li>
+                    </ul>
                 </div>
             </section>
 
