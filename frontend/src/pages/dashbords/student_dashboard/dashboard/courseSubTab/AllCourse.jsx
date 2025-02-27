@@ -6,9 +6,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../../../../utils';
 
 export default function AllCourse() {
-  const { isAuthenticated, fetchCourses, courses } = useAuth(); // Get courses directly from context
-
-  console.log("Courses:", courses); // Debugging
+  const { isAuthenticated, fetchCourses, courses } = useAuth(); // Fetch courses from context
 
   // Function to delete a course
   const handleDelete = async (courseId) => {

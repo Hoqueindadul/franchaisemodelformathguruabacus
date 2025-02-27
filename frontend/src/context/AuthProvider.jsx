@@ -46,7 +46,6 @@ export const AuthProvider = ({ children }) => {
     // Function to fetch courses from API and store in state
     const fetchCourses = useCallback(async () => {
         try {
-            console.log("Fetching courses...");
             const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
             if (response.data && Array.isArray(response.data.courses)) {
                 setCourses(response.data.courses);
@@ -59,13 +58,18 @@ export const AuthProvider = ({ children }) => {
     // Function to fetch all admitted students
     const fetchAllStudents = useCallback(async () => {
         try {
-            console.log("Fetching students...");
-            const response = await axios.get(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
-            if(response.data && Array.isArray(response.data.students)) {
-                setStudents(response.data.students);
+            const response = await fetch(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
+            const data = await response.json();
+        
+            if (Array.isArray(data)) {
+                setStudents(data);
+            } else {
+                console.error("Invalid student data format:", data);
+                setStudents([]);
             }
         } catch (error) {
             console.error("Fetch Students Error:", error);
+            setStudents([]);
         }
     }, []);
 
@@ -125,20 +129,15 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         checkAuthStatus();
+    }, [checkAuthStatus]);
 
+    useEffect(() => {
         if (isAuthenticated) {
             fetchCourses();
             fetchAllStudents();
         }
-
-        return () => {
-            // Cleanup event listeners & timers on unmount
-            if (logoutTimer.current) clearTimeout(logoutTimer.current);
-            if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-            clearInactivityListeners();
-        };
-    }, [isAuthenticated, checkAuthStatus, fetchCourses, fetchAllStudents]);
-
+    }, [isAuthenticated]); // Runs only when `isAuthenticated` changes
+    
     // Login function
     const login = (token, student) => {
         localStorage.setItem("jwt", token);
