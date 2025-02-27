@@ -1,19 +1,18 @@
 import jwt from "jsonwebtoken";
-import Students from "../models/student.model.js";
 
-const createTokenAndSaveCookies = async(studentId, res) => {
-    const token = jwt.sign({studentId}, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h"
-    })
+const createTokenAndSaveCookies = async (studentId, res) => {
+    const token = jwt.sign({ studentId }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1h" // Token expires in 1 hour
+    });
 
     res.cookie("jwt", token, {
-        httpOnly:false,
-        secure:true,
-        sameSite:"none"
-    })
+        httpOnly: true,   
+        secure: true,    
+        sameSite: "none", 
+        maxAge: 60 * 60 * 1000 // Cookie expires in 1 hour (milliseconds)
+    });
 
-    await Students.findByIdAndUpdate(studentId, {token})
-    return token
-}
+    return token; // No need to store it in the database
+};
 
-export default createTokenAndSaveCookies
+export default createTokenAndSaveCookies;

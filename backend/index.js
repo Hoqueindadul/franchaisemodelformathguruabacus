@@ -7,6 +7,7 @@ import franchiseRoute from "./routes/franchise.route.js"
 import courseRoute from "./routes/courses.route.js"
 import otpRoute from "./routes/otp.route.js"
 import enrollRoute from "./routes/courseEnrollment.route.js"
+import studentAdmissionRoute from "./routes/studentAdmission.route.js"
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -22,7 +23,7 @@ const deploymentFrontendUrl = process.env.MAIN_FRONTEND_URL || "https://mathguru
 
 console.log("Allowed Origins:", localFrontendUrl, deploymentFrontendUrl); // Debugging
 
-// ✅ CORS Middleware (MUST be before other middlewares)
+
 app.use(
   cors({
     origin: [localFrontendUrl, deploymentFrontendUrl],
@@ -45,6 +46,7 @@ app.use("/api/franchises", franchiseRoute);
 app.use("/api/otpValidator", otpRoute);
 app.use("/api/courses", courseRoute);
 app.use("/api/enrollcourse", enrollRoute);
+app.use("/api/admission", studentAdmissionRoute);
 
 app.use(
   fileUpload({
