@@ -8,9 +8,11 @@ import courseRoute from "./routes/courses.route.js"
 import otpRoute from "./routes/otp.route.js"
 import enrollRoute from "./routes/courseEnrollment.route.js"
 import studentAdmissionRoute from "./routes/studentAdmission.route.js"
+import branchRoute from "./routes/addBranch.route.js"
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+
 
 const app = express();
 dotenv.config();
@@ -47,6 +49,7 @@ app.use("/api/otpValidator", otpRoute);
 app.use("/api/courses", courseRoute);
 app.use("/api/enrollcourse", enrollRoute);
 app.use("/api/admission", studentAdmissionRoute);
+app.use("/api/branches", branchRoute)
 
 app.use(
   fileUpload({

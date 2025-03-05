@@ -58,9 +58,9 @@ export const AuthProvider = ({ children }) => {
     // Function to fetch all admitted students
     const fetchAllStudents = useCallback(async () => {
         try {
-            const response = await fetch(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
-            const data = await response.json();
-        
+            const response = await axios.get(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
+            const data = response.data;  // Use response.data directly
+            
             if (Array.isArray(data)) {
                 setStudents(data);
             } else {
@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }) => {
             setStudents([]);
         }
     }, []);
+    
 
     // Function to delete a student
     const deleteStudent = async (studentId) => {
@@ -103,7 +104,7 @@ export const AuthProvider = ({ children }) => {
         inactivityTimer.current = setTimeout(() => {
             logout();
             alert("Logged out due to inactivity.");
-        }, 2 * 60 * 1000); // 2 minutes
+        }, 5 * 60 * 1000); // 2 minutes
 
         document.addEventListener("mousemove", resetInactivityTimer);
         document.addEventListener("keydown", resetInactivityTimer);
@@ -117,7 +118,7 @@ export const AuthProvider = ({ children }) => {
         inactivityTimer.current = setTimeout(() => {
             logout();
             alert("Logged out due to inactivity.");
-        }, 2 * 60 * 1000);
+        }, 5 * 60 * 1000);
     };
 
     // Remove inactivity listeners on logout

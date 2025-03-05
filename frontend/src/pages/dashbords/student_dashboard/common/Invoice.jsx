@@ -29,13 +29,17 @@ const styles = StyleSheet.create({
     padding: 15, 
     borderRadius: 5, 
     marginBottom: 10,
-    border: '1px solid #ddd' 
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderStyle: 'solid'
   },
   row: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     paddingVertical: 5, 
-    borderBottom: '1px solid #ddd',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    borderBottomStyle: 'solid',
     marginBottom: 5
   },
   label: { 
@@ -48,7 +52,9 @@ const styles = StyleSheet.create({
     color: '#555'  
   },
   separator: {
-    borderTop: '2px solid #ddd', 
+    borderTopWidth: 2,
+    borderTopColor: '#ddd',
+    borderTopStyle: 'solid',
     marginVertical: 15
   },
   totalAmount: { 
@@ -65,12 +71,15 @@ const styles = StyleSheet.create({
     color: '#777'
   },
   invoiceContainer: {
-    border: '1px solid #ddd',  
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderStyle: 'solid',
     padding: 20,
     borderRadius: 8,
     marginTop: 10
   }
 });
+
 
 const Invoice = ({ transaction }) => (
   <Document>
