@@ -12,8 +12,8 @@ export const register = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Validate role
-        const validRoles = ["visitor", "student", "parent"];
+        // Validate role (Updated to match frontend)
+        const validRoles = ["admin", "franchise", "student"];
         if (!validRoles.includes(role)) {
             return res.status(400).json({ message: "Invalid role" });
         }
@@ -28,26 +28,27 @@ export const register = async (req, res) => {
         const hashPassword = await bcrypt.hash(password, 10);
 
         // Create new user
-        const newStudent = new Students({
+        const newUser = new Students({ // Check if this should be 'Users' instead
             firstName,
             lastName,
             role,
             phone,
             email,
-            password: hashPassword, // Store hashed password
+            password: hashPassword,
         });
-        await newStudent.save();
+
+        await newUser.save();
 
         // Generate token & set cookie
-        const token = await createTokenAndSaveCookies(newStudent._id, res);
+        const token = await createTokenAndSaveCookies(newUser._id, res);
 
         return res.status(201).json({
             message: "User registered successfully",
-            student: {
-                _id: newStudent._id,
-                firstName: newStudent.firstName,
-                email: newStudent.email,
-                role: newStudent.role,
+            user: {
+                _id: newUser._id,
+                firstName: newUser.firstName,
+                email: newUser.email,
+                role: newUser.role,
             },
             token,
         });
@@ -57,6 +58,7 @@ export const register = async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 // ============================ LOGIN ============================
 export const login = async (req, res) => {

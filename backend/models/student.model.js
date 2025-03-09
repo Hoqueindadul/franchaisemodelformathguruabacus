@@ -14,7 +14,7 @@ const studentSchema = new mongoose.Schema(
         role: {
             type: String,
             required: true,
-            enum: ["visitor", "student"], 
+            enum: ["admin", "franchise", "student"], 
         },
         phone: {
             type: String,
@@ -31,7 +31,7 @@ const studentSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
-            select: false, 
+            select: false, // Password is hidden by default
         },
     },
     { timestamps: true }

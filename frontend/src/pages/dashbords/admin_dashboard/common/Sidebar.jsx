@@ -88,7 +88,32 @@ const Sidebar = ({ setActiveTab }) => {
                         <span>Dashboard</span>
                     </div>
 
-                    
+                    {/* Branch Section */}
+                    <div
+                        className="sidebartab"
+                        onClick={() => toggleSubbar("branches")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <LuGitBranchPlus className="sidebarIcon" />
+                        <span>Branch</span>
+                    </div>
+                    {subbarVisibility.branches && (
+                        <div className="subbar">
+                            <button
+                                className="btn btn-link subbar-link"
+                                onClick={() => handleTabClick("addbranch")}
+                            >
+                                <MdOutlineAddCircle className="sidebarIcon" /> Add Branch
+                            </button>
+
+                            <button
+                                className="btn btn-link subbar-link"
+                                onClick={() => handleTabClick("allbranches")}
+                            >
+                                <FaBuilding className="sidebarIcon" /> All Branches
+                            </button>
+                        </div>
+                    )}
 
                     {/* Courses Section */}
                     <div

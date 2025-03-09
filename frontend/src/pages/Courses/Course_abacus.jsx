@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BACKEND_URL } from '../../utils';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const CoursePage = () => {
@@ -13,11 +13,11 @@ const CoursePage = () => {
 
     useEffect(() => {
         const fetchEnrollmentStatus = async () => {
-            if (!isAuthenticated){
+            if (!isAuthenticated) {
                 setLoading(false);
                 return;
-            } 
-            
+            }
+
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
@@ -28,23 +28,23 @@ const CoursePage = () => {
                 const studentId = student._id;
                 const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
                 const courseTitle = "Abacus";
-                
+
                 const matchedCourse = storedCourses.find(course =>
                     course.courseTitle && course.courseTitle.toLowerCase().trim() === courseTitle.toLowerCase().trim()
                 );
                 console.log(matchedCourse);
-                
+
                 if (!matchedCourse) {
                     console.error('Course not found in localStorage.');
                     return;
                 }
-                
+
                 const courseId = matchedCourse._id;
                 const response = await axios.get(
                     `${BACKEND_URL}/api/enrollcourse/enrolled/${studentId}`,
                     { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
                 );
-                
+
                 const enrolledCourses = response.data || [];
                 const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
                     enrolledCourse.courseId?._id === courseId
@@ -310,7 +310,7 @@ const CoursePage = () => {
                     </ul>
                 </div>
             </section>
-            
+
             <section className="mb-5">
                 <h2 className="text-primary">Fees Structure</h2>
                 <div className="card p-4 shadow">
@@ -336,13 +336,15 @@ const CoursePage = () => {
             <div className="text-center">
                 <h2 className="text-primary">Ready to Improve Your Math Skills?</h2>
                 <p>Join Winaum Learning today and discover the joy of mathematics!</p>
-                <button
-                    className="btn handwrittingBtn btn-lg"
-                    onClick={handleEnroll}
-                    disabled={isEnrolled || loading}
-                >
-                    {loading ? "Checking Enrollment..." : isEnrolled ? "Already Enrolled" : "Enroll Now"}
-                </button>
+                <Link to="/dashboard">
+                    <button
+                        className="btn handwrittingBtn btn-lg"
+                        onClick={handleEnroll}
+                        disabled={isEnrolled || loading}
+                    >
+                        {loading ? "Checking Enrollment..." : isEnrolled ? "Already Enrolled" : "Enroll Now"}
+                    </button>
+                </Link>
             </div>
         </div>
     );

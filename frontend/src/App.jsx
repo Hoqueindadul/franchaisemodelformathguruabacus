@@ -1,14 +1,15 @@
 import React, { useState, lazy, Suspense } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectRoute";
+import { useAuth } from "./context/AuthProvider";
 
 // Static Components (Load Immediately)
-import NavBar from "../src/components/NavBar";
-import Home from "../src/components/Home";
-import Footer from "../src/components/Footer";
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import Footer from "./components/Footer";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 
@@ -44,16 +45,21 @@ const Register = lazy(() => import("./pages/Authentications/Register"));
 
 // Payment
 const FeeForm = lazy(() => import("./pages/feesCollection/FeeForm"));
-const Invoice = lazy(() => import("./pages/feesCollection/Invoice"));
 const PaymentPage = lazy(() => import("./pages/payments/PaymentPage"));
 
 // Dashboard
-const Dashboard = lazy(() => import("./pages/dashbords/student_dashboard/Dashboard"));
+const AdminDashboard = lazy(() => import("./pages/dashbords/admin_dashboard/Admin-dashboard"));
+const StudentDashboard = lazy(() => import("./pages/dashbords/student_dashboard/Student-dashboard"));
+const FranchiseDashboard = lazy(() => import("./pages/dashbords/franchise_dashboard/Franchise-dashboard"));
 
 function App() {
   const location = useLocation();
+  const { isAuthenticated, userRole } = useAuth();
+
   const hideNavbarFooter = [
     "/dashboard",
+    "/student-dashboard",
+    "/franchise-dashboard",
     "/register",
     "/login",
     "/franchise-registraion",
@@ -73,11 +79,10 @@ function App() {
       {!hideNavbarFooter && <NavBar />}
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/whatwedo" element={<Whatwedo />} />
           <Route path="/becomeatrainer" element={<BecomeTrainer />} />
 
@@ -108,12 +113,48 @@ function App() {
           {/* Payment */}
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/feesForm" element={<FeeForm />} />
-          <Route path="/invoice" element={<Invoice />} />
 
-          {/* Dashboard */}
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          {/* Authentication */}
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
+          <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />} />
 
-          {/* Not Found */}
+          {/* Role-Based Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                {userRole === "admin" ? (
+                  <AdminDashboard />
+                ) : userRole === "franchise" ? (
+                  <Navigate to="/franchise-dashboard" replace />
+                ) : userRole === "Student or Parent" ? (
+                  <Navigate to="/student-dashboard" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student-dashboard"
+            element={
+              <ProtectedRoute>
+                {userRole === "student" ? <StudentDashboard /> : <Navigate to="/dashboard" replace />}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/franchise-dashboard"
+            element={
+              <ProtectedRoute>
+                {userRole === "franchise" ? <FranchiseDashboard /> : <Navigate to="/dashboard" replace />}
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 404 Not Found */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

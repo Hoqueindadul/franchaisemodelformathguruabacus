@@ -11,48 +11,48 @@ const isProduction = process.env.NODE_ENV === 'production';
 const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
 
 export default function Login() {
-    const [role, setRole] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false); // 🔹 Add loading state
-    const { setIsAuthenticated, login } = useAuth(); // Access setIsAuthenticated from Auth context
+    const [formData, setFormData] = useState({
+        role: "",
+        email: "",
+        password: ""
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const { setIsAuthenticated, login } = useAuth(); 
     const navigate = useNavigate();
 
     useEffect(() => {
-        window.scrollTo(0, 0); // Scroll to top on component mount
+        window.scrollTo(0, 0);
     }, []);
+
+    // Handle input changes
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        const { role, email, password } = formData;
 
         if (!role || !email || !password) {
             toast.error("Please fill in all required fields.");
             return;
         }
 
-        setIsLoading(true); // 🔹 Start loading
+        setIsLoading(true); 
 
         try {
-            const { data } = await axios.post(`${BACKEND_URL}/api/users/login`, {
-                role,
-                email,
-                password,
-            }, {
+            const { data } = await axios.post(`${BASE_URL}/api/users/login`, formData, {
                 headers: { "Content-Type": "application/json" },
             });
-            const token = data.token;
-            const student = data.student
-            // store login information
-            login(token, student)
 
-
+            const { token, student } = data;
+            login(token, student); // Save token & user info in AuthProvider
             setIsAuthenticated(true);
 
-            // show success message
             toast.success(data.message || "User logged in successfully.");
 
-            setEmail("");
-            setPassword("");
+            setFormData({ role: "", email: "", password: "" });
 
             setTimeout(() => {
                 navigate('/');
@@ -61,7 +61,7 @@ export default function Login() {
             console.error("Login failed:", error);
             toast.error(error.response?.data?.message || "Failed to log in.");
         } finally {
-            setIsLoading(false); // 🔹 Stop loading
+            setIsLoading(false); 
         }
     };
 
@@ -80,48 +80,56 @@ export default function Login() {
                                     <h2 className="mb-50 login-heading">Login To Your Account</h2>
                                 </div>
                                 <form onSubmit={handleLogin} className="form-validator">
+                                    {/* Role Selection */}
                                     <div className="mb-24">
                                         <select
                                             name="role"
-                                            id="role"
                                             className="p_lg w-100 p-3 role"
-                                            value={role}
-                                            onChange={(e) => setRole(e.target.value)}
-                                            disabled={isLoading} // 🔹 Disable input while loading
+                                            value={formData.role}
+                                            onChange={handleChange}
+                                            disabled={isLoading}
+                                            required
                                         >
                                             <option value="">Select a Role</option>
-                                            <option value="franchise">Student or Parent</option>
-                                            <option value="student">Visitor</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="franchise">Franchise</option>
+                                            <option value="student">Student</option>
                                         </select>
                                     </div>
-                                    <div className="mb-24 another">
+
+                                    {/* Email Input */}
+                                    <div className="mb-24">
                                         <input
                                             type="email"
                                             className="form-control p_lg p-3 mt-3"
-                                            id="login-email"
                                             name="email"
                                             placeholder="Email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            disabled={isLoading} // 🔹 Disable input while loading
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            disabled={isLoading}
+                                            required
                                         />
                                     </div>
-                                    <div className="mb-24 another">
+
+                                    {/* Password Input */}
+                                    <div className="mb-24">
                                         <input
                                             type="password"
                                             className="form-control p_lg p-3"
-                                            id="login-password"
                                             name="password"
                                             placeholder="Password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            disabled={isLoading} // 🔹 Disable input while loading
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            disabled={isLoading}
+                                            required
                                         />
                                     </div>
+
+                                    {/* Submit Button */}
                                     <button
                                         type="submit"
                                         className="b-unstyle educate-btn w-100 mb-24"
-                                        disabled={isLoading} // 🔹 Disable button while loading
+                                        disabled={isLoading}
                                     >
                                         {isLoading ? (
                                             <>
@@ -132,8 +140,9 @@ export default function Login() {
                                             "Login to Account"
                                         )}
                                     </button>
-
                                 </form>
+
+                                {/* Bottom Links */}
                                 <div className="bottom-row">
                                     <h6>
                                         Don't have an account? <Link to="/register" className="color-primary">Register</Link>

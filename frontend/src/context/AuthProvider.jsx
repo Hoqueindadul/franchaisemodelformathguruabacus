@@ -1,34 +1,37 @@
-import React, { createContext, useState, useContext, useEffect, useRef, useCallback } from 'react';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import { BACKEND_URL } from '../utils';
+import React, { createContext, useState, useContext, useEffect, useRef, useCallback } from "react";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { BACKEND_URL } from "../utils";
 
 // Create Context
 const AuthContext = createContext();
 
-// Custom hook to use the AuthContext
+// Custom hook to use AuthContext
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [courses, setCourses] = useState([]); 
-    const [students, setStudents] = useState([]);
+    const [userRole, setUserRole] = useState(null);
+    const [courses, setCourses] = useState([]);
+    const [students, setStudents] = useState([]); // ✅ Ensure students is part of the context
     const logoutTimer = useRef(null);
     const inactivityTimer = useRef(null);
 
-    // Function to check authentication status
+    // Check authentication status
     const checkAuthStatus = useCallback(() => {
         const token = localStorage.getItem("jwt");
+        const storedUser = localStorage.getItem("student");
 
-        if (token) {
+        if (token && storedUser) {
             try {
                 const decoded = jwtDecode(token);
-                const currentTime = Date.now() / 1000; // Current time in seconds
+                const currentTime = Date.now() / 1000;
 
                 if (decoded.exp < currentTime) {
                     logout();
                 } else {
                     setIsAuthenticated(true);
+                    setUserRole(JSON.parse(storedUser).role);
                     setAutoLogout(decoded.exp - currentTime);
                     startInactivityTimer();
                 }
@@ -38,12 +41,13 @@ export const AuthProvider = ({ children }) => {
             }
         } else {
             setIsAuthenticated(false);
+            setUserRole(null);
             setCourses([]);
             setStudents([]);
         }
     }, []);
 
-    // Function to fetch courses from API and store in state
+    // Fetch courses from API
     const fetchCourses = useCallback(async () => {
         try {
             const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
@@ -55,16 +59,14 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // Function to fetch all admitted students
+    // Fetch all students
     const fetchAllStudents = useCallback(async () => {
         try {
             const response = await axios.get(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
-            const data = response.data;  // Use response.data directly
-            
-            if (Array.isArray(data)) {
-                setStudents(data);
+            if (Array.isArray(response.data)) {
+                setStudents(response.data);
             } else {
-                console.error("Invalid student data format:", data);
+                console.error("Invalid student data format:", response.data);
                 setStudents([]);
             }
         } catch (error) {
@@ -72,49 +74,44 @@ export const AuthProvider = ({ children }) => {
             setStudents([]);
         }
     }, []);
-    
 
-    // Function to delete a student
+    // Delete student
     const deleteStudent = async (studentId) => {
         if (!window.confirm("Are you sure you want to delete this student?")) return;
 
         try {
             await axios.delete(`${BACKEND_URL}/api/admission/deleteAdmitedStudent/${studentId}`);
             setStudents(prevStudents => prevStudents.filter(student => student._id !== studentId));
-            console.log("Student deleted successfully!");
         } catch (error) {
             console.error("Delete Student Error:", error);
         }
     };
 
-    // Function to automatically log out when token expires
+    // Auto logout when token expires
     const setAutoLogout = (seconds) => {
         if (logoutTimer.current) clearTimeout(logoutTimer.current);
-
         logoutTimer.current = setTimeout(() => {
             logout();
             alert("Session expired! Please log in again.");
         }, seconds * 1000);
     };
 
-    // Function to check activity and start inactivity timer (2 minutes)
+    // Start inactivity timer (5 min)
     const startInactivityTimer = () => {
         if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-
         inactivityTimer.current = setTimeout(() => {
             logout();
             alert("Logged out due to inactivity.");
-        }, 5 * 60 * 1000); // 2 minutes
+        }, 5 * 60 * 1000);
 
         document.addEventListener("mousemove", resetInactivityTimer);
         document.addEventListener("keydown", resetInactivityTimer);
         document.addEventListener("click", resetInactivityTimer);
     };
 
-    // Reset inactivity timer on user activity
+    // Reset inactivity timer on activity
     const resetInactivityTimer = () => {
         if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-
         inactivityTimer.current = setTimeout(() => {
             logout();
             alert("Logged out due to inactivity.");
@@ -137,8 +134,8 @@ export const AuthProvider = ({ children }) => {
             fetchCourses();
             fetchAllStudents();
         }
-    }, [isAuthenticated]); // Runs only when `isAuthenticated` changes
-    
+    }, [isAuthenticated]);
+
     // Login function
     const login = (token, student) => {
         localStorage.setItem("jwt", token);
@@ -147,6 +144,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const decoded = jwtDecode(token);
             setIsAuthenticated(true);
+            setUserRole(student.role);
             fetchCourses();
             fetchAllStudents();
             setAutoLogout(decoded.exp - Date.now() / 1000);
@@ -162,28 +160,17 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("jwt");
         localStorage.removeItem("student");
         setIsAuthenticated(false);
+        setUserRole(null);
         setCourses([]);
         setStudents([]);
-
-        clearInactivityListeners(); // 🔹 Ensure this runs to remove event listeners
+        clearInactivityListeners();
 
         if (logoutTimer.current) clearTimeout(logoutTimer.current);
         if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
     };
 
     return (
-        <AuthContext.Provider value={{ 
-            isAuthenticated, 
-            setIsAuthenticated,
-            login, 
-            logout, 
-            checkAuthStatus,
-            fetchCourses,
-            courses,
-            fetchAllStudents,
-            students,
-            deleteStudent // Expose delete function globally
-        }}>
+        <AuthContext.Provider value={{ isAuthenticated, userRole, students, login, logout, fetchCourses, courses, fetchAllStudents, deleteStudent }}>
             {children}
         </AuthContext.Provider>
     );
