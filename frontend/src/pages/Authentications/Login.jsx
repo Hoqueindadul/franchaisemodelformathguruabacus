@@ -54,9 +54,7 @@ export default function Login() {
 
             setFormData({ role: "", email: "", password: "" });
 
-            setTimeout(() => {
-                navigate('/');
-            }, 2000);
+            
         } catch (error) {
             console.error("Login failed:", error);
             toast.error(error.response?.data?.message || "Failed to log in.");

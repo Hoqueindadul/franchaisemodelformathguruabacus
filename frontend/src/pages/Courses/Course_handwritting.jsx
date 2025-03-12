@@ -7,20 +7,21 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 
-export default function Course_handwritting() {
-    const { isAuthenticated } = useAuth();
+export default function Course_handwriting() {
+    const { isAuthenticated, courses } = useAuth();
     const navigate = useNavigate();
-
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [loading, setLoading] = useState(true);
+    const courseTitle = "Handwritting";
 
     useEffect(() => {
-        const fetchEnrollmentStatus = async () => {
-            if (!isAuthenticated) {
-                setLoading(false);
-                return;
-            }
+        console.log("Courses from useAuth:", courses);
+        if (!isAuthenticated || !courses || courses.length === 0) {
+            setLoading(false);
+            return;
+        }
 
+        const fetchEnrollmentStatus = async () => {
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
@@ -29,38 +30,26 @@ export default function Course_handwritting() {
                     return;
                 }
 
-                const studentId = student._id;
-                const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-
-                const courseTitle = "Handwritting".toLowerCase().trim(); // Corrected spelling
-
-                const matchedCourse = storedCourses.find(course =>
-                    course.courseTitle?.toLowerCase().trim() === courseTitle
+                const matchedCourse = courses.find(course => 
+                    course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
                 );
-
+                
                 if (!matchedCourse) {
-                    console.error(`Course "${courseTitle}" not found in localStorage.`);
+                    console.error('Course not found in useAuth.courses');
                     setLoading(false);
                     return;
                 }
-
-                const courseId = matchedCourse._id;
-
-                // Fetch enrolled courses
+                console.log("Matched Course:", matchedCourse);
+                
                 const response = await axios.get(
-                    `${BACKEND_URL}/api/enrollcourse/enrolled/${studentId}`,
-                    {
-                        headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
-                    }
+                    `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
+                    { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
                 );
 
                 const enrolledCourses = response.data || [];
-
-                // Check if student is already enrolled
-                const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
-                    enrolledCourse.courseId?._id === courseId || enrolledCourse.courseId === courseId
+                const alreadyEnrolled = enrolledCourses.some(enrolledCourse => 
+                    enrolledCourse.courseId?._id === matchedCourse._id
                 );
-
                 setIsEnrolled(alreadyEnrolled);
             } catch (error) {
                 console.error("Error checking enrollment status:", error);
@@ -70,7 +59,7 @@ export default function Course_handwritting() {
         };
 
         fetchEnrollmentStatus();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, courses]);
 
     const handleEnroll = async () => {
         if (!isAuthenticated) {
@@ -90,18 +79,15 @@ export default function Course_handwritting() {
                 return;
             }
 
-            const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-            const courseTitle = "Handwritting".toLowerCase().trim();
-
-            const matchedCourse = storedCourses.find(course =>
-                course.courseTitle?.toLowerCase().trim() === courseTitle
+            const matchedCourse = courses.find(course => 
+                course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
             );
-
+            
             if (!matchedCourse) {
                 toast.error("Course not found.");
                 return;
             }
-
+            
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
                 {
@@ -116,7 +102,7 @@ export default function Course_handwritting() {
 
             if (response.data.message === 'Enrollment successful') {
                 toast.success("Enrollment request submitted! Visit our center to complete payment.");
-                navigate('/feesForm');
+                // navigate('/feesForm');
             }
         } catch (error) {
             console.error('Enrollment error:', error);
@@ -127,6 +113,7 @@ export default function Course_handwritting() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+    
     return (
         <div className="container mt-5 handwritingCourse">
             <header className="text-center courseHeader mb-5">
@@ -134,7 +121,6 @@ export default function Course_handwritting() {
                 <p className="lead coursePara">Unlock confidence and brain development through better handwriting.</p>
             </header>
 
-            {/* Benefits Section */}
             <section className="mb-5">
                 <h2 className="text-primary">Why Good Handwriting Matters</h2>
                 <ul className="list-group list-group-flush">
@@ -145,7 +131,6 @@ export default function Course_handwritting() {
                 </ul>
             </section>
 
-            {/* Features Section */}
             <section className="mb-5">
                 <h2 className="text-primary">Course Features</h2>
                 <ul className="list-group list-group-flush">
@@ -155,7 +140,6 @@ export default function Course_handwritting() {
                 </ul>
             </section>
 
-            {/* Call to Action Section */}
             <div className="text-center">
                 <h2 className="text-primary">Ready to Improve Your Handwriting?</h2>
                 <p>Join Winaum Learning today and discover the joy of writing confidently and creatively!</p>

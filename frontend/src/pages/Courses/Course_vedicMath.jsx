@@ -9,61 +9,48 @@ import { BACKEND_URL } from '../../utils';
 import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 
 export default function Course_vedicMath() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, courses } = useAuth();
     const navigate = useNavigate();
-
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [loading, setLoading] = useState(true);
+    const courseTitle = "Vedic Math";
 
     useEffect(() => {
-        const fetchEnrollmentStatus = async () => {
-            if (!isAuthenticated) {
-                setLoading(false)
-                return;
-            }
+        console.log("Courses from useAuth:", courses);
+        if (!isAuthenticated || !courses || courses.length === 0) {
+            setLoading(false);
+            return;
+        }
 
+        const fetchEnrollmentStatus = async () => {
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
                     console.error('No valid student found in localStorage.');
+                    setLoading(false);
                     return;
                 }
 
-                const studentId = student._id;
-                const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-
-                console.log("Stored Courses:", storedCourses);
-
-                const courseTitle = "vedic math".toLowerCase().trim(); // Normalized title
-
-                const matchedCourse = storedCourses.find(course =>
-                    course.courseTitle?.toLowerCase().trim() === courseTitle
+                const matchedCourse = courses.find(course => 
+                    course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
                 );
-
+                
                 if (!matchedCourse) {
-                    console.error(`Course "${courseTitle}" not found in localStorage.`);
+                    console.error('Course not found in useAuth.courses');
+                    setLoading(false);
                     return;
                 }
-
-                const courseId = matchedCourse._id;
-                console.log("Matched Course ID:", courseId);
-
-                // Fetch enrolled courses for the student
+                console.log("Matched Course:", matchedCourse);
+                
                 const response = await axios.get(
-                    `${BACKEND_URL}/api/enrollcourse/enrolled/${studentId}`,
-                    {
-                        headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
-                    }
+                    `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
+                    { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
                 );
 
                 const enrolledCourses = response.data || [];
-                console.log(" Enrolled Courses:", enrolledCourses);
-
-                // Ensure proper comparison
-                const alreadyEnrolled = enrolledCourses.some(enrolledCourse =>
-                    enrolledCourse.courseId?._id === courseId || enrolledCourse.courseId === courseId
+                const alreadyEnrolled = enrolledCourses.some(enrolledCourse => 
+                    enrolledCourse.courseId?._id === matchedCourse._id
                 );
-
                 setIsEnrolled(alreadyEnrolled);
             } catch (error) {
                 console.error("Error checking enrollment status:", error);
@@ -73,7 +60,7 @@ export default function Course_vedicMath() {
         };
 
         fetchEnrollmentStatus();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, courses]);
 
     const handleEnroll = async () => {
         if (!isAuthenticated) {
@@ -93,14 +80,15 @@ export default function Course_vedicMath() {
                 return;
             }
 
-            const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-            const courseTitle = "vedic math".toLowerCase().trim(); 
-
-            const matchedCourse = storedCourses.find(course =>
-                course.courseTitle?.toLowerCase().trim() === courseTitle
+            const matchedCourse = courses.find(course => 
+                course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
             );
-
-
+            
+            if (!matchedCourse) {
+                toast.error("Course not found.");
+                return;
+            }
+            
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
                 {
@@ -115,7 +103,7 @@ export default function Course_vedicMath() {
 
             if (response.data.message === 'Enrollment successful') {
                 toast.success("Enrollment request submitted! Visit our center to complete payment.");
-                navigate('/feesForm');
+                // navigate('/feesForm');
             }
         } catch (error) {
             console.error('Enrollment error:', error);

@@ -64,11 +64,11 @@ const Header = () => {
                                 Home
                             </button>
                         </Link>
-                        <Link to="/profile" className="dropdown-item text-decoration-none">
+                        {/* <Link to="/profile" className="dropdown-item text-decoration-none">
                             <button className="btn btn-link text-decoration-none dashHeaderBtn w-50">
                                 Profile
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
                 )}
             </div>

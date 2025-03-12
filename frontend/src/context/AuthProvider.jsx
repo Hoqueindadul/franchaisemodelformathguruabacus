@@ -13,10 +13,10 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const [courses, setCourses] = useState([]);
-    const [students, setStudents] = useState([]); // ✅ Ensure students is part of the context
+    const [students, setStudents] = useState([]);
+    const [enrolledCourses, setEnrolledCourses] = useState([]); // New state for enrolled courses
     const logoutTimer = useRef(null);
     const inactivityTimer = useRef(null);
-
     // Check authentication status
     const checkAuthStatus = useCallback(() => {
         const token = localStorage.getItem("jwt");
@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
             setUserRole(null);
             setCourses([]);
             setStudents([]);
+            setEnrolledCourses([]);
         }
     }, []);
 
@@ -51,8 +52,10 @@ export const AuthProvider = ({ children }) => {
     const fetchCourses = useCallback(async () => {
         try {
             const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
-            if (response.data && Array.isArray(response.data.courses)) {
+            if (response.data?.courses && Array.isArray(response.data.courses)) {
                 setCourses(response.data.courses);
+            } else {
+                console.error("Invalid course data format:", response.data);
             }
         } catch (error) {
             console.error("Fetch Courses Error:", error);
@@ -74,6 +77,40 @@ export const AuthProvider = ({ children }) => {
             setStudents([]);
         }
     }, []);
+
+    // Fetch enrolled courses for the logged-in user
+    const fetchEnrolledCourses = useCallback(async () => {
+        const token = localStorage.getItem("jwt");
+    
+        if (!token) {
+            setEnrolledCourses([]);
+            return;
+        }
+    
+        try {
+            const decoded = jwtDecode(token); // Extract user info from JWT
+            const userId = decoded.id; // Ensure this matches the backend user ID field
+    
+            if (!userId) {
+                console.error("User ID missing from token.");
+                setEnrolledCourses([]);
+                return;
+            }
+    
+            const response = await axios.get(`${BACKEND_URL}/api/enrollment/user-courses/${userId}`);
+            
+            if (Array.isArray(response.data)) {
+                setEnrolledCourses(response.data);
+            } else {
+                console.error("Invalid enrolled courses data format:", response.data);
+                setEnrolledCourses([]);
+            }
+        } catch (error) {
+            console.error("Fetch Enrolled Courses Error:", error);
+            setEnrolledCourses([]);
+        }
+    }, []);
+     
 
     // Delete student
     const deleteStudent = async (studentId) => {
@@ -133,8 +170,9 @@ export const AuthProvider = ({ children }) => {
         if (isAuthenticated) {
             fetchCourses();
             fetchAllStudents();
+            fetchEnrolledCourses(); // Fetch enrolled courses when authenticated
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, fetchCourses, fetchAllStudents, fetchEnrolledCourses]);
 
     // Login function
     const login = (token, student) => {
@@ -147,6 +185,7 @@ export const AuthProvider = ({ children }) => {
             setUserRole(student.role);
             fetchCourses();
             fetchAllStudents();
+            fetchEnrolledCourses(); // Fetch enrolled courses on login
             setAutoLogout(decoded.exp - Date.now() / 1000);
             startInactivityTimer();
         } catch (error) {
@@ -163,6 +202,7 @@ export const AuthProvider = ({ children }) => {
         setUserRole(null);
         setCourses([]);
         setStudents([]);
+        setEnrolledCourses([]);
         clearInactivityListeners();
 
         if (logoutTimer.current) clearTimeout(logoutTimer.current);
@@ -170,7 +210,19 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userRole, students, login, logout, fetchCourses, courses, fetchAllStudents, deleteStudent }}>
+        <AuthContext.Provider value={{ 
+            isAuthenticated, 
+            userRole, 
+            students, 
+            courses, 
+            enrolledCourses, // Provide enrolled courses to the context
+            login, 
+            logout, 
+            fetchCourses, 
+            fetchAllStudents, 
+            fetchEnrolledCourses, 
+            deleteStudent 
+        }}>
             {children}
         </AuthContext.Provider>
     );

@@ -41,14 +41,25 @@ export default function Register() {
       return;
     }
 
+    // Ensure phone number is exactly 10 digits
+    const cleanedPhone = formData.phone.replace(/\D/g, ""); // Remove non-numeric characters
+    if (cleanedPhone.length !== 10) {
+      toast.error("Phone number must be exactly 10 digits.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      console.log("Sending request with:", formData); //Log request data
-      const response = await axios.post(`${BACKEND_URL}/api/users/register`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${BACKEND_URL}/api/users/register`,
+        { ...formData, phone: cleanedPhone },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
       toast.success(response.data.message || "User registered successfully.");
       localStorage.setItem("firstName", formData.firstName);

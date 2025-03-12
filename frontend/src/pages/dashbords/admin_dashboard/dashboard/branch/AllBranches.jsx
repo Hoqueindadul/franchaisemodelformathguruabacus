@@ -3,6 +3,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { LOCAL_BACKEND_URL } from "../../../../../local_backend_url";
+import { BACKEND_URL } from '../../../../../utils';
 
 export default function AllBranches() {
     const [branches, setBranches] = useState([]);
@@ -18,7 +19,7 @@ export default function AllBranches() {
     const fetchBranches = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get(`${LOCAL_BACKEND_URL}/api/branches/allbranches`);
+            const response = await axios.get(`${BACKEND_URL}/api/branches/allbranches`);
             setBranches(response.data.data);
         } catch (error) {
             setError("Failed to load branches.");
@@ -33,7 +34,7 @@ export default function AllBranches() {
         if (!window.confirm("Are you sure you want to delete this branch?")) return;
 
         try {
-            await axios.delete(`${LOCAL_BACKEND_URL}/api/branches/deletebranch/${branchId}`);
+            await axios.delete(`${BACKEND_URL}/api/branches/deletebranch/${branchId}`);
             setBranches(prev => prev.filter(branch => branch._id !== branchId));
             toast.success("Branch deleted successfully!");
         } catch (error) {
@@ -61,7 +62,7 @@ export default function AllBranches() {
         e.preventDefault();
         try {
             const response = await axios.put(
-                `${LOCAL_BACKEND_URL}/api/branches/updatebranch/${editBranch._id}`,
+                `${BACKEND_URL}/api/branches/updatebranch/${editBranch._id}`,
                 editForm
             );
             setBranches(prev =>

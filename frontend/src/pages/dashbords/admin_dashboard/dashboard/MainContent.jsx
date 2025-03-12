@@ -29,7 +29,7 @@ const TotalStudents = () => {
     useEffect(() => {
         const fetchTotalStudents = async () => {
             try {
-                const response = await axios.get(`${LOCAL_BACKEND_URL}/api/admission/getAllAdmitedStudents`);
+                const response = await axios.get(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
                 setTotalStudents(response.data.length);
             } catch (error) {
                 console.error("Error fetching total students count:", error);

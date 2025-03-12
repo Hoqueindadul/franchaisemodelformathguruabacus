@@ -60,6 +60,7 @@ function App() {
     "/dashboard",
     "/student-dashboard",
     "/franchise-dashboard",
+    "/admin-dashboard",
     "/register",
     "/login",
     "/franchise-registraion",
@@ -127,7 +128,7 @@ function App() {
                   <AdminDashboard />
                 ) : userRole === "franchise" ? (
                   <Navigate to="/franchise-dashboard" replace />
-                ) : userRole === "Student or Parent" ? (
+                ) : userRole === "student" ? (
                   <Navigate to="/student-dashboard" replace />
                 ) : (
                   <Navigate to="/login" replace />
@@ -150,6 +151,15 @@ function App() {
             element={
               <ProtectedRoute>
                 {userRole === "franchise" ? <FranchiseDashboard /> : <Navigate to="/dashboard" replace />}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin-dashboard"
+            element={
+              <ProtectedRoute>
+                {userRole === "admin" ? <AdminDashboard /> : <Navigate to="/dashboard" replace />}
               </ProtectedRoute>
             }
           />

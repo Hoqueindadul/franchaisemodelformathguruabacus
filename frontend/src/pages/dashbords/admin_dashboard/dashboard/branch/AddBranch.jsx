@@ -44,7 +44,7 @@ export default function AddBranch() {
         try {
             console.log("Submitting FormData:", formData); // Debugging: Check data before sending
 
-            const response = await axios.post(`${LOCAL_BACKEND_URL}/api/branches/addbranch`, formData, {
+            const response = await axios.post(`${BACKEND_URL}/api/branches/addbranch`, formData, {
                 headers: { "Content-Type": "application/json" },
             });
             toast.success("Branch added successfully!");
