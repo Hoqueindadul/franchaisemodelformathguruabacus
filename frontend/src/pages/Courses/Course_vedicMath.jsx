@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 import { BACKEND_URL } from '../../utils';
-import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 
 export default function Course_vedicMath() {
     const { isAuthenticated, courses } = useAuth();
@@ -16,7 +14,6 @@ export default function Course_vedicMath() {
     const courseTitle = "Vedic Math";
 
     useEffect(() => {
-        console.log("Courses from useAuth:", courses);
         if (!isAuthenticated || !courses || courses.length === 0) {
             setLoading(false);
             return;
@@ -24,15 +21,21 @@ export default function Course_vedicMath() {
 
         const fetchEnrollmentStatus = async () => {
             try {
-                const student = JSON.parse(localStorage.getItem('student'));
-                if (!student || !student._id) {
+                const studentData = localStorage.getItem('student');
+                if (!studentData) {
                     console.error('No valid student found in localStorage.');
                     setLoading(false);
                     return;
                 }
+                const student = JSON.parse(studentData);
+                if (!student._id) {
+                    console.error('Invalid student data.');
+                    setLoading(false);
+                    return;
+                }
 
-                const matchedCourse = courses.find(course => 
-                    course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+                const matchedCourse = courses?.find(course => 
+                    course?.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
                 );
                 
                 if (!matchedCourse) {
@@ -40,7 +43,6 @@ export default function Course_vedicMath() {
                     setLoading(false);
                     return;
                 }
-                console.log("Matched Course:", matchedCourse);
                 
                 const response = await axios.get(
                     `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
@@ -53,7 +55,7 @@ export default function Course_vedicMath() {
                 );
                 setIsEnrolled(alreadyEnrolled);
             } catch (error) {
-                console.error("Error checking enrollment status:", error);
+                console.error("Error checking enrollment status:", error.response?.data || error);
             } finally {
                 setLoading(false);
             }
@@ -74,39 +76,49 @@ export default function Course_vedicMath() {
         }
 
         try {
-            const student = JSON.parse(localStorage.getItem('student'));
-            if (!student || !student._id) {
+            const studentData = localStorage.getItem('student');
+            if (!studentData) {
                 toast.error("Student data missing. Please log in again.");
                 return;
             }
+            const student = JSON.parse(studentData);
+            if (!student._id) {
+                toast.error("Invalid student data. Please log in again.");
+                return;
+            }
 
-            const matchedCourse = courses.find(course => 
-                course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
+            const matchedCourse = courses?.find(course => 
+                course?.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
             );
             
             if (!matchedCourse) {
                 toast.error("Course not found.");
                 return;
             }
-            
+
+            const requestBody = {
+                studentId: student._id || null,
+                courseId: matchedCourse?._id || null,
+                courseTitle: matchedCourse?.courseTitle || null,
+            };
+
+            if (!requestBody.studentId || !requestBody.courseId || !requestBody.courseTitle) {
+                toast.error("Enrollment request failed. Missing required fields.");
+                return;
+            }
+
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
-                {
-                    studentId: student._id,
-                    courseId: matchedCourse._id,
-                    paymentMethod: 'Offline'
-                },
-                {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
-                }
+                requestBody,
+                { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
             );
 
             if (response.data.message === 'Enrollment successful') {
                 toast.success("Enrollment request submitted! Visit our center to complete payment.");
-                // navigate('/feesForm');
+                setIsEnrolled(true);
             }
         } catch (error) {
-            console.error('Enrollment error:', error);
+            console.error('Enrollment error:', error.response?.data || error);
             toast.error(error.response?.data?.message || 'Enrollment failed.');
         }
     };

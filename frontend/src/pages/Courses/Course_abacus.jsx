@@ -13,7 +13,7 @@ const CoursePage = () => {
     const courseTitle = "Abacus";
 
     useEffect(() => {
-        console.log("Courses from useAuth:", courses);
+
         if (!isAuthenticated || !courses || courses.length === 0) {
             setLoading(false);
             return;
@@ -23,7 +23,6 @@ const CoursePage = () => {
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
-                    console.error('No valid student found in localStorage.');
                     setLoading(false);
                     return;
                 }
@@ -33,12 +32,10 @@ const CoursePage = () => {
                 );
                 
                 if (!matchedCourse) {
-                    console.error('Course not found in useAuth.courses');
                     setLoading(false);
                     return;
                 }
-                console.log("Matched Course:", matchedCourse);
-                
+
                 const response = await axios.get(
                     `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
                     { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
@@ -48,6 +45,7 @@ const CoursePage = () => {
                 const alreadyEnrolled = enrolledCourses.some(enrolledCourse => 
                     enrolledCourse.courseId?._id === matchedCourse._id
                 );
+                
                 setIsEnrolled(alreadyEnrolled);
             } catch (error) {
                 console.error("Error checking enrollment status:", error);
@@ -57,57 +55,62 @@ const CoursePage = () => {
         };
 
         fetchEnrollmentStatus();
-    }, [isAuthenticated, courses]);
+    }, [isAuthenticated, courses]); // Dependencies: only run when authentication or courses change.
 
     const handleEnroll = async () => {
-        if (!isAuthenticated) {
-            toast.error("Please log in to enroll.");
-            return navigate('/login');
-        }
-
-        if (isEnrolled) {
-            toast.error("You are already enrolled in this course.");
-            return;
-        }
-
         try {
             const student = JSON.parse(localStorage.getItem('student'));
+
             if (!student || !student._id) {
-                toast.error("Student data missing. Please log in again.");
+                toast.error("Student data is missing. Please log in again.");
                 return;
             }
 
-            const matchedCourse = courses.find(course => 
+            const matchedCourse = courses.find(course =>
                 course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
             );
-            
-            if (!matchedCourse) {
+
+            if (!matchedCourse || !matchedCourse._id) {
                 toast.error("Course not found.");
                 return;
             }
-            
+
+            const requestBody = {
+                studentId: student._id || null,
+                courseId: matchedCourse._id || null,
+                courseTitle: matchedCourse.courseTitle || null,
+            };
+
+            console.log(" Enrollment Request Body:", requestBody);
+
+            // Prevent request if any required field is missing
+            if (!requestBody.studentId || !requestBody.courseId || !requestBody.courseTitle) {
+                toast.error("Enrollment request failed. Missing required fields.");
+                return;
+            }
+
+            console.log("Sending Enrollment Request:", requestBody);
+
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
-                {
-                    studentId: student._id,
-                    courseId: matchedCourse._id,
-                    paymentMethod: 'Offline'
-                },
+                requestBody,
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
                 }
             );
 
+            console.log("Enrollment Response:", response.data);
+
             if (response.data.message === 'Enrollment successful') {
                 toast.success("Enrollment request submitted! Visit our center to complete payment.");
-                navigate('/feesForm');
+                setIsEnrolled(true); 
             }
+
         } catch (error) {
-            console.error('Enrollment error:', error);
+            console.error("Enrollment Error:", error.response?.data || error);
             toast.error(error.response?.data?.message || 'Enrollment failed.');
         }
     };
-
     return (
         <div className="container abacusCourse mt-5">
             <header className="text-center courseHeader mb-5">

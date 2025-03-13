@@ -9,10 +9,10 @@ const router = express.Router();
 // Create Enrollment
 export const enroll = async (req, res) => {
     try {
-        const { studentId, courseId, paymentMethod, paymentStatus } = req.body;
+        const { studentId, courseId, courseTitle} = req.body;
 
         // Validate required fields
-        if (!studentId || !courseId || !paymentMethod) {
+        if (!studentId || !courseId || !courseTitle) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -28,23 +28,19 @@ export const enroll = async (req, res) => {
             return res.status(404).json({ message: 'Course not found' });
         }
 
-        // Ensure payment status is valid
-        const validStatuses = ['Pending', 'Completed', 'Failed'];
-        if (paymentStatus && !validStatuses.includes(paymentStatus)) {
-            return res.status(400).json({ message: 'Invalid payment status' });
-        }
+       
 
         // Default payment status to 'Pending' if not provided
         const enrollment = new Enrollments({
             studentId,
             courseId,
-            paymentMethod,
-            paymentStatus: paymentStatus || 'Pending'
+            courseTitle
         });
 
         await enrollment.save();
         res.status(201).json({ message: 'Enrollment successful', enrollment });
     } catch (error) {
+        console.error(error)
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import { BACKEND_URL } from '../../../../utils';
 
 export default function EnrolledCourses() {
     const [enrolledCourses, setEnrolledCourses] = useState([]);
-    const [totalEnrollments, setTotalEnrollments] = useState(0);
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchAllEnrolledCourses = async () => {
+        const fetchStudentEnrollments = async () => {
             try {
+                // Get logged-in student from localStorage
+                const student = JSON.parse(localStorage.getItem("student"));
+
+                if (!student || !student._id) {
+                    setError("Student data is missing. Please log in again.");
+                    return;
+                }
+
+                // Fetch only enrollments of the logged-in student
                 const response = await axios.get(
-                    `${BACKEND_URL}/api/enrollcourse/allenrolledcourse`
+                    `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+                    }
                 );
 
                 console.log("Fetched Enrollments:", response.data);
 
-                if (Array.isArray(response.data)) {
+                if (Array.isArray(response.data) && response.data.length > 0) {
                     setEnrolledCourses(response.data);
-                    setTotalEnrollments(response.data.length);
                 } else {
-                    setError("API did not return an array.");
+                    setEnrolledCourses([]); // No enrollments for this student
                 }
             } catch (error) {
                 setError("Failed to fetch enrolled courses.");
@@ -31,7 +40,7 @@ export default function EnrolledCourses() {
             }
         };
 
-        fetchAllEnrolledCourses();
+        fetchStudentEnrollments();
     }, []);
 
     const handlePayment = (courseId) => {
@@ -41,7 +50,7 @@ export default function EnrolledCourses() {
     return (
         <div className="container mt-4">
             <h2 className="mb-4">My Enrolled Courses</h2>
-            <p>Total Enrollments: {totalEnrollments}</p>
+            
             {error && <p className="text-danger">{error}</p>}
 
             {enrolledCourses.length > 0 ? (
@@ -51,8 +60,6 @@ export default function EnrolledCourses() {
                             <tr>
                                 <th>#</th>
                                 <th>Course Name</th>
-                                <th>Student Name</th>
-                                <th>Email</th>
                                 <th>Enrollment Date</th>
                                 <th>Action</th>
                             </tr>
@@ -61,9 +68,7 @@ export default function EnrolledCourses() {
                             {enrolledCourses.map((enrollment, index) => (
                                 <tr key={enrollment._id}>
                                     <td>{index + 1}</td>
-                                    <td>{enrollment.courseId?.courseTitle || "N/A"}</td>
-                                    <td>{`${enrollment.studentId?.firstName || "N/A"} ${enrollment.studentId?.lastName || ""}`}</td>
-                                    <td>{enrollment.studentId?.email || "N/A"}</td>
+                                    <td>{enrollment.courseTitle || "N/A"}</td>
                                     <td>{new Date(enrollment.enrolledAt).toLocaleDateString()}</td>
                                     <td>
                                         <button 
@@ -79,9 +84,8 @@ export default function EnrolledCourses() {
                     </table>
                 </div>
             ) : (
-                <p>No enrollments available.</p>
+                <p>No enrolled courses found.</p>
             )}
         </div>
     );
 }
-

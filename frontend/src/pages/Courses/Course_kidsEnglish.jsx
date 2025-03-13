@@ -16,7 +16,6 @@ const Course_kidsEnglish = () => {
     const courseTitle = "Kids English";
 
     useEffect(() => {
-        console.log("Courses from useAuth:", courses);
         if (!isAuthenticated || !courses || courses.length === 0) {
             setLoading(false);
             return;
@@ -24,9 +23,16 @@ const Course_kidsEnglish = () => {
 
         const fetchEnrollmentStatus = async () => {
             try {
-                const student = JSON.parse(localStorage.getItem("student"));
-                if (!student || !student._id) {
-                    console.error("No valid student found in localStorage.");
+                const studentData = localStorage.getItem("student");
+                if (!studentData) {
+                    console.error("No student data found in localStorage.");
+                    setLoading(false);
+                    return;
+                }
+                
+                const student = JSON.parse(studentData);
+                if (!student._id) {
+                    console.error("Invalid student data.");
                     setLoading(false);
                     return;
                 }
@@ -40,7 +46,6 @@ const Course_kidsEnglish = () => {
                     setLoading(false);
                     return;
                 }
-                console.log("Matched Course:", matchedCourse);
                 
                 const response = await axios.get(
                     `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
@@ -48,10 +53,9 @@ const Course_kidsEnglish = () => {
                 );
 
                 const enrolledCourses = response.data || [];
-                const alreadyEnrolled = enrolledCourses.some(enrolledCourse => 
+                setIsEnrolled(enrolledCourses.some(enrolledCourse => 
                     enrolledCourse.courseId?._id === matchedCourse._id
-                );
-                setIsEnrolled(alreadyEnrolled);
+                ));
             } catch (error) {
                 console.error("Error checking enrollment status:", error);
             } finally {
@@ -74,9 +78,15 @@ const Course_kidsEnglish = () => {
         }
 
         try {
-            const student = JSON.parse(localStorage.getItem("student"));
-            if (!student || !student._id) {
+            const studentData = localStorage.getItem("student");
+            if (!studentData) {
                 toast.error("Student data missing. Please log in again.");
+                return;
+            }
+
+            const student = JSON.parse(studentData);
+            if (!student._id) {
+                toast.error("Invalid student data.");
                 return;
             }
 
@@ -94,7 +104,7 @@ const Course_kidsEnglish = () => {
                 {
                     studentId: student._id,
                     courseId: matchedCourse._id,
-                    paymentMethod: "Offline"
+                    courseTitle: matchedCourse.courseTitle,
                 },
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }

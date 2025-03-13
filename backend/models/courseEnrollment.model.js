@@ -3,27 +3,25 @@ import mongoose from 'mongoose';
 const enrollmentSchema = new mongoose.Schema({
     studentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "students"
+        ref: "students",
+        required: true // Ensures studentId is always provided
     },
     courseId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "courses"
+        ref: "courses",
+        required: true // Ensures courseId is always provided
     },
-    paymentStatus: {
+    courseTitle: {
         type: String,
-        enum: ['Pending', 'Completed', 'Failed'],
-        default: 'Pending'
-    },
-    paymentMethod: {
-        type: String,
-        required: true
+        required: true,
+        trim: true // Removes extra spaces
     },
     enrolledAt: {
         type: Date,
         default: Date.now
     }
-});
+}, { timestamps: true }); // Adds createdAt & updatedAt fields automatically
 
-const Enrollments = mongoose.model("enrollments", enrollmentSchema);
+const Enrollments = mongoose.model("Enrollments", enrollmentSchema);
 
 export default Enrollments;

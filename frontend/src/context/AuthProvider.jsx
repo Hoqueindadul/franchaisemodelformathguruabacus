@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
         inactivityTimer.current = setTimeout(() => {
             logout();
             alert("Logged out due to inactivity.");
-        }, 5 * 60 * 1000);
+        }, 10 * 60 * 1000); // 10 min
     };
 
     // Remove inactivity listeners on logout
@@ -211,6 +211,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ 
+            setIsAuthenticated,
             isAuthenticated, 
             userRole, 
             students, 

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { BACKEND_URL } from '../../utils';
-import { LOCAL_BACKEND_URL } from '../../local_backend_url';
 
 export default function Course_handwriting() {
     const { isAuthenticated, courses } = useAuth();
@@ -15,7 +14,6 @@ export default function Course_handwriting() {
     const courseTitle = "Handwritting";
 
     useEffect(() => {
-        console.log("Courses from useAuth:", courses);
         if (!isAuthenticated || !courses || courses.length === 0) {
             setLoading(false);
             return;
@@ -25,7 +23,6 @@ export default function Course_handwriting() {
             try {
                 const student = JSON.parse(localStorage.getItem('student'));
                 if (!student || !student._id) {
-                    console.error('No valid student found in localStorage.');
                     setLoading(false);
                     return;
                 }
@@ -35,12 +32,10 @@ export default function Course_handwriting() {
                 );
                 
                 if (!matchedCourse) {
-                    console.error('Course not found in useAuth.courses');
                     setLoading(false);
                     return;
                 }
-                console.log("Matched Course:", matchedCourse);
-                
+
                 const response = await axios.get(
                     `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
                     { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
@@ -50,6 +45,7 @@ export default function Course_handwriting() {
                 const alreadyEnrolled = enrolledCourses.some(enrolledCourse => 
                     enrolledCourse.courseId?._id === matchedCourse._id
                 );
+                
                 setIsEnrolled(alreadyEnrolled);
             } catch (error) {
                 console.error("Error checking enrollment status:", error);
@@ -82,27 +78,27 @@ export default function Course_handwriting() {
             const matchedCourse = courses.find(course => 
                 course.courseTitle?.toLowerCase().trim() === courseTitle.toLowerCase().trim()
             );
-            
+
             if (!matchedCourse) {
                 toast.error("Course not found.");
                 return;
             }
-            
+
+            const requestBody = {
+                studentId: student._id,
+                courseId: matchedCourse._id,
+                courseTitle: matchedCourse.courseTitle,
+            };
+
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
-                {
-                    studentId: student._id,
-                    courseId: matchedCourse._id,
-                    paymentMethod: 'Offline'
-                },
-                {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
-                }
+                requestBody,
+                { headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` } }
             );
 
             if (response.data.message === 'Enrollment successful') {
                 toast.success("Enrollment request submitted! Visit our center to complete payment.");
-                // navigate('/feesForm');
+                setIsEnrolled(true);
             }
         } catch (error) {
             console.error('Enrollment error:', error);
