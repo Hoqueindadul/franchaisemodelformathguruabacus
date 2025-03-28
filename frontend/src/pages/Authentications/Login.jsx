@@ -110,7 +110,7 @@ export default function Login() {
                                     </div>
 
                                     {/* Password Input */}
-                                    <div className="mb-24">
+                                    <div className="mb-24 mt-3">
                                         <input
                                             type="password"
                                             className="form-control p_lg p-3"
@@ -126,7 +126,7 @@ export default function Login() {
                                     {/* Submit Button */}
                                     <button
                                         type="submit"
-                                        className="b-unstyle educate-btn w-100 mb-24"
+                                        className="b-unstyle educate-btn w-100 mb-24 mt-3"
                                         disabled={isLoading}
                                     >
                                         {isLoading ? (

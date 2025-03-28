@@ -43,6 +43,9 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Login = lazy(() => import("./pages/Authentications/Login"));
 const Register = lazy(() => import("./pages/Authentications/Register"));
 
+// Product pages
+
+const ProductDetails = lazy(() => import("./pages/productPages/ProductDetails"))
 // Payment
 const FeeForm = lazy(() => import("./pages/feesCollection/FeeForm"));
 const PaymentPage = lazy(() => import("./pages/payments/PaymentPage"));
@@ -110,6 +113,11 @@ function App() {
           <Route path="/abacus" element={<CourseAbacus />} />
           <Route path="/hand-writing" element={<CourseHandwriting />} />
           <Route path="/kids-english" element={<CourseKidsEnglish />} />
+
+          {/* Product */}
+          <Route path="/productDetails/:productName/:productImage/:price" element={<ProductDetails />} />
+
+
 
           {/* Payment */}
           <Route path="/payment" element={<PaymentPage />} />

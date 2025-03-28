@@ -7,14 +7,15 @@ import { LOCAL_BACKEND_URL } from '../local_backend_url';
 import toast from 'react-hot-toast';
 import { motion } from "framer-motion";
 import { Carousel } from "react-bootstrap";
+import { FaBoxOpen} from "react-icons/fa";
+
 
 const products = [
-    { id: 1, name: "Counting Tool", image: "./material-1.jpg" },
-    { id: 2, name: "Bag", image: "./material-2.jpg" },
-    { id: 3, name: "T-shirt", image: "./material-3.jpeg" },
-    { id: 4, name: "Watch", image: "./material-4.jpeg" },
+    { id: 1, name: "Counting Tool", image: "/material-1.jpg", price: 299 },
+    { id: 2, name: "Bag", image: "/material-2.jpg", price: 499 },
+    { id: 3, name: "T-shirt", image: "/material-3.jpeg", price: 399 },
+    { id: 4, name: "Watch", image: "/material-4.jpeg", price: 599 },
 ];
-
 function Home() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
@@ -38,10 +39,10 @@ function Home() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSending(true);
-    
+
         try {
-            console.log("Submitting Data:", formData); 
-    
+            console.log("Submitting Data:", formData);
+
             const response = await axios.get(
                 `${BACKEND_URL}/api/users/sendWhatsappMessage`,
                 {
@@ -53,16 +54,16 @@ function Home() {
                     withCredentials: true,
                 }
             );
-    
-            console.log("Server Response:", response.data); 
-    
+
+            console.log("Server Response:", response.data);
+
             // Check success inside the 'response' object
             if (response.data.response.success) {
                 toast.success("WhatsApp message sent successfully!");
                 setFormData({ program: "", name: "", phone: "" });
                 window.scrollTo(0, 0);
             } else {
-                console.log("Unexpected Response:", response.data); 
+                console.log("Unexpected Response:", response.data);
                 toast.error("Failed to send WhatsApp message");
             }
         } catch (error) {
@@ -72,7 +73,7 @@ function Home() {
             setIsSending(false);
         }
     };
-    
+
 
     return (
         <>
@@ -113,13 +114,13 @@ function Home() {
                                 )}
                                 <div className="another-item mt-3 d-flex align-items-center justify-content-center text-center">
                                     <div className="item1 mt-3">
-                                         <p><span className='count'>4+</span><br/> Courses</p>
+                                        <p><span className='count'>4+</span><br /> Courses</p>
                                     </div>
                                     <div className="item1 mt-3">
-                                    <p><span className='count'>10+ </span><br/>Trainer</p>
+                                        <p><span className='count'>10+ </span><br />Trainer</p>
                                     </div>
                                     <div className="item1 mt-3">
-                                         <p><span className='count'>50+</span><br/>Learning Module</p>
+                                        <p><span className='count'>50+</span><br />Learning Module</p>
                                     </div>
                                 </div>
                             </div>
@@ -336,37 +337,45 @@ function Home() {
 
 
             {/* Product sliding section start */}
-            <div className="slider-container">
-                <div className="slider_tittle text-center p-4">
-                    <span className="slider_section_tittle"> Buy Our Products</span>
-                    <p className="line"></p>
+            <div className="container my-4">
+                <div className="text-center p-3">
+                    <h2>Buy Our Products</h2>
+                    <hr className="mx-auto w-25" />
                 </div>
 
-                <motion.div
-                    className="slider"
-                    animate={{
-                        x: isPaused ? 0 : ["0%", "-100%"], // If paused, keep at 0%
-                    }}
-                    transition={{
-                        repeat: Infinity,
-                        duration: 25, // Increased duration for slower speed
-                        ease: "linear", // Ensures smooth continuous flow
-                    }}
-                    onMouseEnter={() => setIsPaused(true)} // Stop animation when mouse enters
-                    onMouseLeave={() => setIsPaused(false)} // Resume animation when mouse leaves
-                >
-                    {products.map((product) => (
-                        <div className="product-card" key={product.id}>
-                            <h6 className="text-center mt-2">{product.name}</h6>
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                className="product-image"
-                            />
-                            <Link to="/buymaterials"><button className="order-btn">Order Now</button></Link>
+                <div className="slider-wrapper">
+                    <div className="slider-container">
+                        <div className="slide-track d-flex">
+                            {products.map((product) => (
+                                <div key={product.id} className="product-card" style={{ width: "250px", height: "350px" }}>
+                                    <div className="card text-center border-0 shadow-sm" style={{ width: "100%", height: "100%" }}>
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="card-img-top p-3"
+                                            style={{ height: "200px", objectFit: "cover" }}
+                                        />
+                                        <div className="card-body">
+                                            <div className="productTitle d-flex justify-content-between">
+                                                <h6 className="card-title mb-0">{product.name}</h6>
+                                                <p className="text-primary fw-bold mb-0"> ₹{product.price}</p>
+                                            </div>
+
+                                            <Link
+                                                to={`/productDetails/${encodeURIComponent(product.name)}/${encodeURIComponent(product.image)}/${product.price}`}
+                                                className="btn btn-primary d-flex align-items-center justify-content-center"
+                                            >
+                                                <span style={{ fontSize: "1rem" }}>
+                                                    <FaBoxOpen className="me-2" />
+                                                </span>See Details
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </motion.div>
+                    </div>
+                </div>
             </div>
             {/* Product sliding section end*/}
         </>
@@ -374,3 +383,4 @@ function Home() {
 }
 
 export default Home;
+

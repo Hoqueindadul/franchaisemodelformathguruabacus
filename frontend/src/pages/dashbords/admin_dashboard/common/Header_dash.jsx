@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     const toggleDropdown = (e) => {
@@ -25,10 +26,31 @@ const Header = () => {
         };
     }, []);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/search?query=${searchQuery}`);
+        }
+    };
+
     return (
-        <header className="main-header d-flex justify-content-between align-items-center px-3 py-2">
+        <header className="main-header d-flex align-items-center px-3 py-2 flex-wrap">
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="search-bar d-flex align-items-center mx-auto flex-grow-1" style={{ maxWidth: '300px' }}>
+                <input
+                    type="text"
+                    className="form-control searchField w-100"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button type="submit" className="btn btn-primary ms-2">
+                    <FaSearch />
+                </button>
+            </form>
+
             {/* Right Section */}
-            <div className="header-actions d-flex align-items-center ms-auto position-relative dropdown-container">
+            <div className="header-actions d-flex align-items-center ms-auto position-relative dropdown-container mt-2 mt-md-0">
                 {/* Profile Image - Click anywhere inside to open dropdown */}
                 <div 
                     className="user-profile ms-3 rounded-circle bg-warning d-flex align-items-center justify-content-center"
@@ -60,12 +82,12 @@ const Header = () => {
                         }}
                     >
                         <Link to="/" className="dropdown-item text-decoration-none">
-                            <button className="btn btn-link text-decoration-none dashHeaderBtn w-50">
+                            <button className="btn btn-link text-decoration-none dashHeaderBtn w-100">
                                 Home
                             </button>
                         </Link>
                         <Link to="/profile" className="dropdown-item text-decoration-none">
-                            <button className="btn btn-link text-decoration-none dashHeaderBtn w-50">
+                            <button className="btn btn-link text-decoration-none dashHeaderBtn w-100">
                                 Profile
                             </button>
                         </Link>

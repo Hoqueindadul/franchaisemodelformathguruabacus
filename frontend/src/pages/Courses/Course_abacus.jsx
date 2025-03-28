@@ -336,7 +336,7 @@ const CoursePage = () => {
             <div className="text-center">
                 <h2 className="text-primary">Ready to Improve Your Math Skills?</h2>
                 <p>Join Winaum Learning today and discover the joy of mathematics!</p>
-                <Link to="/dashboard">
+                <Link>
                     <button
                         className="btn handwrittingBtn btn-lg"
                         onClick={handleEnroll}

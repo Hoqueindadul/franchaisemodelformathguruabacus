@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineAddCircle } from "react-icons/md";
+import { AiFillProduct } from "react-icons/ai";
+
 import { PiStudentBold } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
 import {
@@ -86,6 +88,16 @@ const Sidebar = ({ setActiveTab }) => {
                     >
                         <FaThLarge className="sidebarIcon" />
                         <span>Dashboard</span>
+                    </div>
+
+                    {/* Upload Product Section */}
+                    <div
+                        className="sidebartab"
+                        onClick={() => handleTabClick("allproduct")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <MdOutlineAddCircle className="sidebarIcon" />
+                        <span>Upload Product</span>
                     </div>
 
                     {/* Branch Section */}

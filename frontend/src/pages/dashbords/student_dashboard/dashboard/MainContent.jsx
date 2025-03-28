@@ -8,6 +8,10 @@ import { useAuth } from "../../../../context/AuthProvider";
 
 // Lazy-loaded components
 const Mycourses = lazy(() => import("./Mycourses"));
+const Downloads = lazy(() => import("./Downloads"));
+const FeesHistory = lazy(() => import("./FeesHistory"));
+const StudyMatOrder = lazy(() => import("./StudyMatOrder"));
+const OrderHistory = lazy(() => import("./OrderHistory"));
 
 const MainContent = () => {
     const [activeTab, setActiveTab] = useState("dashboard");
@@ -187,6 +191,14 @@ const MainContent = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {/* Lazy Loaded Tabs */}
+            <Suspense fallback={<Spinner animation="border" variant="primary" className="d-block mx-auto my-5" />}>
+                {activeTab === "downloads" && <Downloads />}
+                {activeTab === "paymentHistory" && <FeesHistory />}
+                {activeTab === "studymatOrder" && <StudyMatOrder />}
+                {activeTab === "orderHistory" && <OrderHistory />}
+            </Suspense>
         </div>
     );
 };

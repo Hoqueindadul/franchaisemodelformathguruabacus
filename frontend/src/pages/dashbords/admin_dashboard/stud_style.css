@@ -91,7 +91,29 @@ body {
     width: 8vw;
 }
 
+.dashHeaderBtn{
+    margin-left: 0;
+}
 
+@media (max-width: 1024px) and (min-width: 1008px) {
+    .search-bar {
+        margin-left: 18rem !important;
+    }
+}
+@media (max-width: 375px){
+    .search-bar{
+        max-width: 248px !important;
+        background-color: gray;
+        margin-left: 34px !important;
+    }
+}
+@media (max-width: 320px){
+    .search-bar{
+        max-width: 197px !important;
+        background-color: gray;
+        margin-left: 34px !important;
+    }
+}
 /* Sidebar start */
 .sidebar {
     width: var(--sidebar-width);
@@ -548,3 +570,15 @@ td {
 
   
 /* Students form and table design end */
+
+
+
+
+.modal-content {
+    width: 500px !important;
+    text-align: start !important;
+}
+.productUploadbtn{
+    position: relative;
+    margin: 0 auto  0;
+}

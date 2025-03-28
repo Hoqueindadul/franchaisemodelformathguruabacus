@@ -20,7 +20,8 @@ const EnrolledStudents = lazy(() => import("./EnrolledStudents"));
 const AddStaff = lazy(() => import("./staffSubTab/AddStaff"));
 const AllStaff = lazy(() => import("./staffSubTab/AllStaff"));
 const AddBranch = lazy(() => import("./branch/AddBranch"));
-const AllBranches = lazy(() => import("./branch/AllBranches"));
+const AllBranches = lazy(() => import("./branch/AllBranches")); 
+const AllProducts = lazy(() => import("./products/AllProducts"));
 
 // Lazy-loaded student count
 const TotalStudents = () => {
@@ -259,6 +260,7 @@ const MainContent = () => {
                     {activeTab === "allstaff" && <AllStaff />}
                     {activeTab === "addbranch" && <AddBranch />}
                     {activeTab === "allbranches" && <AllBranches />}
+                    {activeTab === "allproduct" && <AllProducts />}
                 </Suspense>
             </div>
 
