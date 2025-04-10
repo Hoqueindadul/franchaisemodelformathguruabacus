@@ -1,25 +1,42 @@
 import { Link } from 'react-router-dom';
 import { GoPeople } from "react-icons/go";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import { BACKEND_URL } from '../utils.js';
 import { LOCAL_BACKEND_URL } from '../local_backend_url';
 import toast from 'react-hot-toast';
 import { motion } from "framer-motion";
 import { Carousel } from "react-bootstrap";
-import { FaBoxOpen} from "react-icons/fa";
+import { FaBoxOpen } from "react-icons/fa";
 
 
-const products = [
-    { id: 1, name: "Counting Tool", image: "/material-1.jpg", price: 299 },
-    { id: 2, name: "Bag", image: "/material-2.jpg", price: 499 },
-    { id: 3, name: "T-shirt", image: "/material-3.jpeg", price: 399 },
-    { id: 4, name: "Watch", image: "/material-4.jpeg", price: 599 },
-];
 function Home() {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-    const duplicatedProducts = [...products, ...products];
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/products/getAllProducts`);
+                if (Array.isArray(response.data)) {
+                    setProducts(response.data);
+                } else if (Array.isArray(response.data.products)) {
+                    setProducts(response.data.products);
+                } else {
+                    console.error("Unexpected API response:", response.data);
+                }
+                console.log(products)
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                toast.error("Failed to load products");
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     const handleImageClick = () => {
         setIsPlaying(true); // Show the video and hide the image
@@ -337,46 +354,60 @@ function Home() {
 
 
             {/* Product sliding section start */}
-            <div className="container my-4">
-                <div className="text-center p-3">
-                    <h2>Buy Our Products</h2>
-                    <hr className="mx-auto w-25" />
-                </div>
+<div className="container my-4">
+    <div className="text-center p-3">
+        <h2>Buy Our Products</h2>
+        <hr className="mx-auto w-25" />
+    </div>
 
-                <div className="slider-wrapper">
-                    <div className="slider-container">
-                        <div className="slide-track d-flex">
-                            {products.map((product) => (
-                                <div key={product.id} className="product-card" style={{ width: "250px", height: "350px" }}>
-                                    <div className="card text-center border-0 shadow-sm" style={{ width: "100%", height: "100%" }}>
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="card-img-top p-3"
-                                            style={{ height: "200px", objectFit: "cover" }}
-                                        />
-                                        <div className="card-body">
-                                            <div className="productTitle d-flex justify-content-between">
-                                                <h6 className="card-title mb-0">{product.name}</h6>
-                                                <p className="text-primary fw-bold mb-0"> ₹{product.price}</p>
-                                            </div>
+    {isLoading ? (
+        <p className="text-center">Loading products...</p>
+    ) : (
+        <div className="slider-wrapper">
+            <div className="slider-container">
+                <div className="slide-track d-flex">
+                    {products.map((product) => (
+                        <div key={product._id} className="product-card" style={{ width: "250px", height: "350px" }}>
+                            <div className="card text-center border-0 shadow-sm" style={{ width: "100%", height: "100%" }}>
+                                
+                                {/* Extract first image from array */}
+                                {product.image.length > 0 && (
+                                    <img
+                                        src={product.image[0].url} 
+                                        alt={product.name} 
+                                        className="card-img-top p-3"
+                                        style={{ height: "200px", objectFit: "cover" }}
+                                    />
+                                )}
 
-                                            <Link
-                                                to={`/productDetails/${encodeURIComponent(product.name)}/${encodeURIComponent(product.image)}/${product.price}`}
-                                                className="btn btn-primary d-flex align-items-center justify-content-center"
-                                            >
-                                                <span style={{ fontSize: "1rem" }}>
-                                                    <FaBoxOpen className="me-2" />
-                                                </span>See Details
-                                            </Link>
-                                        </div>
+                                <div className="card-body">
+                                    <div className="productTitle d-flex justify-content-between">
+                                        {/* Use `product.name` instead of `product.title` */}
+                                        <h6 className="card-title mb-0">{product.name}</h6>
+                                        
                                     </div>
+                                    <p className="text-primary fw-bold mb-0 text-start"> ₹{product.price}</p>
+
+                                    {/* Encode image URL properly */}
+                                    <Link
+                                        to={`/productDetails/${encodeURIComponent(product.name)}/${encodeURIComponent(product.image[0].url)}/${product.price}`}
+                                        className="btn btn-primary d-flex align-items-center justify-content-center"
+                                    >
+                                        <span style={{ fontSize: "1rem" }}>
+                                            <FaBoxOpen className="me-2" />
+                                        </span>
+                                        See Details
+                                    </Link>
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
+        </div>
+    )}
+</div>
+
             {/* Product sliding section end*/}
         </>
     );

@@ -49,6 +49,8 @@ const ProductDetails = lazy(() => import("./pages/productPages/ProductDetails"))
 // Payment
 const FeeForm = lazy(() => import("./pages/feesCollection/FeeForm"));
 const PaymentPage = lazy(() => import("./pages/payments/PaymentPage"));
+const PlaceOrder = lazy(() => import("./pages/PlaceOrder"))
+const ProductPaymentForm = lazy(() => import("./pages/feesCollection/ProductPaymentForm"))
 
 // Dashboard
 const AdminDashboard = lazy(() => import("./pages/dashbords/admin_dashboard/Admin-dashboard"));
@@ -116,12 +118,15 @@ function App() {
 
           {/* Product */}
           <Route path="/productDetails/:productName/:productImage/:price" element={<ProductDetails />} />
+          <Route path="/productDetails" element={<ProductDetails />} />
 
 
 
           {/* Payment */}
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/feesForm" element={<FeeForm />} />
+          <Route path="/placeOrder" element={<PlaceOrder />} />
+          <Route path="/productPaymentForm" element={<ProductPaymentForm />} />
 
           {/* Authentication */}
           <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />

@@ -91,7 +91,7 @@ export default function StudentAdmission() {
         try {
             console.log("Submitting FormData:", formData); // Debugging: Check data before sending
 
-            const response = await axios.post("http://localhost:4000/api/admission/studentAdmission", formData, {
+            const response = await axios.post(`${BACKEND_URL}/api/admission/studentAdmission`, formData, {
                 headers: { "Content-Type": "application/json" },
             });
             toast.success("Student admitted successfully!");

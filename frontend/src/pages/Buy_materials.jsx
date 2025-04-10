@@ -4,98 +4,146 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import toast from 'react-hot-toast';
+import axios from "axios";
+import { FaBoxOpen } from "react-icons/fa";
+import { useAuth } from '../context/AuthProvider';
+import { BACKEND_URL } from "../utils.js";
 
 export default function BuyMaterials() {
-  const [cart, setCart] = useState([]); // Use state to track cart
-  const navigate = useNavigate();
+    const [cart, setCart] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCart(savedCart); // Load cart from localStorage
-  }, []);
+    // Fetch products from backend
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/products/getAllProducts`);
+                if (Array.isArray(response.data)) {
+                    setProducts(response.data);
+                } else if (Array.isArray(response.data.products)) {
+                    setProducts(response.data.products);
+                } else {
+                    console.error("Unexpected API response:", response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                toast.error("Failed to load products");
+            } finally {
+                setIsLoading(false)
+            }
+        };
 
-  const products = [
-    {
-      id: 1,
-      title: "Abacus",
-      image: "../material-1.jpg",
-      price: 500,
-      description:
-        "This is a longer card with supporting text below as a natural lead-in to additional content.",
-    },
-    {
-      id: 2,
-      title: "Bag",
-      image: "../material-2.jpg",
-      price: 300,
-      description:
-        "This is a longer card with supporting text below as a natural lead-in to additional content.",
-    },
-    {
-      id: 3,
-      title: "T-shirt",
-      image: "../material-3.jpeg",
-      price: 700,
-      description:
-        "This is a longer card with supporting text below as a natural lead-in to additional content.",
-    },
-    {
-      id: 4,
-      title: "Watch",
-      image: "../material-4.jpeg",
-      price: 1200,
-      description:
-        "This is a longer card with supporting text below as a natural lead-in to additional content.",
-    },
-  ];
+        fetchProducts();
+    }, []);
 
-  const addToCart = (product) => {
-    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingItem = savedCart.find((item) => item.id === product.id);
+    // Load cart from localStorage
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCart(savedCart);
+    }, []);
 
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      savedCart.push({ ...product, quantity: 1 });
-    }
+    // Add to cart logic
+    const addToCart = (product) => {
 
-    localStorage.setItem("cart", JSON.stringify(savedCart));
-    setCart(savedCart); // Update cart state
-    toast.success(`${product.title} added to your cart!`);
-  };
+        if (!isAuthenticated) {
+            alert("Please login to add items to your cart.");
+            navigate("/login");
+            return;
+        }
 
-  // Function to check if the item is in the cart
-  const isItemInCart = (productId) => {
-    return cart.some((item) => item.id === productId); // Use state for checking if item is in cart
-  };
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  return (
-    <div className="container buymaterialMain">
-      <Link to="/cart"><button className="yourCart float-end">Your Cart</button></Link>
-      <Row xs={1} md={2} xl={3} className="g-4">
-        {products.map((product) => (
-          <Col key={product.id}>
-            <Card className="card">
-              <Card.Img variant="top" className="card-image" src={product.image} />
-              <Card.Body>
-                <Card.Title>{product.title}</Card.Title>
-                <Card.Text>{product.description}</Card.Text>
-                <div className="d-flex justify-content-between align-items-center">
-                  <span>₹{product.price}</span>
-                  <button
-                    className="btn addtocart"
-                    onClick={() => addToCart(product)}
-                    disabled={isItemInCart(product.id)} // Disable button if item is in the cart
-                  >
-                    {isItemInCart(product.id) ? "Already in Cart" : "Add to Cart"}
-                  </button>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </div>
-  );
+        const existingItem = cart.find(item => item.name === product.name);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: product._id,
+                name: product.name,
+                image: product.image[0].url,
+                price: product.price,
+                quantity: 1,
+                color: product.color || "silver"  // Default/fallback color
+            });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        setCart(cart); // Update state to trigger re-render
+        toast.success(`${product.name} added to cart!`);
+    };
+
+    const isItemInCart = (productId) => {
+        return cart.some((item) => item.id === productId);
+    };
+
+    const handleBuyNow = (product) => {
+        localStorage.removeItem("cart"); // Optional: Prevent conflict
+        localStorage.setItem("buyNowProduct", JSON.stringify({ ...product, quantity: 1 }));
+        navigate("/placeOrder");
+    };
+
+    return (
+        <div className="container buymaterialMain py-4">
+            {isLoading ? (
+                <div className="text-center">Loading products...</div>
+            ) : (
+                <Row xs={1} md={2} xl={3} className="g-4">
+                    {products.map((product) => (
+                        <Col key={product._id}>
+                            <Card className="text-center border-0 shadow-sm" style={{ width: "100%", height: "100%" }}>
+                                {product.image.length > 0 && (
+                                    <Card.Img
+                                        variant="top"
+                                        src={product.image[0].url}
+                                        alt={product.name}
+                                        className="p-3"
+                                        style={{
+                                            height: "180px",
+                                            width: "100%",
+                                            objectFit: "contain",
+                                            borderRadius: "10px",
+                                        }}
+                                    />
+                                )}
+                                <Card.Body>
+                                    <div className="productTitle d-flex justify-content-between">
+                                        <Link
+                                            to={`/productDetails/${encodeURIComponent(product.name)}/${encodeURIComponent(product.image[0].url)}/${product.price}`}
+                                            style={{ textDecoration: 'none', color: 'blue' }}
+                                        >
+                                            <Card.Title as="h6" className="mb-0">{product.name}</Card.Title>
+                                        </Link>
+
+                                    </div>
+                                    <p className="text-primary fw-bold mb-2 text-start text-black">₹{product.price}</p>
+
+
+                                    <button
+                                        onClick={() => addToCart(product)}
+                                        className="btn cartBtn btn-outline-primary btn-sm mb-2"
+                                    >
+                                        <FaBoxOpen className="me-2" />
+                                        Add to Cart
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleBuyNow(product)}
+                                        className="btn cartBtn btn-primary btn-sm w-100"
+                                    >
+                                        Buy Now
+                                    </button>
+
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+            )}
+        </div>
+    );
 }

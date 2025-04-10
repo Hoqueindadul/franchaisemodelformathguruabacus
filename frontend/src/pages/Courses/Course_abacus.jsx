@@ -81,7 +81,6 @@ const CoursePage = () => {
                 courseTitle: matchedCourse.courseTitle || null,
             };
 
-            console.log(" Enrollment Request Body:", requestBody);
 
             // Prevent request if any required field is missing
             if (!requestBody.studentId || !requestBody.courseId || !requestBody.courseTitle) {
@@ -89,7 +88,6 @@ const CoursePage = () => {
                 return;
             }
 
-            console.log("Sending Enrollment Request:", requestBody);
 
             const response = await axios.post(
                 `${BACKEND_URL}/api/enrollcourse/enroll`,
@@ -99,7 +97,6 @@ const CoursePage = () => {
                 }
             );
 
-            console.log("Enrollment Response:", response.data);
 
             if (response.data.message === 'Enrollment successful') {
                 toast.success("Enrollment request submitted! Visit our center to complete payment.");

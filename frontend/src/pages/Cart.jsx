@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { FaCartArrowDown } from "react-icons/fa";
-
+import { FaTrash, FaHeart, FaMinus, FaPlus, FaCartArrowDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 
 export default function Cart() {
     const [cart, setCart] = useState([]);
+    const [showDeliveryTime, setShowDeliveryTime] = useState(true)
 
     // Load cart from localStorage on mount
     useEffect(() => {
+        localStorage.removeItem("buyNowProduct"); // Clear Buy Now product
         const savedCart = JSON.parse(localStorage.getItem("cart"));
         if (savedCart) {
             setCart(savedCart);
         }
     }, []);
+    
 
     // Save cart to localStorage whenever it changes
     useEffect(() => {
         if (cart.length > 0) {
             localStorage.setItem("cart", JSON.stringify(cart));
+            setShowDeliveryTime(true)
         } else {
             localStorage.removeItem("cart");
+            setShowDeliveryTime(false)
         }
     }, [cart]);
 
@@ -35,112 +36,137 @@ export default function Cart() {
                         ? { ...item, quantity: Math.max(1, item.quantity + increment) }
                         : item
                 )
-                .filter((item) => item.quantity > 0) // Ensure no item has 0 quantity
+                .filter((item) => item.quantity > 0)
         );
     };
 
-    // Remove item from cart
+    // Remove item
     const removeItem = (id) => {
-        setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+        const updatedCart = cart.filter((item) => item.id !== id);
+        setCart(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
     };
 
-    // Calculate total price
-    const totalPrice = cart.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-    );
+    const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
         <div className="container my-4">
-            <h2 className="cartTittle"> <span>Your</span>Cart <FaCartArrowDown className="fs-2 cartIcon"/></h2>
-            <div className="tittleBorder"></div>
-            {cart.length === 0 ? (
-                <div className="text-center my-5">
-                    <h4>Your cart is empty!</h4>
-                    <p>Add items to your cart to see them here.</p>
-                    <Link to="/buymaterials" className="btn btn-primary">
-                        Go to Materials
-                    </Link>
-                </div>
-            ) : (
-                <Row className="addToCartContainter">
-                    {/* Left side: Cart items */}
-                    <Col md={8}>
-                        <Row xs={1} md={2} xl={3} className="g-4">
-                            {cart.map((item) => (
-                                <Col key={item.id}>
-                                    <Card className="card">
-                                        <Card.Img
-                                            variant="top"
-                                            className="card-image"
-                                            src={item.image}
-                                        />
-                                        <Card.Body>
-                                            <Card.Title>{item.title}</Card.Title>
-                                            <Card.Text>
-                                                Price: ₹{item.price} <br />
-                                                Quantity: {item.quantity}
-                                            </Card.Text>
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                {/* Quantity and Remove Button */}
-                                                <div className="d-flex align-items-center ">
-                                                    <button
-                                                        className="btn btn-sm removeItem ms-1"
-                                                        onClick={() => removeItem(item.id)}
-                                                    >
-                                                        Remove
-                                                    </button>
-                                                    {/* Decrease Quantity Button */}
-                                                    <button
-                                                        className="btn btn-sm btn-secondary me-2"
-                                                        onClick={() => updateQuantity(item.id, -1)}
-                                                        disabled={item.quantity === 1}
-                                                    >
-                                                        -
-                                                    </button>
-                                                    <span>{item.quantity}</span>
-                                                    {/* Increase Quantity Button */}
-                                                    <button
-                                                        className="btn btn-sm btn-secondary ms-2"
-                                                        onClick={() => updateQuantity(item.id, 1)}
-                                                    >
-                                                        +
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
-                    </Col>
+            <h2 className="cartTittle">
+                <FaCartArrowDown className="fs-2 cartIcon" /> <span>Your</span> Cart
+            </h2>
 
-                    {/* Right side: Order Summary */}
-                    <Col md={4}>
-                        <div className="p-3 border rounded">
-                            <h5>Order Summary</h5>
-                            {cart.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="d-flex justify-content-between mb-2"
-                                >
-                                    <div>
-                                        <strong>{item.title}</strong>
-                                        <br />
-                                        <small>₹{item.price}</small>
-                                    </div>
-                                    <div className="d-flex align-items-center">
-                                        <span>{item.quantity}</span>
-                                    </div>
+            <section className="h-100 gradient-custom">
+                <div className="container">
+                    <div className="row d-flex my-4">
+                        <div className="col-md-8">
+                            <div className="card cartCard mb-4">
+                                <div className="card-header py-3">
+                                    <h5 className="mb-0">Cart - {cart.length} item(s)</h5>
                                 </div>
-                            ))}
-                            <hr />
-                            <h5>Total: ₹{totalPrice}</h5>
-                            <button className="btn orderNow w-100 mt-3">Order Now</button>
+                                <div className="card-body">
+                                    {cart.length === 0 ? (
+                                        <p>Your cart is empty.</p>
+                                    ) : (
+                                        cart.map((item, index) => (
+                                            <div key={item.id}>
+                                                <div className="row">
+                                                    <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                                        <img
+                                                            src={item.image}
+                                                            className="w-100"
+                                                            alt={item.name}
+                                                        />
+                                                    </div>
+
+                                                    <div className="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                                        <p><strong>{item.name}</strong></p>
+                                                        <p>Color: {item.color}</p>
+                                                        {item.size && <p>Size: {item.size}</p>}
+                                                        <button
+                                                            className="btn cartBtn btn-primary btn-sm me-1 mb-2"
+                                                            onClick={() => removeItem(item.id)}
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                        <button className="btn cartBtn btn-danger btn-sm mb-2">
+                                                            <FaHeart />
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                                                        <div className="d-flex align-items-center mb-4" style={{ maxWidth: 300 }}>
+                                                            <button
+                                                                className="btn cartBtn btn-primary px-3 me-2"
+                                                                onClick={() => updateQuantity(item.id, -1)}
+                                                            >
+                                                                <FaMinus />
+                                                            </button>
+                                                            <input
+                                                                readOnly
+                                                                value={item.quantity}
+                                                                type="number"
+                                                                className="form-control text-center"
+                                                                style={{ width: "60px" }}
+                                                            />
+                                                            <button
+                                                                className="btn cartBtn btn-primary px-3 ms-2"
+                                                                onClick={() => updateQuantity(item.id, 1)}
+                                                            >
+                                                                <FaPlus />
+                                                            </button>
+                                                        </div>
+                                                        <p className="text-start text-md-center">
+                                                            <strong>₹{item.price}</strong>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                {index < cart.length - 1 && <hr className="my-4" />}
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+
+                            {showDeliveryTime && (<div className="card cartCard mb-4">
+                                <div className="card-body">
+                                    <p><strong>Expected shipping delivery</strong></p>
+                                    <p className="mb-0">3 - 5 business days</p>
+                                </div>
+                            </div>)}
                         </div>
-                    </Col>
-                </Row>
-            )}
+
+                        {/* Summary Section */}
+                        <div className="col-md-4">
+                            <div className="card cartCard mb-4">
+                                <div className="card-header py-3">
+                                    <h5 className="mb-0">Summary</h5>
+                                </div>
+                                <div className="card-body">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item d-flex justify-content-between border-0 pb-0">
+                                            Products
+                                            <span>₹{totalPrice.toFixed(2)}</span>
+                                        </li>
+                                        <li className="list-group-item d-flex justify-content-between">
+                                            Shipping
+                                            <span>Free</span>
+                                        </li>
+                                        <li className="list-group-item d-flex justify-content-between border-0">
+                                            <div>
+                                                <strong>Total (incl. tax)</strong>
+                                            </div>
+                                            <span><strong>₹{totalPrice.toFixed(2)}</strong></span>
+                                        </li>
+                                    </ul>
+                                    <Link to={"/placeOrder"}><button className="btn cartBtn btn-primary btn-lg w-100 mt-3">
+                                        Place Order
+                                    </button></Link> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

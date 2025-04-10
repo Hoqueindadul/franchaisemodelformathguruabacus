@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthProvider';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { FaFacebook, FaYoutube, FaUserCircle } from "react-icons/fa";
+import { FaFacebook, FaYoutube, FaUserCircle, FaShoppingCart } from "react-icons/fa";
 import Header from './Header';
 import toast from 'react-hot-toast';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -61,25 +61,25 @@ function NavBar() {
                     {/* Right Column with Social Icons */}
                     <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2">
                         <div className="icons">
-                            <a
-                                href="https://www.facebook.com/profile.php?id=61566500032820"
+                            <Link to="https://www.facebook.com/profile.php?id=61566500032820"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="iconimage me-2"
                             >
                                 <FaFacebook className="header-social-icon facebook" />
-                            </a>
-                            <a
-                                href="https://www.youtube.com/@mathguruabacusho"
+                            </Link>
+                            <Link to="https://www.youtube.com/@mathguruabacusho"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="iconimage"
                             >
                                 <FaYoutube className="header-social-icon youtube" />
-                            </a>
+                            </Link>
+                            <Link to="/cart"><FaShoppingCart className='addToCartBtn'/></Link>
+                        
                         </div>
                     </div>
-
+                    
                     {/* User Dropdown */}
                     <div className="col-6 col-md-1 d-flex justify-content-end order-4">
                         <div className="login-btn">

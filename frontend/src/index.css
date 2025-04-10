@@ -81,6 +81,34 @@ body {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+
+.addToCartBtn {
+    font-size: 2rem;
+    color: blue;
+    background-color: white;
+    border-radius: 50%;
+    margin: auto 0;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: visible;
+}
+.cartBtn{
+    margin-left: 0 !important;
+}
+@media (max-width: 768px) {
+    .addToCartContainer {
+        width: 40px;
+        height: 40px;
+    }
+    .addToCartIcon {
+        font-size: 1.4rem;
+    }
+}
+
+
+
+
+
 .login-btn {
     text-align: center;
 }
@@ -1182,6 +1210,9 @@ section h2 {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.cartCard:hover{
+    transform: none !important;
+}
 
 /* Course pages design end */
 
