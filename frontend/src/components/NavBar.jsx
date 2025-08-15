@@ -1,184 +1,203 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthProvider';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { FaFacebook, FaYoutube, FaUserCircle, FaShoppingCart } from "react-icons/fa";
-import Header from './Header';
+import {
+    FaFacebook,
+    FaYoutube,
+    FaEnvelope,
+    FaMapMarkerAlt,
+    FaShoppingCart,
+    FaUser
+} from 'react-icons/fa';
+import { Container, Navbar, Nav, Button, NavDropdown, Dropdown } from 'react-bootstrap';
 import toast from 'react-hot-toast';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import OffcanvasMenu from './Offcanvusmenubar';
 
 function NavBar() {
     const { isAuthenticated, logout } = useAuth();
-    const [firstInitial, setFirstInitial] = useState(""); // 🔹 Store first letter of first name
-    const [dropdownStates, setDropdownStates] = useState({});
-    const location = useLocation();
+    const [firstInitial, setFirstInitial] = useState('');
+    const [username, setUsername] = useState('User');
+    const [hoveredDropdown, setHoveredDropdown] = useState(null);
     const navigate = useNavigate();
 
-    // Fetch first name from localStorage and extract first letter
     useEffect(() => {
         const storedStudent = JSON.parse(localStorage.getItem("student"));
-        if (storedStudent && storedStudent.firstName) {
-            setFirstInitial(storedStudent.firstName.charAt(0).toUpperCase()); // 🔹 Get first letter and capitalize it
+        if (storedStudent?.firstName) {
+            const initial = storedStudent.firstName.charAt(0).toUpperCase();
+            setFirstInitial(initial);
+            setUsername(initial); // only first capital letter
         } else {
-            setFirstInitial("U"); // Default to 'U' (for "User") if no name is found
+            setFirstInitial('U');
+            setUsername('U');
         }
     }, []);
 
-    const handleLogout = async () => {
+
+
+    const handleLogout = () => {
         logout();
         toast.success("Logout Successfully");
-        setTimeout(() => {
-            navigate("/login");
-        }, 2000);
-    };
-
-    const handleDashboard = () => {
-        navigate("/dashboard");
+        setTimeout(() => navigate("/login"), 2000);
     };
 
     return (
         <>
-            <div className="container-fluid">
-                <div className="row pt-0 py-3 py-md-2 py-sm-1 top-header align-items-center">
-                    {/* Left Column with Phone Number */}
-                    <div className="col-12 col-md-4 d-flex justify-content-center justify-content-md-start align-items-center mb-2 mb-md-0">
-                        <div className="phoneNumber text-nowrap text-center text-md-start">
-                            <h6 className="mb-0 text-item">
-                                Need Franchise? <span className='franchiseText'>+91 9735 2338 08</span>
-                            </h6>
-                        </div>
+            {/* Top Info Bar */}
+            <div className="bg-info text-white py-2 d-none d-md-block">
+                <Container className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center gap-4">
+                        <span><FaMapMarkerAlt className="me-1 text-white" /> 6391 Elgin St. Celina, USA</span>
+                        <span><FaEnvelope className="me-1 text-white" /> info@example.com</span>
                     </div>
+                    <div className="d-flex align-items-center gap-3 text-white">
+                        <span className="me-1">Follow Us On:</span>
+                        <Link to="https://www.facebook.com/profile.php?id=61566500032820"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="iconimage me-2"
+                        >
+                            <FaFacebook className="header-social-icon facebook" />
+                        </Link>
+                        <Link to="https://www.youtube.com/@mathguruabacusho"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="iconimage"
+                        >
+                            <FaYoutube className="header-social-icon youtube" />
+                        </Link>
 
-                    {/* Center Column with Heading */}
-                    <div className="col-12 col-md-5 text-center mb-2 mb-md-0">
-                        <h5 className="heading-tagline mb-0 text-wrap">
-                            🎉 Get Ready for the Abacus Mega Competition! 🎉
-                        </h5>
                     </div>
-
-                    {/* Right Column with Social Icons */}
-                    <div className="col-6 col-md-2 d-flex justify-content-center align-items-center order-3 order-md-2">
-                        <div className="icons">
-                            <Link to="https://www.facebook.com/profile.php?id=61566500032820"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="iconimage me-2"
-                            >
-                                <FaFacebook className="header-social-icon facebook" />
-                            </Link>
-                            <Link to="https://www.youtube.com/@mathguruabacusho"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="iconimage"
-                            >
-                                <FaYoutube className="header-social-icon youtube" />
-                            </Link>
-                            <Link to="/cart"><FaShoppingCart className='addToCartBtn'/></Link>
-                        
-                        </div>
-                    </div>
-                    
-                    {/* User Dropdown */}
-                    <div className="col-6 col-md-1 d-flex justify-content-end order-4">
-                        <div className="login-btn">
-                            {isAuthenticated ? (
-                                <NavDropdown
-                                    title={
-                                        <span>
-                                            <FaUserCircle className="me-2" />
-                                            {firstInitial} {/* 🔹 Show only the first letter */}
-                                        </span>
-                                    }
-                                    id="user-dropdown"
-                                    className="z-5"
-                                    align="end"
-                                    data-bs-display="static"
-                                >
-                                    <NavDropdown.Item onClick={handleDashboard}>Dashboard</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                                </NavDropdown>
-                            ) : (
-                                <Link to="/login">
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary fw-semibold login"
-                                    >
-                                        Login
-                                    </button>
-                                </Link>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                </Container>
             </div>
 
-            {location.pathname === '/' && <Header />}
+            {/* Main Navbar */}
+            <Navbar expand="lg" bg="white" className="shadow-sm">
+                <Container>
+                    <Navbar.Brand as={Link} to="/">
+                        <img
+                            src="https://i.ibb.co/bmN4W3k/logo.png"
+                            alt="Logo"
+                            style={{ height: '40px' }}
+                            className="me-2"
+                        />
+                        <span className="fw-bold fs-4 text-primary d-none d-sm-inline">Kidsa</span>
+                    </Navbar.Brand>
 
-            <div className="mainabar navbar-container">
-                <Navbar expand="xl" className="navbar-custom bg-warning">
-                    <Container fluid>
-                        <Navbar.Toggle aria-controls="navbarScroll" className="ms-auto" />
-                        <Navbar.Collapse id="navbarScroll">
-                            <Nav className="me-auto my-2 my-lg-0 navi" navbarScroll>
-                                <Nav.Link as={Link} to="/" className="active mainNavbar">Home</Nav.Link>
-                                <Nav.Link as={Link} to="/about" className="mainNavbar">About Us</Nav.Link>
-                                <Nav.Link as={Link} to="/whatwedo" className="mainNavbar">What we do</Nav.Link>
+                    {/* Removed default Bootstrap hamburger */}
 
-                                {/* Courses Dropdown */}
-                                <NavDropdown
-                                    title="Courses"
-                                    className="mainNavbar"
-                                    id="navbarScrollingDropdown"
-                                    show={dropdownStates["courses"]}
-                                    onMouseEnter={() => toggleDropdown("courses", true)}
-                                    onMouseLeave={() => toggleDropdown("courses", false)}
+                    <Navbar.Collapse id="main-navbar">
+                        <Nav className="mx-auto">
+                            <Nav.Link as={Link} to="/" className='me-4'>Home</Nav.Link>
+                            <Nav.Link as={Link} className='me-4' to="/about">About Us</Nav.Link>
+                            <Nav.Link as={Link} to="/courses" className='me-4'>Courses</Nav.Link>
+
+                            <NavDropdown
+                                title="Franchise"
+                                id="pages-dropdown"
+                                className='me-4'
+                                show={hoveredDropdown === "pages"}
+                                onMouseEnter={() => setHoveredDropdown("pages")}
+                                onMouseLeave={() => setHoveredDropdown(null)}
+                            >
+                                <NavDropdown.Item>Benifit</NavDropdown.Item>
+                                <NavDropdown.Item>Criteria</NavDropdown.Item>
+                                <NavDropdown.Item>Registration</NavDropdown.Item>
+                            </NavDropdown>
+
+                            <NavDropdown
+                                title="Trainer"
+                                id="blog-dropdown"
+                                className='me-4'
+                                show={hoveredDropdown === "blog"}
+                                onMouseEnter={() => setHoveredDropdown("blog")}
+                                onMouseLeave={() => setHoveredDropdown(null)}
+                            >
+                                <NavDropdown.Item>Become a Trainer</NavDropdown.Item>
+                                <NavDropdown.Item>Our Certified Trainer</NavDropdown.Item>
+                            </NavDropdown>
+
+                            <Nav.Link as={Link} className='me-4' to="/studymaterials">Study materials</Nav.Link>
+                            <Nav.Link as={Link} className='me-4' to="/contact">Contact Us</Nav.Link>
+                        </Nav>
+                        <Link to="/cart"><FaShoppingCart className='addToCartBtn' /></Link>
+                        {/* Desktop Right Side */}
+                        {!isAuthenticated ? (
+                            <div className='d-flex item-center'>
+
+                                <Button
+                                    as={Link}
+                                    to="/login"
+                                    variant="primary"
+                                    className="rounded-pill fw-bold ms-3 d-none d-lg-block loginBtn"
                                 >
-                                    <NavDropdown.Item as={Link} to="/abacus">Abacus</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/kids-english">Kids English</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/vedicmath">Vedic Math</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/hand-writing">Handwriting</NavDropdown.Item>
-                                </NavDropdown>
+                                    Login
+                                </Button>
 
-                                <Nav.Link as={Link} to="/studycenter" className="mainNavbar">Study Center</Nav.Link>
+                            </div>
 
-                                {/* Franchise Dropdown */}
-                                <NavDropdown
-                                    title="Franchise"
-                                    className="mainNavbar"
-                                    id="navbarScrollingDropdown"
-                                    show={dropdownStates["franchise"]}
-                                    onMouseEnter={() => toggleDropdown("franchise", true)}
-                                    onMouseLeave={() => toggleDropdown("franchise", false)}
+                        ) : (
+                            <Dropdown className="ms-3 d-none d-lg-block">
+                                <Dropdown.Toggle
+                                    variant="primary"
+                                    id="dropdown-user"
+                                    className="rounded-pill fw-bold"
+                                    style={{ padding: '6px 14px', border: 'none', position: 'relative', right: '70px' }}
                                 >
-                                    <NavDropdown.Item as={Link} to="/benifit">Benefit</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/criteria">Criteria</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/franchise-registraion">Registration</NavDropdown.Item>
-                                </NavDropdown>
+                                    {username.charAt(0).toUpperCase()}
+                                </Dropdown.Toggle>
 
-                                <Nav.Link as={Link} to="/school-tieup" className="mainNavbar">School Tie-up</Nav.Link>
+                                <Dropdown.Menu align="end">
+                                    <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        )}
+                    </Navbar.Collapse>
 
-                                {/* Trainer Dropdown */}
-                                <NavDropdown
-                                    title="Trainer"
-                                    className="mainNavbar"
-                                    id="navbarScrollingDropdown"
-                                    show={dropdownStates["trainer"]}
-                                    onMouseEnter={() => toggleDropdown("trainer", true)}
-                                    onMouseLeave={() => toggleDropdown("trainer", false)}
+                    {/* Mobile User Section */}
+                    <div className="d-lg-none d-flex align-items-center gap-2 ms-auto position-relative right-3">
+                        <Link to="/cart"><FaShoppingCart className='addToCartBtn d-none' /></Link>
+                        {!isAuthenticated ? (
+                            <div className='d-flex item-center'>
+                                <Link to="/cart"><FaShoppingCart className='addToCartBtn' /></Link>
+                                <Button
+                                    as={Link}
+                                    to="/login"
+                                    variant="primary"
+                                    className="rounded-pill fw-bold loginBtn mr-2 mr-md-0"
+                                    style={{ fontSize: '14px', padding: '6px 14px' }}
                                 >
-                                    <NavDropdown.Item as={Link} to="/become-trainer">Become a Trainer</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/trainers">Our Certified Trainer</NavDropdown.Item>
-                                </NavDropdown>
+                                    Login
+                                </Button>
 
-                                <Nav.Link as={Link} to="/buymaterials" className="mainNavbar">Buy Materials</Nav.Link>
-                                <Nav.Link as={Link} to="/contact" className="mainNavbar">Contact us</Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Container>
-                </Navbar>
-            </div>
+
+                            </div>
+
+
+                        ) : (
+                            <Dropdown>
+                                <Dropdown.Toggle
+                                    variant="primary"
+                                    id="dropdown-user-mobile"
+                                    className="rounded-pill fw-bold afterLoginDropdown"
+                                >
+                                    {username}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu align="end">
+                                    <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        )}
+
+                        {/* Custom Orange Hamburger */}
+                        <OffcanvasMenu />
+                    </div>
+                </Container>
+            </Navbar>
         </>
     );
 }

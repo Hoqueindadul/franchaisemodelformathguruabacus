@@ -16,6 +16,7 @@ import Cart from "./pages/Cart";
 // Lazy-loaded Pages
 const About = lazy(() => import("./pages/About"));
 const Whatwedo = lazy(() => import("./pages/Whatwedo"));
+import Hero  from "./components/Hero";
 
 // Courses
 const CourseAbacus = lazy(() => import("./pages/Courses/Course_abacus"));
@@ -91,6 +92,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/whatwedo" element={<Whatwedo />} />
           <Route path="/becomeatrainer" element={<BecomeTrainer />} />
+          <Route path="/hero" element={<Hero />} />
 
           {/* Franchise Routes */}
           <Route path="/benifit" element={<Benifit />} />
@@ -107,7 +109,7 @@ function App() {
           <Route path="/school-tieup" element={<SchoolTieup />} />
 
           {/* Buy Materials */}
-          <Route path="/buymaterials" element={<BuyMaterials addToCart={addToCart} />} />
+          <Route path="/studymaterials" element={<BuyMaterials addToCart={addToCart} />} />
           <Route path="/cart" element={<Cart cartItems={cartItems} />} />
 
           {/* Courses */}

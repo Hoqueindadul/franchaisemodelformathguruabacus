@@ -1,0 +1,63 @@
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 1050;
+}
+
+.offcanvas-menu.open {
+  right: 0;
+}
+
+@media (max-width: 425px ){
+    .hambargarIcon{
+    margin-top: 13px !important;
+    }
+} 
+
+.offcanvas-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.offcanvas-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.btn-close-custom {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.offcanvas-menu nav ul li {
+  padding: 10px 0;
+}
+
+.offcanvas-menu nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 1.1rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.contact-info {
+  font-size: 0.95rem;
+  color: #444;
+}

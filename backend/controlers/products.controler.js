@@ -87,7 +87,7 @@ export const updateProduct = async (req, res) => {
         if (req.files && req.files.length > 0) {
             imageFiles = await Promise.all(
                 req.files.map(async (file) => {
-                    const result = await cloudinary.v2.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+                    const result = cloudinary.v2.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
                         if (error) throw error;
                         return { public_id: result.public_id, url: result.secure_url };
                     }).end(file.buffer);
