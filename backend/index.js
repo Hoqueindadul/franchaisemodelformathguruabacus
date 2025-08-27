@@ -20,10 +20,11 @@ dotenv.config();
 // Load environment variables
 const mongo_url = process.env.MONGODB_URI;
 const port = process.env.PORT || 5000;
-const localFrontendUrl = process.env.FRONTEND_URL_LOCAL || "http://localhost:5173";
-const deploymentFrontendUrl = process.env.FRONTEND_URL;
 
-const allowedOrigins = [localFrontendUrl, deploymentFrontendUrl];
+const allowedOrigins = [
+  process.env.FRONTEND_URL_LOCAL || "http://localhost:5173",
+  process.env.FRONTEND_URL || "https://franchaisemodelformathguruabacus.vercel.app" 
+];
 
 app.use(
   cors({
@@ -31,6 +32,7 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.error("Blocked by CORS:", origin); // debug
         callback(new Error("Not allowed by CORS: " + origin));
       }
     },
@@ -40,7 +42,8 @@ app.use(
   })
 );
 
-app.options("*", cors()); // Preflight support
+app.options("*", cors());
+
 
 
 // Middleware setup
