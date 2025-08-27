@@ -42,7 +42,7 @@ export default function Login() {
         setIsLoading(true); 
 
         try {
-            const { data } = await axios.post(`${BASE_URL}/api/users/login`, formData, {
+            const { data } = await axios.post(`${BACKEND_URL}/api/users/login`, formData, {
                 headers: { "Content-Type": "application/json" },
             });
 
