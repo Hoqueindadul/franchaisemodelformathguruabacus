@@ -19,6 +19,7 @@ const Whatwedo = lazy(() => import("./pages/Whatwedo"));
 import Hero  from "./components/Hero";
 
 // Courses
+const Courses = lazy(() => import("./components/Courses"))
 const CourseAbacus = lazy(() => import("./pages/Courses/Course_abacus"));
 const CourseKidsEnglish = lazy(() => import("./pages/Courses/Course_kidsEnglish"));
 const CourseHandwriting = lazy(() => import("./pages/Courses/Course_handwritting"));
@@ -57,6 +58,7 @@ const ProductPaymentForm = lazy(() => import("./pages/feesCollection/ProductPaym
 const AdminDashboard = lazy(() => import("./pages/dashbords/admin_dashboard/Admin-dashboard"));
 const StudentDashboard = lazy(() => import("./pages/dashbords/student_dashboard/Student-dashboard"));
 const FranchiseDashboard = lazy(() => import("./pages/dashbords/franchise_dashboard/Franchise-dashboard"));
+
 
 function App() {
   const location = useLocation();
@@ -113,6 +115,7 @@ function App() {
           <Route path="/cart" element={<Cart cartItems={cartItems} />} />
 
           {/* Courses */}
+          <Route path="/courses" element={<Courses />} />
           <Route path="/vedicmath" element={<CourseVedicMath />} />
           <Route path="/abacus" element={<CourseAbacus />} />
           <Route path="/hand-writing" element={<CourseHandwriting />} />

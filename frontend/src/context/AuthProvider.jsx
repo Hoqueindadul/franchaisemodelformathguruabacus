@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect, useRef, useCallb
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { BACKEND_URL } from "../utils";
+import { LOCAL_BACKEND_URL } from "../local_backend_url";
 
 // Create Context
 const AuthContext = createContext();
@@ -12,7 +13,10 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState(null);
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState(() => {
+        const savedCourses = localStorage.getItem('courses');
+        return savedCourses ? JSON.parse(savedCourses): [];
+    });
     const [students, setStudents] = useState([]);
     const [enrolledCourses, setEnrolledCourses] = useState([]); // New state for enrolled courses
     const logoutTimer = useRef(null);
@@ -51,9 +55,11 @@ export const AuthProvider = ({ children }) => {
     // Fetch courses from API
     const fetchCourses = useCallback(async () => {
         try {
-            const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
+            const response = await axios.get(`${LOCAL_BACKEND_URL}/api/courses/allCourse`);
             if (response.data?.courses && Array.isArray(response.data.courses)) {
                 setCourses(response.data.courses);
+
+                localStorage.setItem('courses', JSON.stringify(response.data?.courses))
             } else {
                 console.error("Invalid course data format:", response.data);
             }

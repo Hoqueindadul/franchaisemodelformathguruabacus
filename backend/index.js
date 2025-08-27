@@ -21,7 +21,7 @@ dotenv.config();
 const mongo_url = process.env.MONGODB_URI;
 const port = process.env.PORT || 5000;
 const localFrontendUrl = process.env.FRONTEND_URL_LOCAL || "http://localhost:5174";
-const deploymentFrontendUrl = process.env.MAIN_FRONTEND_URL || "https://mathguruabacus.com/";
+const deploymentFrontendUrl = process.env.FRONTEND_URL || "https://mathguruabacus.com/";
 
 console.log("Allowed Origins:", localFrontendUrl, deploymentFrontendUrl); // Debugging
 
