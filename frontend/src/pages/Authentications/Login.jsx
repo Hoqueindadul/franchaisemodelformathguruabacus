@@ -51,9 +51,20 @@ export default function Login() {
 
             toast.success(data.message || "User logged in successfully.");
 
+            // Reset form
             setFormData({ role: "", email: "", password: "" });
 
-            
+            // Navigate based on role
+            if (role === "admin") {
+                navigate("/admin-dashboard");
+            } else if (role === "franchise") {
+                navigate("/franchise-dashboard");
+            } else if (role === "student") {
+                navigate("/student-dashboard");
+            } else {
+                navigate("/"); // fallback
+            }
+
         } catch (error) {
             console.error("Login failed:", error);
             toast.error(error.response?.data?.message || "Failed to log in.");
@@ -156,3 +167,4 @@ export default function Login() {
         </div>
     );
 }
+    
