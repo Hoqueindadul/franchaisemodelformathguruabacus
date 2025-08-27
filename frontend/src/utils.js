@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://franchaisemodelformathguruabacus.onrender.com"
+export const BACKEND_URL = "https://franchaisemodelformathguruabacus.onrender.com/api"
