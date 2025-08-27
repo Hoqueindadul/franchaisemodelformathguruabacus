@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     // Fetch courses from API
     const fetchCourses = useCallback(async () => {
         try {
-            const response = await axios.get(`${BACKEND_URL}/courses/allCourse`);
+            const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
             if (response.data?.courses && Array.isArray(response.data.courses)) {
                 setCourses(response.data.courses);
 
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     // Fetch all students
     const fetchAllStudents = useCallback(async () => {
         try {
-            const response = await axios.get(`${BACKEND_URL}/admission/getAllAdmitedStudents`);
+            const response = await axios.get(`${BACKEND_URL}/api/admission/getAllAdmitedStudents`);
             if (Array.isArray(response.data)) {
                 setStudents(response.data);
             } else {
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
                 return;
             }
     
-            const response = await axios.get(`${BACKEND_URL}/enrollment/user-courses/${userId}`);
+            const response = await axios.get(`${BACKEND_URL}/api/enrollment/user-courses/${userId}`);
             
             if (Array.isArray(response.data)) {
                 setEnrolledCourses(response.data);
@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
         if (!window.confirm("Are you sure you want to delete this student?")) return;
 
         try {
-            await axios.delete(`${BACKEND_URL}/admission/deleteAdmitedStudent/${studentId}`);
+            await axios.delete(`${BACKEND_URL}/api/admission/deleteAdmitedStudent/${studentId}`);
             setStudents(prevStudents => prevStudents.filter(student => student._id !== studentId));
         } catch (error) {
             console.error("Delete Student Error:", error);
