@@ -15,7 +15,7 @@ export default function ClassesSlider() {
       desc: "Boost your child's math skills and concentration through fun abacus-based learning.",
       age: "5-12 years",
       weekly: "5 Days",
-      time: "1 Hour"
+      time: "1 Hour",
     },
     {
       img: "/01.webp",
@@ -23,7 +23,7 @@ export default function ClassesSlider() {
       desc: "Enhance your child's vocabulary, grammar, and communication skills with engaging activities.",
       age: "5-12 years",
       weekly: "5 Days",
-      time: "1 Hour"
+      time: "1 Hour",
     },
     {
       img: "/01.webp",
@@ -31,7 +31,7 @@ export default function ClassesSlider() {
       desc: "Master quick and easy calculation techniques with ancient Vedic math tricks.",
       age: "8-14 years",
       weekly: "5 Days",
-      time: "1 Hour"
+      time: "1 Hour",
     },
     {
       img: "/01.webp",
@@ -39,197 +39,232 @@ export default function ClassesSlider() {
       desc: "Improve handwriting speed, style, and neatness through structured practice sessions.",
       age: "6-14 years",
       weekly: "5 Days",
-      time: "1 Hour"
-    }
+      time: "1 Hour",
+    },
   ];
+
+  // Component-specific configuration parameters eliminating any reliance on external CSS loaders
+  const styles = {
+    sectionBackground: {
+      background: "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
+    },
+    subtitleTypography: {
+      fontFamily: "'Pacifico', cursive",
+      fontSize: "1.4rem",
+      letterSpacing: "0.5px",
+    },
+    cardWrapper: {
+      backgroundColor: "#ffffff",
+      borderRadius: "20px",
+      transition:
+        "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease",
+    },
+    imageContainer: {
+      height: "200px",
+      borderRadius: "20px 20px 0 0",
+      overflow: "hidden",
+    },
+  };
 
   return (
     <>
-      <style jsx>{`
-        /* Your original CSS remains unchanged */
-        .classes-section {
-          background: #ff9248;
-          padding: 4rem 0;
-        }
-        .section-header {
-          color: white;
-          margin-bottom: 3rem;
-        }
-        .section-subtitle {
-          font-size: 1.8rem;
-          margin-bottom: 0.5rem;
-          opacity: 0.9;
-          font-family: 'Pacifico', cursive;
-          color: #1f68ee;
-                               
-        }
-        .section-title {
-          font-size: 2.2rem;
-          font-weight: 700;
-          line-height: 1.3;
-        }
-        .class-card {
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-          transition: all 0.3s ease;
-          margin: 0 10px;
-        }
-        .class-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-        .class-card-img {
-          position: relative;
-          height: 180px;
-          overflow: hidden;
-          border-radius: 20px 20px 0 0;
-        }
-        .class-card-img img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-        .class-card:hover .class-card-img img {
-          transform: scale(1.05);
-        }
-        .class-card-content {
-          padding: 1.5rem;
-        }
-        .class-title {
-          font-size: 1.2rem;
-          font-weight: 700;
-          color: #1f68ee;
-          margin-bottom: 0.8rem;
-          cursor: pointer;
-        }
-        .class-description {
-          color: #7f8c8d;
-          font-size: 0.85rem;
-          line-height: 1.5;
-          margin-bottom: 1.5rem;
-        }
-        .class-stats {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-top: 1px solid #ecf0f1;
-          padding-top: 1rem;
-        }
-        .stat-item {
-          text-align: center;
-          flex: 1;
-        }
-        .stat-label {
-          color: #ff9248;
-          font-weight: 700;
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.3rem;
-          display: block;
-        }
-        .stat-value {
-          color: #2c3e50;
-          font-size: 0.8rem;
-          font-weight: 600;
-        }
-        .stat-divider {
-          width: 1px;
-          height: 30px;
-          background: #ecf0f1;
-          margin: 0 0.5rem;
-        }
-        .swiper-button-next,
-        .swiper-button-prev {
-          color: white;
-          background: rgba(255, 255, 255, 0.2);
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-          backdrop-filter: blur(10px);
-        }
-        .swiper-button-next:after,
-        .swiper-button-prev:after {
-          font-size: 18px;
-          font-weight: 700;
-        }
-        .swiper-button-next:hover,
-        .swiper-button-prev:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-        @media (max-width: 768px) {
-          .section-title {
-            font-size: 1.8rem;
+      {/* Global Inline Override Injection to style the dynamic Swiper Carousel arrows perfectly */}
+      <style>
+        {`
+          .custom-class-swiper .swiper-button-next,
+          .custom-class-swiper .swiper-button-prev {
+            color: #ff9248 !important;
+            background: rgba(255, 255, 255, 0.9);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
           }
-          .class-card {
-            margin: 0 5px;
+          .custom-class-swiper .swiper-button-next:after,
+          .custom-class-swiper .swiper-button-prev:after {
+            font-size: 16px !important;
+            font-weight: 800;
           }
-          .class-card-content {
-            padding: 1.2rem;
+          .custom-class-swiper .swiper-button-next:hover,
+          .custom-class-swiper .swiper-button-prev:hover {
+            background: #ffffff;
+            transform: scale(1.05);
           }
-        }
-      `}</style>
+        `}
+      </style>
 
-      <section className="classes-section">
-        <div className="container text-center">
-          <div className="section-header">
-            <p className="section-subtitle">Our Courses</p>
-            <h2 className="section-title">
-              We Meet Kids At Their Level <br /> 
+      <section
+        className="py-5 overflow-hidden"
+        style={styles.sectionBackground}
+      >
+        <div className="container py-4 text-center">
+          {/* Section Header Layout */}
+          <div className="mb-5 mx-auto" style={{ maxWidth: "650px" }}>
+            <span
+              className="text-primary d-inline-block mb-2 fw-semibold"
+              style={styles.subtitleTypography}
+            >
+              Our Premium Courses
+            </span>
+            <h2
+              className="fw-black text-dark tracking-tight mb-0"
+              style={{
+                fontWeight: "800",
+                fontSize: "2.3rem",
+                letterSpacing: "-0.5px",
+              }}
+            >
+              We Meet Kids At Their Level <br />
               Regardless Of Their Age
             </h2>
+            <div
+              className="bg-primary rounded-pill mx-auto mt-3"
+              style={{ width: "45px", height: "4px" }}
+            ></div>
           </div>
 
-          <Swiper
-            modules={[Navigation]}
-            spaceBetween={20}
-            slidesPerView={3}
-            navigation
-            loop={true}
-            breakpoints={{
-              0: { slidesPerView: 1, spaceBetween: 15 },
-              768: { slidesPerView: 2, spaceBetween: 20 },
-              992: { slidesPerView: 3, spaceBetween: 25 }
-            }}
-          >
-            {classesData.map((item, index) => (
-              <SwiperSlide key={index}>
-                <div className="class-card">
-                  <div className="class-card-img">
-                    <img src={item.img} alt={item.title} />
-                  </div>
-                  <div className="class-card-content">
-                    <h6
-                      className="class-title"
-                      onClick={() => navigate("/courses")}
+          {/* Swiper Slider Wrapper Context */}
+          <div className="px-1 px-md-3">
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={24}
+              slidesPerView={3}
+              navigation
+              loop={true}
+              className="custom-class-swiper py-4"
+              breakpoints={{
+                0: { slidesPerView: 1, spaceBetween: 16 },
+                768: { slidesPerView: 2, spaceBetween: 20 },
+                992: { slidesPerView: 3, spaceBetween: 24 },
+              }}
+            >
+              {classesData.map((item, index) => (
+                <SwiperSlide key={index} className="h-auto">
+                  <div
+                    className="card border-0 shadow-sm h-100 position-relative border border-light"
+                    style={styles.cardWrapper}
+                  >
+                    {/* Course Media Frame */}
+                    <div
+                      className="position-relative w-100"
+                      style={styles.imageContainer}
                     >
-                      {item.title}
-                    </h6>
-                    <p className="class-description">{item.desc}</p>
-                    <div className="class-stats">
-                      <div className="stat-item">
-                        <span className="stat-label">Age</span>
-                        <div className="stat-value">{item.age}</div>
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="w-100 h-100"
+                        style={{ objectFit: "cover" }}
+                      />
+                      {/* Gradient Ambient Overlay masking the bottom edge */}
+                      <div
+                        className="position-absolute bottom-0 start-0 w-100 h-25"
+                        style={{
+                          background:
+                            "linear-gradient(to top, rgba(0,0,0,0.15), transparent)",
+                        }}
+                      ></div>
+                    </div>
+
+                    {/* Course Summary Content Body */}
+                    <div className="card-body d-flex flex-column justify-content-between p-4 text-start">
+                      <div>
+                        <h5
+                          className="fw-bold text-dark mb-2 text-decoration-none"
+                          style={{
+                            cursor: "pointer",
+                            fontSize: "1.25rem",
+                            transition: "color 0.2s",
+                          }}
+                          onClick={() => navigate("/courses")}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#ff9248")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#212529")
+                          }
+                        >
+                          {item.title}
+                        </h5>
+                        <p
+                          className="text-secondary small lh-base mb-4"
+                          style={{ minHeight: "60px" }}
+                        >
+                          {item.desc}
+                        </p>
                       </div>
-                      <div className="stat-divider"></div>
-                      <div className="stat-item">
-                        <span className="stat-label">Weekly</span>
-                        <div className="stat-value">{item.weekly}</div>
-                      </div>
-                      <div className="stat-divider"></div>
-                      <div className="stat-item">
-                        <span className="stat-label">Time</span>
-                        <div className="stat-value">{item.time}</div>
+
+                      {/* Micro Metric Parametric Data Grid Footer */}
+                      <div className="d-flex align-items-center justify-content-between pt-3 border-top border-light-subtle bg-light bg-opacity-20 rounded-3 px-2 py-1">
+                        <div className="text-center flex-grow-1">
+                          <span
+                            className="d-block text-muted fw-bold text-uppercase mb-1"
+                            style={{
+                              fontSize: "0.65rem",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            Age Group
+                          </span>
+                          <span
+                            className="fw-semibold text-dark"
+                            style={{ fontSize: "0.82rem" }}
+                          >
+                            {item.age}
+                          </span>
+                        </div>
+
+                        <div
+                          className="bg-light-subtle opacity-50"
+                          style={{ width: "1px", height: "24px" }}
+                        ></div>
+
+                        <div className="text-center flex-grow-1">
+                          <span
+                            className="d-block text-muted fw-bold text-uppercase mb-1"
+                            style={{
+                              fontSize: "0.65rem",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            Schedule
+                          </span>
+                          <span
+                            className="fw-semibold text-dark"
+                            style={{ fontSize: "0.82rem" }}
+                          >
+                            {item.weekly}
+                          </span>
+                        </div>
+
+                        <div
+                          className="bg-light-subtle opacity-50"
+                          style={{ width: "1px", height: "24px" }}
+                        ></div>
+
+                        <div className="text-center flex-grow-1">
+                          <span
+                            className="d-block text-muted fw-bold text-uppercase mb-1"
+                            style={{
+                              fontSize: "0.65rem",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            Duration
+                          </span>
+                          <span
+                            className="fw-semibold text-dark"
+                            style={{ fontSize: "0.82rem" }}
+                          >
+                            {item.time}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
       </section>
     </>

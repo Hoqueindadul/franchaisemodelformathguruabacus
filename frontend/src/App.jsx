@@ -10,25 +10,24 @@ import { useAuth } from "./context/AuthProvider";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
-import NotFound from "./pages/NotFound";
-import Cart from "./pages/Cart";
+import NotFound from "./components/NotFound";
+import Cart from "./pages/cart/Cart";
 
 // Lazy-loaded Pages
-const About = lazy(() => import("./pages/About"));
-const Whatwedo = lazy(() => import("./pages/Whatwedo"));
-import Hero  from "./components/Hero";
+const About = lazy(() => import("./pages/companyDetails/About"));
+const Whatwedo = lazy(() => import("./pages/companyDetails/Whatwedo"));
+import Hero from "./components/Hero";
 
 // Courses
-const Courses = lazy(() => import("./components/Courses"))
-const CourseAbacus = lazy(() => import("./pages/Courses/Course_abacus"));
-const CourseKidsEnglish = lazy(() => import("./pages/Courses/Course_kidsEnglish"));
-const CourseHandwriting = lazy(() => import("./pages/Courses/Course_handwritting"));
-const CourseVedicMath = lazy(() => import("./pages/Courses/Course_vedicMath"));
+const Courses = lazy(() => import("./pages/courses/Courses"));
+const CourseDetails = lazy(() => import("./pages/courses/CourseDetails"));
 
 // Franchise
 const Benifit = lazy(() => import("./pages/Franchise/Benifit"));
 const Criteria = lazy(() => import("./pages/Franchise/Criteria"));
-const FranchiseRegistraion = lazy(() => import("./pages/Franchise/FranchiseRegistraion"));
+const FranchiseRegistraion = lazy(
+  () => import("./pages/Franchise/FranchiseRegistraion"),
+);
 const FranchiseLogin = lazy(() => import("./pages/Franchise/FranchiseLogin"));
 
 // Trainers
@@ -36,10 +35,8 @@ const BecomeTrainer = lazy(() => import("./pages/Trainer/BecomeTrainer"));
 const Trainers = lazy(() => import("./pages/Trainer/Trainers"));
 
 // Other Pages
-const StudyCenter = lazy(() => import("./pages/Study_Center"));
-const SchoolTieup = lazy(() => import("./pages/School_tieup"));
-const BuyMaterials = lazy(() => import("./pages/Buy_materials"));
-const Contact = lazy(() => import("./pages/Contact"));
+const Products = lazy(() => import("./pages/productPages/Products"));
+const Contact = lazy(() => import("./pages/companyDetails/Contact"));
 
 // Authentication
 const Login = lazy(() => import("./pages/Authentications/Login"));
@@ -47,18 +44,27 @@ const Register = lazy(() => import("./pages/Authentications/Register"));
 
 // Product pages
 
-const ProductDetails = lazy(() => import("./pages/productPages/ProductDetails"))
+const ProductDetails = lazy(
+  () => import("./pages/productPages/ProductDetails"),
+);
 // Payment
 const FeeForm = lazy(() => import("./pages/feesCollection/FeeForm"));
 const PaymentPage = lazy(() => import("./pages/payments/PaymentPage"));
-const PlaceOrder = lazy(() => import("./pages/PlaceOrder"))
-const ProductPaymentForm = lazy(() => import("./pages/feesCollection/ProductPaymentForm"))
+const PlaceOrder = lazy(() => import("./pages/order/PlaceOrder"));
+const ProductPaymentForm = lazy(
+  () => import("./pages/feesCollection/ProductPaymentForm"),
+);
 
 // Dashboard
-const AdminDashboard = lazy(() => import("./pages/dashbords/admin_dashboard/Admin-dashboard"));
-const StudentDashboard = lazy(() => import("./pages/dashbords/student_dashboard/Student-dashboard"));
-const FranchiseDashboard = lazy(() => import("./pages/dashbords/franchise_dashboard/Franchise-dashboard"));
-
+const AdminDashboard = lazy(
+  () => import("./pages/dashbords/admin_dashboard/Admin-dashboard"),
+);
+const StudentDashboard = lazy(
+  () => import("./pages/dashbords/student_dashboard/Student-dashboard"),
+);
+const FranchiseDashboard = lazy(
+  () => import("./pages/dashbords/franchise_dashboard/Franchise-dashboard"),
+);
 
 function App() {
   const location = useLocation();
@@ -95,48 +101,55 @@ function App() {
           <Route path="/whatwedo" element={<Whatwedo />} />
           <Route path="/becomeatrainer" element={<BecomeTrainer />} />
           <Route path="/hero" element={<Hero />} />
-
           {/* Franchise Routes */}
           <Route path="/benifit" element={<Benifit />} />
           <Route path="/criteria" element={<Criteria />} />
-          <Route path="/franchise-registraion" element={<FranchiseRegistraion />} />
+          <Route
+            path="/franchise-registraion"
+            element={<FranchiseRegistraion />}
+          />
           <Route path="/franchise-login" element={<FranchiseLogin />} />
-
           {/* Trainers */}
           <Route path="/become-trainer" element={<BecomeTrainer />} />
           <Route path="/trainers" element={<Trainers />} />
 
-          {/* Study Center & School Tieup */}
-          <Route path="/studycenter" element={<StudyCenter />} />
-          <Route path="/school-tieup" element={<SchoolTieup />} />
-
           {/* Buy Materials */}
-          <Route path="/studymaterials" element={<BuyMaterials addToCart={addToCart} />} />
+          <Route
+            path="/products"
+            element={<Products addToCart={addToCart} />}
+          />
           <Route path="/cart" element={<Cart cartItems={cartItems} />} />
-
           {/* Courses */}
           <Route path="/courses" element={<Courses />} />
-          <Route path="/vedicmath" element={<CourseVedicMath />} />
-          <Route path="/abacus" element={<CourseAbacus />} />
-          <Route path="/hand-writing" element={<CourseHandwriting />} />
-          <Route path="/kids-english" element={<CourseKidsEnglish />} />
-
+          <Route path="/courses/:courseId" element={<CourseDetails />} />
           {/* Product */}
-          <Route path="/productDetails/:productName/:productImage/:price" element={<ProductDetails />} />
+          <Route
+            path="/productDetails/:productName/:productImage/:price"
+            element={<ProductDetails />}
+          />
           <Route path="/productDetails" element={<ProductDetails />} />
-
-
-
           {/* Payment */}
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/feesForm" element={<FeeForm />} />
           <Route path="/placeOrder" element={<PlaceOrder />} />
           <Route path="/productPaymentForm" element={<ProductPaymentForm />} />
-
           {/* Authentication */}
-          <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
-          <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />} />
-
+          <Route
+            path="/login"
+            element={
+              isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Register />
+              )
+            }
+          />
           {/* Role-Based Protected Routes */}
           <Route
             path="/dashboard"
@@ -154,34 +167,42 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/student-dashboard"
             element={
               <ProtectedRoute>
-                {userRole === "student" ? <StudentDashboard /> : <Navigate to="/dashboard" replace />}
+                {userRole === "student" ? (
+                  <StudentDashboard />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )}
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/franchise-dashboard"
             element={
               <ProtectedRoute>
-                {userRole === "franchise" ? <FranchiseDashboard /> : <Navigate to="/dashboard" replace />}
+                {userRole === "franchise" ? (
+                  <FranchiseDashboard />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )}
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin-dashboard"
             element={
               <ProtectedRoute>
-                {userRole === "admin" ? <AdminDashboard /> : <Navigate to="/dashboard" replace />}
+                {userRole === "admin" ? (
+                  <AdminDashboard />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )}
               </ProtectedRoute>
             }
           />
-
           {/* 404 Not Found */}
           <Route path="*" element={<NotFound />} />
         </Routes>
