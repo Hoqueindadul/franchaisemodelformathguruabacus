@@ -8,34 +8,36 @@ import { useAuth } from "./context/AuthProvider";
 import { roleMeta } from "./config/navigation";
 
 // ── Static / Always-loaded Components ──────────────────────────────────────
-import NavBar  from "./components/NavBar";
-import Home    from "./components/Home";
-import Footer  from "./components/Footer";
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import Footer from "./components/Footer";
 import NotFound from "./components/NotFound";
-import Cart    from "./pages/cart/Cart";
-import Hero    from "./components/Hero";
+import Cart from "./pages/cart/Cart";
+import Hero from "./components/Hero";
 
 // ── Lazy: Public Pages ──────────────────────────────────────────────────────
-const About               = lazy(() => import("./pages/companyDetails/About"));
-const Whatwedo            = lazy(() => import("./pages/companyDetails/Whatwedo"));
-const Contact             = lazy(() => import("./pages/companyDetails/Contact"));
-const Courses             = lazy(() => import("./pages/courses/Courses"));
-const CourseDetails       = lazy(() => import("./pages/courses/CourseDetails"));
-const Benifit             = lazy(() => import("./pages/Franchise/Benifit"));
-const Criteria            = lazy(() => import("./pages/Franchise/Criteria"));
-const FranchiseRegistraion= lazy(() => import("./pages/Franchise/FranchiseRegistraion"));
-const FranchiseLogin      = lazy(() => import("./pages/Franchise/FranchiseLogin"));
-const BecomeTrainer       = lazy(() => import("./pages/Trainer/BecomeTrainer"));
-const Trainers            = lazy(() => import("./pages/Trainer/Trainers"));
-const Products            = lazy(() => import("./pages/productPages/Products"));
-const ProductDetails      = lazy(() => import("./pages/productPages/ProductDetails"));
-const FeeForm             = lazy(() => import("./pages/feesCollection/FeeForm"));
-const PaymentPage         = lazy(() => import("./pages/payments/PaymentPage"));
-const PlaceOrder          = lazy(() => import("./pages/order/PlaceOrder"));
-const ProductPaymentForm  = lazy(() => import("./pages/feesCollection/ProductPaymentForm"));
+const About = lazy(() => import("./pages/companyDetails/About"));
+const Whatwedo = lazy(() => import("./pages/companyDetails/Whatwedo"));
+const Contact = lazy(() => import("./pages/companyDetails/Contact"));
+const Courses = lazy(() => import("./pages/courses/Courses"));
+const CourseDetails = lazy(() => import("./pages/courses/CourseDetails"));
+const Benifit = lazy(() => import("./pages/Franchise/Benifit"));
+const Criteria = lazy(() => import("./pages/Franchise/Criteria"));
+const BecomeTrainer = lazy(() => import("./pages/Trainer/BecomeTrainer"));
+const Trainers = lazy(() => import("./pages/Trainer/Trainers"));
+const Products = lazy(() => import("./pages/productPages/Products"));
+const ProductDetails = lazy(
+  () => import("./pages/productPages/ProductDetails"),
+);
+const FeeForm = lazy(() => import("./pages/feesCollection/FeeForm"));
+const PaymentPage = lazy(() => import("./pages/payments/PaymentPage"));
+const PlaceOrder = lazy(() => import("./pages/order/PlaceOrder"));
+const ProductPaymentForm = lazy(
+  () => import("./pages/feesCollection/ProductPaymentForm"),
+);
 
 // ── Lazy: Auth Pages ────────────────────────────────────────────────────────
-const Login    = lazy(() => import("./pages/Authentications/Login"));
+const Login = lazy(() => import("./pages/Authentications/Login"));
 const Register = lazy(() => import("./pages/Authentications/Register"));
 
 // ── Lazy: Shared Dashboard Layout (NEW) ────────────────────────────────────
@@ -43,25 +45,56 @@ const Register = lazy(() => import("./pages/Authentications/Register"));
 const DashboardLayout = lazy(() => import("./layouts/DashboardLayout"));
 
 // ── Lazy: Role-Shared Dashboard Overview ───────────────────────────────────
-const DashboardOverview = lazy(() => import("./pages/dashboards/DashboardOverview"));
+const DashboardOverview = lazy(
+  () => import("./pages/dashboards/DashboardOverview"),
+);
 
 // ── Lazy: ADMIN & FRANCHISE Pages ──────────────────────────────────────────
-const AddBranch       = lazy(() => import("./pages/dashboards/components/admin/branch/AddBranch"));
-const AllBranches     = lazy(() => import("./pages/dashboards/components/admin/branch/AllBranches"));
-const AddCourse       = lazy(() => import("./pages/dashboards/components/admin/courseSubTab/AddCourse"));
-const AllCourse       = lazy(() => import("./pages/dashboards/components/admin/courseSubTab/AllCourse"));
-const StudentAdmission= lazy(() => import("./pages/dashboards/components/admin/studentSubTab/StudentAdmission"));
-const AllStudents     = lazy(() => import("./pages/dashboards/components/admin/studentSubTab/AllStudents"));
-const AllProducts     = lazy(() => import("./pages/dashboards/components/admin/products/AllProducts"));
-const AllStaff        = lazy(() => import("./pages/dashboards/components/admin/staffSubTab/AllStaff"));
-const EnrolledStudents= lazy(() => import("./pages/dashboards/components/shared/EnrolledStudents"));
+const AddBranch = lazy(
+  () => import("./pages/dashboards/components/admin/branch/AddBranch"),
+);
+const AllBranches = lazy(
+  () => import("./pages/dashboards/components/admin/branch/AllBranches"),
+);
+const AddCourse = lazy(
+  () => import("./pages/dashboards/components/admin/courseSubTab/AddCourse"),
+);
+const AllCourse = lazy(
+  () => import("./pages/dashboards/components/admin/courseSubTab/AllCourse"),
+);
+const StudentAdmission = lazy(
+  () =>
+    import("./pages/dashboards/components/admin/studentSubTab/StudentAdmission"),
+);
+const AllStudents = lazy(
+  () => import("./pages/dashboards/components/admin/studentSubTab/AllStudents"),
+);
+const AllProducts = lazy(
+  () => import("./pages/dashboards/components/admin/products/AllProducts"),
+);
+const AllStaff = lazy(
+  () => import("./pages/dashboards/components/admin/staffSubTab/AllStaff"),
+);
+const EnrolledStudents = lazy(
+  () => import("./pages/dashboards/components/shared/EnrolledStudents"),
+);
 
 // ── Lazy: STUDENT Pages ─────────────────────────────────────────────────────
-const MyCourses      = lazy(() => import("./pages/dashboards/components/student/Mycourses"));
-const Downloads      = lazy(() => import("./pages/dashboards/components/student/Downloads"));
-const FeesHistory    = lazy(() => import("./pages/dashboards/components/student/FeesHistory"));
-const StudyMatOrder  = lazy(() => import("./pages/dashboards/components/student/StudyMatOrder"));
-const OrderHistory   = lazy(() => import("./pages/dashboards/components/student/OrderHistory"));
+const MyCourses = lazy(
+  () => import("./pages/dashboards/components/student/Mycourses"),
+);
+const Downloads = lazy(
+  () => import("./pages/dashboards/components/student/Downloads"),
+);
+const FeesHistory = lazy(
+  () => import("./pages/dashboards/components/student/FeesHistory"),
+);
+const StudyMatOrder = lazy(
+  () => import("./pages/dashboards/components/student/StudyMatOrder"),
+);
+const OrderHistory = lazy(
+  () => import("./pages/dashboards/components/student/OrderHistory"),
+);
 
 // ── Lazy: Placeholder ───────────────────────────────────────────────────────
 const ComingSoon = lazy(() => import("./pages/common/ComingSoon"));
@@ -70,7 +103,12 @@ const ComingSoon = lazy(() => import("./pages/common/ComingSoon"));
 // Paths where the public NavBar/Footer should be hidden
 // (all dashboard namespaces + auth pages)
 const DASHBOARD_PREFIXES = ["/admin", "/franchise", "/student"];
-const AUTH_PATHS         = ["/login", "/register", "/franchise-registraion", "/franchise-login"];
+const AUTH_PATHS = [
+  "/login",
+  "/register",
+  "/franchise-registraion",
+  "/franchise-login",
+];
 
 function App() {
   const location = useLocation();
@@ -102,54 +140,84 @@ function App() {
       >
         <Routes>
           {/* ── Public Routes ──────────────────────────────────────────── */}
-          <Route path="/"         element={<Home />} />
-          <Route path="/about"    element={<About />} />
-          <Route path="/contact"  element={<Contact />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/whatwedo" element={<Whatwedo />} />
-          <Route path="/hero"     element={<Hero />} />
+          <Route path="/hero" element={<Hero />} />
 
           {/* Franchise Info */}
-          <Route path="/benifit"               element={<Benifit />} />
-          <Route path="/criteria"              element={<Criteria />} />
-          <Route path="/franchise-registraion" element={<FranchiseRegistraion />} />
-          <Route path="/franchise-login"       element={<FranchiseLogin />} />
+          <Route path="/benifit" element={<Benifit />} />
+          <Route path="/criteria" element={<Criteria />} />
 
           {/* Trainers */}
           <Route path="/becomeatrainer" element={<BecomeTrainer />} />
           <Route path="/become-trainer" element={<BecomeTrainer />} />
-          <Route path="/trainers"       element={<Trainers />} />
+          <Route path="/trainers" element={<Trainers />} />
 
           {/* Shop */}
-          <Route path="/products" element={<Products addToCart={addToCart} />} />
-          <Route path="/cart"     element={<Cart cartItems={cartItems} />} />
-          <Route path="/productDetails/:productName/:productImage/:price" element={<ProductDetails />} />
+          <Route
+            path="/products"
+            element={<Products addToCart={addToCart} />}
+          />
+          <Route path="/cart" element={<Cart cartItems={cartItems} />} />
+          <Route
+            path="/productDetails/:productName/:productImage/:price"
+            element={<ProductDetails />}
+          />
           <Route path="/productDetails" element={<ProductDetails />} />
 
           {/* Courses */}
-          <Route path="/courses"           element={<Courses />} />
+          <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<CourseDetails />} />
 
           {/* Payments */}
-          <Route path="/payment"            element={<PaymentPage />} />
-          <Route path="/feesForm"           element={<FeeForm />} />
-          <Route path="/placeOrder"         element={<PlaceOrder />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/feesForm" element={<FeeForm />} />
+          <Route path="/placeOrder" element={<PlaceOrder />} />
           <Route path="/productPaymentForm" element={<ProductPaymentForm />} />
 
           {/* ── Auth Routes ────────────────────────────────────────────── */}
           <Route
             path="/login"
-            element={isAuthenticated ? <Navigate to={roleHome} replace /> : <Login />}
+            element={
+              isAuthenticated ? <Navigate to={roleHome} replace /> : <Login />
+            }
           />
           <Route
             path="/register"
-            element={isAuthenticated ? <Navigate to={roleHome} replace /> : <Register />}
+            element={
+              isAuthenticated ? (
+                <Navigate to={roleHome} replace />
+              ) : (
+                <Register />
+              )
+            }
           />
 
           {/* ── Legacy redirects — forward old URLs to new role paths ─── */}
-          <Route path="/dashboard"          element={isAuthenticated ? <Navigate to={roleHome} replace /> : <Navigate to="/login" replace />} />
-          <Route path="/admin-dashboard"    element={<Navigate to="/admin/dashboard"     replace />} />
-          <Route path="/student-dashboard"  element={<Navigate to="/student/dashboard"   replace />} />
-          <Route path="/franchise-dashboard"element={<Navigate to="/franchise/dashboard" replace />} />
+          <Route
+            path="/dashboard"
+            element={
+              isAuthenticated ? (
+                <Navigate to={roleHome} replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin-dashboard"
+            element={<Navigate to="/admin/dashboard" replace />}
+          />
+          <Route
+            path="/student-dashboard"
+            element={<Navigate to="/student/dashboard" replace />}
+          />
+          <Route
+            path="/franchise-dashboard"
+            element={<Navigate to="/franchise/dashboard" replace />}
+          />
 
           {/* ══════════════════════════════════════════════════════════════
               ADMIN Dashboard — /admin/*
@@ -165,20 +233,52 @@ function App() {
           >
             {/* Default: /admin → /admin/dashboard */}
             <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard"  element={<DashboardOverview />} />
-            <Route path="courses"    element={<AllCourse />} />
+            <Route path="dashboard" element={<DashboardOverview />} />
+            <Route path="courses" element={<AllCourse />} />
             <Route path="add-course" element={<AddCourse />} />
-            <Route path="students"   element={<AllStudents />} />
+            <Route path="students" element={<AllStudents />} />
             <Route path="admissions" element={<StudentAdmission />} />
-            <Route path="enrolled"   element={<EnrolledStudents />} />
-            <Route path="products"   element={<AllProducts />} />
-            <Route path="branches"   element={<AllBranches />} />
+            <Route path="enrolled" element={<EnrolledStudents />} />
+            <Route path="products" element={<AllProducts />} />
+            <Route path="branches" element={<AllBranches />} />
             <Route path="add-branch" element={<AddBranch />} />
             {/* Stubs — to be implemented */}
-            <Route path="franchises" element={<ComingSoon title="Franchises" description="Manage all franchise partners from this section." />} />
-            <Route path="financials" element={<ComingSoon title="Financials & Payouts" description="Revenue reports, payout requests, and billing history." />} />
-            <Route path="support"    element={<ComingSoon title="Support Tickets" description="View and respond to support requests from students and franchises." />} />
-            <Route path="settings"   element={<ComingSoon title="System Settings" description="Configure platform-wide settings and preferences." />} />
+            <Route
+              path="franchises"
+              element={
+                <ComingSoon
+                  title="Franchises"
+                  description="Manage all franchise partners from this section."
+                />
+              }
+            />
+            <Route
+              path="financials"
+              element={
+                <ComingSoon
+                  title="Financials & Payouts"
+                  description="Revenue reports, payout requests, and billing history."
+                />
+              }
+            />
+            <Route
+              path="support"
+              element={
+                <ComingSoon
+                  title="Support Tickets"
+                  description="View and respond to support requests from students and franchises."
+                />
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <ComingSoon
+                  title="System Settings"
+                  description="Configure platform-wide settings and preferences."
+                />
+              }
+            />
           </Route>
 
           {/* ══════════════════════════════════════════════════════════════
@@ -194,18 +294,34 @@ function App() {
             }
           >
             <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard"  element={<DashboardOverview />} />
+            <Route path="dashboard" element={<DashboardOverview />} />
             <Route path="admissions" element={<StudentAdmission />} />
-            <Route path="students"   element={<AllStudents />} />
-            <Route path="enrolled"   element={<EnrolledStudents />} />
-            <Route path="courses"    element={<AllCourse />} />
+            <Route path="students" element={<AllStudents />} />
+            <Route path="enrolled" element={<EnrolledStudents />} />
+            <Route path="courses" element={<AllCourse />} />
             <Route path="add-course" element={<AddCourse />} />
-            <Route path="branches"   element={<AllBranches />} />
+            <Route path="branches" element={<AllBranches />} />
             <Route path="add-branch" element={<AddBranch />} />
-            <Route path="staff"      element={<AllStaff />} />
+            <Route path="staff" element={<AllStaff />} />
             {/* Stubs */}
-            <Route path="batches"    element={<ComingSoon title="Batches & Schedules" description="Manage class batches, timing, and batch assignments." />} />
-            <Route path="billing"    element={<ComingSoon title="Local Financials" description="View fee collections, pending invoices, and financial reports for your franchise." />} />
+            <Route
+              path="batches"
+              element={
+                <ComingSoon
+                  title="Batches & Schedules"
+                  description="Manage class batches, timing, and batch assignments."
+                />
+              }
+            />
+            <Route
+              path="billing"
+              element={
+                <ComingSoon
+                  title="Local Financials"
+                  description="View fee collections, pending invoices, and financial reports for your franchise."
+                />
+              }
+            />
           </Route>
 
           {/* ══════════════════════════════════════════════════════════════
@@ -221,15 +337,32 @@ function App() {
             }
           >
             <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard"   element={<DashboardOverview />} />
-            <Route path="courses"     element={<MyCourses />} />
+            <Route path="dashboard" element={<DashboardOverview />} />
+            <Route path="courses" element={<MyCourses />} />
             <Route path="assignments" element={<Downloads />} />
-            <Route path="fees"        element={<FeesHistory />} />
-            <Route path="studymat"    element={<StudyMatOrder />} />
-            <Route path="orders"      element={<OrderHistory />} />
+            <Route path="fees" element={<FeesHistory />} />
+            <Route path="studymat" element={<StudyMatOrder />} />
+            <Route path="orders" element={<OrderHistory />} />
             {/* Stubs */}
-            <Route path="live"        element={<ComingSoon title="Live Classes" description="Join your scheduled live sessions with instructors in real time." badge="Live" />} />
-            <Route path="progress"    element={<ComingSoon title="Progress & Grades" description="View your assessment scores, course completion, and grade reports." />} />
+            <Route
+              path="live"
+              element={
+                <ComingSoon
+                  title="Live Classes"
+                  description="Join your scheduled live sessions with instructors in real time."
+                  badge="Live"
+                />
+              }
+            />
+            <Route
+              path="progress"
+              element={
+                <ComingSoon
+                  title="Progress & Grades"
+                  description="View your assessment scores, course completion, and grade reports."
+                />
+              }
+            />
           </Route>
 
           {/* ── 404 Catch-all ──────────────────────────────────────────── */}
