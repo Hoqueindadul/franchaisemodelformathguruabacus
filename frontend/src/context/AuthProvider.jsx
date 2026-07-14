@@ -8,9 +8,11 @@ import React, {
 } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { BACKEND_URL } from "../utils";
-import { LOCAL_BACKEND_URL } from "../local_backend_url";
+import { currentConfig } from "../utils";
 
+const API_URL = currentConfig.API_URL;
+
+axios.defaults.withCredentials = true;
 // Create Context
 const AuthContext = createContext();
 
@@ -61,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   const fetchCourses = useCallback(async () => {
     try {
       setLoadingCourses(true); // Start loading state before network trip
-      const response = await axios.get(`${BACKEND_URL}/api/courses/allCourse`);
+      const response = await axios.get(`${API_URL}/courses/allCourse`);
       const targetData = response.data?.courses || response.data;
 
       if (targetData && Array.isArray(targetData)) {
@@ -82,7 +84,7 @@ export const AuthProvider = ({ children }) => {
   const fetchAllStudents = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${BACKEND_URL}/api/admission/getAllAdmitedStudents`,
+        `${API_URL}/admission/getAllAdmitedStudents`,
       );
       if (Array.isArray(response.data)) {
         setStudents(response.data);
@@ -116,7 +118,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const response = await axios.get(
-        `${BACKEND_URL}/api/enrollment/user-courses/${userId}`,
+        `${API_URL}/enrollment/user-courses/${userId}`,
       );
 
       if (Array.isArray(response.data)) {
@@ -138,7 +140,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       await axios.delete(
-        `${BACKEND_URL}/api/admission/deleteAdmitedStudent/${studentId}`,
+        `${API_URL}/admission/deleteAdmitedStudent/${studentId}`,
       );
       setStudents((prevStudents) =>
         prevStudents.filter((student) => student._id !== studentId),

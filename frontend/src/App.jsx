@@ -5,209 +5,239 @@ import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectRoute";
 import { useAuth } from "./context/AuthProvider";
+import { roleMeta } from "./config/navigation";
 
-// Static Components (Load Immediately)
-import NavBar from "./components/NavBar";
-import Home from "./components/Home";
-import Footer from "./components/Footer";
+// ── Static / Always-loaded Components ──────────────────────────────────────
+import NavBar  from "./components/NavBar";
+import Home    from "./components/Home";
+import Footer  from "./components/Footer";
 import NotFound from "./components/NotFound";
-import Cart from "./pages/cart/Cart";
+import Cart    from "./pages/cart/Cart";
+import Hero    from "./components/Hero";
 
-// Lazy-loaded Pages
-const About = lazy(() => import("./pages/companyDetails/About"));
-const Whatwedo = lazy(() => import("./pages/companyDetails/Whatwedo"));
-import Hero from "./components/Hero";
+// ── Lazy: Public Pages ──────────────────────────────────────────────────────
+const About               = lazy(() => import("./pages/companyDetails/About"));
+const Whatwedo            = lazy(() => import("./pages/companyDetails/Whatwedo"));
+const Contact             = lazy(() => import("./pages/companyDetails/Contact"));
+const Courses             = lazy(() => import("./pages/courses/Courses"));
+const CourseDetails       = lazy(() => import("./pages/courses/CourseDetails"));
+const Benifit             = lazy(() => import("./pages/Franchise/Benifit"));
+const Criteria            = lazy(() => import("./pages/Franchise/Criteria"));
+const FranchiseRegistraion= lazy(() => import("./pages/Franchise/FranchiseRegistraion"));
+const FranchiseLogin      = lazy(() => import("./pages/Franchise/FranchiseLogin"));
+const BecomeTrainer       = lazy(() => import("./pages/Trainer/BecomeTrainer"));
+const Trainers            = lazy(() => import("./pages/Trainer/Trainers"));
+const Products            = lazy(() => import("./pages/productPages/Products"));
+const ProductDetails      = lazy(() => import("./pages/productPages/ProductDetails"));
+const FeeForm             = lazy(() => import("./pages/feesCollection/FeeForm"));
+const PaymentPage         = lazy(() => import("./pages/payments/PaymentPage"));
+const PlaceOrder          = lazy(() => import("./pages/order/PlaceOrder"));
+const ProductPaymentForm  = lazy(() => import("./pages/feesCollection/ProductPaymentForm"));
 
-// Courses
-const Courses = lazy(() => import("./pages/courses/Courses"));
-const CourseDetails = lazy(() => import("./pages/courses/CourseDetails"));
-
-// Franchise
-const Benifit = lazy(() => import("./pages/Franchise/Benifit"));
-const Criteria = lazy(() => import("./pages/Franchise/Criteria"));
-const FranchiseRegistraion = lazy(
-  () => import("./pages/Franchise/FranchiseRegistraion"),
-);
-const FranchiseLogin = lazy(() => import("./pages/Franchise/FranchiseLogin"));
-
-// Trainers
-const BecomeTrainer = lazy(() => import("./pages/Trainer/BecomeTrainer"));
-const Trainers = lazy(() => import("./pages/Trainer/Trainers"));
-
-// Other Pages
-const Products = lazy(() => import("./pages/productPages/Products"));
-const Contact = lazy(() => import("./pages/companyDetails/Contact"));
-
-// Authentication
-const Login = lazy(() => import("./pages/Authentications/Login"));
+// ── Lazy: Auth Pages ────────────────────────────────────────────────────────
+const Login    = lazy(() => import("./pages/Authentications/Login"));
 const Register = lazy(() => import("./pages/Authentications/Register"));
 
-// Product pages
+// ── Lazy: Shared Dashboard Layout (NEW) ────────────────────────────────────
+// This is the new layout at src/layouts/ — it uses the dynamic Sidebar.
+const DashboardLayout = lazy(() => import("./layouts/DashboardLayout"));
 
-const ProductDetails = lazy(
-  () => import("./pages/productPages/ProductDetails"),
-);
-// Payment
-const FeeForm = lazy(() => import("./pages/feesCollection/FeeForm"));
-const PaymentPage = lazy(() => import("./pages/payments/PaymentPage"));
-const PlaceOrder = lazy(() => import("./pages/order/PlaceOrder"));
-const ProductPaymentForm = lazy(
-  () => import("./pages/feesCollection/ProductPaymentForm"),
-);
+// ── Lazy: Role-Shared Dashboard Overview ───────────────────────────────────
+const DashboardOverview = lazy(() => import("./pages/dashboards/DashboardOverview"));
 
-// Dashboard
-const AdminDashboard = lazy(
-  () => import("./pages/dashbords/admin_dashboard/Admin-dashboard"),
-);
-const StudentDashboard = lazy(
-  () => import("./pages/dashbords/student_dashboard/Student-dashboard"),
-);
-const FranchiseDashboard = lazy(
-  () => import("./pages/dashbords/franchise_dashboard/Franchise-dashboard"),
-);
+// ── Lazy: ADMIN & FRANCHISE Pages ──────────────────────────────────────────
+const AddBranch       = lazy(() => import("./pages/dashboards/components/admin/branch/AddBranch"));
+const AllBranches     = lazy(() => import("./pages/dashboards/components/admin/branch/AllBranches"));
+const AddCourse       = lazy(() => import("./pages/dashboards/components/admin/courseSubTab/AddCourse"));
+const AllCourse       = lazy(() => import("./pages/dashboards/components/admin/courseSubTab/AllCourse"));
+const StudentAdmission= lazy(() => import("./pages/dashboards/components/admin/studentSubTab/StudentAdmission"));
+const AllStudents     = lazy(() => import("./pages/dashboards/components/admin/studentSubTab/AllStudents"));
+const AllProducts     = lazy(() => import("./pages/dashboards/components/admin/products/AllProducts"));
+const AllStaff        = lazy(() => import("./pages/dashboards/components/admin/staffSubTab/AllStaff"));
+const EnrolledStudents= lazy(() => import("./pages/dashboards/components/shared/EnrolledStudents"));
+
+// ── Lazy: STUDENT Pages ─────────────────────────────────────────────────────
+const MyCourses      = lazy(() => import("./pages/dashboards/components/student/Mycourses"));
+const Downloads      = lazy(() => import("./pages/dashboards/components/student/Downloads"));
+const FeesHistory    = lazy(() => import("./pages/dashboards/components/student/FeesHistory"));
+const StudyMatOrder  = lazy(() => import("./pages/dashboards/components/student/StudyMatOrder"));
+const OrderHistory   = lazy(() => import("./pages/dashboards/components/student/OrderHistory"));
+
+// ── Lazy: Placeholder ───────────────────────────────────────────────────────
+const ComingSoon = lazy(() => import("./pages/common/ComingSoon"));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Paths where the public NavBar/Footer should be hidden
+// (all dashboard namespaces + auth pages)
+const DASHBOARD_PREFIXES = ["/admin", "/franchise", "/student"];
+const AUTH_PATHS         = ["/login", "/register", "/franchise-registraion", "/franchise-login"];
 
 function App() {
   const location = useLocation();
   const { isAuthenticated, userRole } = useAuth();
 
-  const hideNavbarFooter = [
-    "/dashboard",
-    "/student-dashboard",
-    "/franchise-dashboard",
-    "/admin-dashboard",
-    "/register",
-    "/login",
-    "/franchise-registraion",
-    "/franchise-login",
-  ].includes(location.pathname);
+  // Hide the public NavBar/Footer inside any dashboard namespace or on auth pages
+  const hideNavbarFooter =
+    DASHBOARD_PREFIXES.some((p) => location.pathname.startsWith(p)) ||
+    AUTH_PATHS.includes(location.pathname);
 
-  // Cart state
+  // Cart state (lifted up so it persists across public pages)
   const [cartItems, setCartItems] = useState([]);
+  const addToCart = (item) => setCartItems((prev) => [...prev, item]);
 
-  // Add item to cart
-  const addToCart = (item) => {
-    setCartItems((prevItems) => [...prevItems, item]);
-  };
+  // Determine the home URL for the logged-in user's role
+  // Used to redirect /dashboard → role-specific home
+  const roleHome = roleMeta[userRole]?.home || "/login";
 
   return (
     <div>
       {!hideNavbarFooter && <NavBar />}
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/whatwedo" element={<Whatwedo />} />
-          <Route path="/becomeatrainer" element={<BecomeTrainer />} />
-          <Route path="/hero" element={<Hero />} />
-          {/* Franchise Routes */}
-          <Route path="/benifit" element={<Benifit />} />
-          <Route path="/criteria" element={<Criteria />} />
-          <Route
-            path="/franchise-registraion"
-            element={<FranchiseRegistraion />}
-          />
-          <Route path="/franchise-login" element={<FranchiseLogin />} />
-          {/* Trainers */}
-          <Route path="/become-trainer" element={<BecomeTrainer />} />
-          <Route path="/trainers" element={<Trainers />} />
 
-          {/* Buy Materials */}
-          <Route
-            path="/products"
-            element={<Products addToCart={addToCart} />}
-          />
-          <Route path="/cart" element={<Cart cartItems={cartItems} />} />
-          {/* Courses */}
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/courses/:courseId" element={<CourseDetails />} />
-          {/* Product */}
-          <Route
-            path="/productDetails/:productName/:productImage/:price"
-            element={<ProductDetails />}
-          />
+      <Suspense
+        fallback={
+          <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="spinner-grow text-primary" role="status" />
+          </div>
+        }
+      >
+        <Routes>
+          {/* ── Public Routes ──────────────────────────────────────────── */}
+          <Route path="/"         element={<Home />} />
+          <Route path="/about"    element={<About />} />
+          <Route path="/contact"  element={<Contact />} />
+          <Route path="/whatwedo" element={<Whatwedo />} />
+          <Route path="/hero"     element={<Hero />} />
+
+          {/* Franchise Info */}
+          <Route path="/benifit"               element={<Benifit />} />
+          <Route path="/criteria"              element={<Criteria />} />
+          <Route path="/franchise-registraion" element={<FranchiseRegistraion />} />
+          <Route path="/franchise-login"       element={<FranchiseLogin />} />
+
+          {/* Trainers */}
+          <Route path="/becomeatrainer" element={<BecomeTrainer />} />
+          <Route path="/become-trainer" element={<BecomeTrainer />} />
+          <Route path="/trainers"       element={<Trainers />} />
+
+          {/* Shop */}
+          <Route path="/products" element={<Products addToCart={addToCart} />} />
+          <Route path="/cart"     element={<Cart cartItems={cartItems} />} />
+          <Route path="/productDetails/:productName/:productImage/:price" element={<ProductDetails />} />
           <Route path="/productDetails" element={<ProductDetails />} />
-          {/* Payment */}
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/feesForm" element={<FeeForm />} />
-          <Route path="/placeOrder" element={<PlaceOrder />} />
+
+          {/* Courses */}
+          <Route path="/courses"           element={<Courses />} />
+          <Route path="/courses/:courseId" element={<CourseDetails />} />
+
+          {/* Payments */}
+          <Route path="/payment"            element={<PaymentPage />} />
+          <Route path="/feesForm"           element={<FeeForm />} />
+          <Route path="/placeOrder"         element={<PlaceOrder />} />
           <Route path="/productPaymentForm" element={<ProductPaymentForm />} />
-          {/* Authentication */}
+
+          {/* ── Auth Routes ────────────────────────────────────────────── */}
           <Route
             path="/login"
-            element={
-              isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
-            }
+            element={isAuthenticated ? <Navigate to={roleHome} replace /> : <Login />}
           />
           <Route
             path="/register"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
-                <Register />
-              )
-            }
+            element={isAuthenticated ? <Navigate to={roleHome} replace /> : <Register />}
           />
-          {/* Role-Based Protected Routes */}
+
+          {/* ── Legacy redirects — forward old URLs to new role paths ─── */}
+          <Route path="/dashboard"          element={isAuthenticated ? <Navigate to={roleHome} replace /> : <Navigate to="/login" replace />} />
+          <Route path="/admin-dashboard"    element={<Navigate to="/admin/dashboard"     replace />} />
+          <Route path="/student-dashboard"  element={<Navigate to="/student/dashboard"   replace />} />
+          <Route path="/franchise-dashboard"element={<Navigate to="/franchise/dashboard" replace />} />
+
+          {/* ══════════════════════════════════════════════════════════════
+              ADMIN Dashboard — /admin/*
+              Only accessible to users with role === 'admin'
+          ══════════════════════════════════════════════════════════════ */}
           <Route
-            path="/dashboard"
+            path="/admin"
             element={
-              <ProtectedRoute>
-                {userRole === "admin" ? (
-                  <AdminDashboard />
-                ) : userRole === "franchise" ? (
-                  <Navigate to="/franchise-dashboard" replace />
-                ) : userRole === "student" ? (
-                  <Navigate to="/student-dashboard" replace />
-                ) : (
-                  <Navigate to="/login" replace />
-                )}
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <DashboardLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            {/* Default: /admin → /admin/dashboard */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard"  element={<DashboardOverview />} />
+            <Route path="courses"    element={<AllCourse />} />
+            <Route path="add-course" element={<AddCourse />} />
+            <Route path="students"   element={<AllStudents />} />
+            <Route path="admissions" element={<StudentAdmission />} />
+            <Route path="enrolled"   element={<EnrolledStudents />} />
+            <Route path="products"   element={<AllProducts />} />
+            <Route path="branches"   element={<AllBranches />} />
+            <Route path="add-branch" element={<AddBranch />} />
+            {/* Stubs — to be implemented */}
+            <Route path="franchises" element={<ComingSoon title="Franchises" description="Manage all franchise partners from this section." />} />
+            <Route path="financials" element={<ComingSoon title="Financials & Payouts" description="Revenue reports, payout requests, and billing history." />} />
+            <Route path="support"    element={<ComingSoon title="Support Tickets" description="View and respond to support requests from students and franchises." />} />
+            <Route path="settings"   element={<ComingSoon title="System Settings" description="Configure platform-wide settings and preferences." />} />
+          </Route>
+
+          {/* ══════════════════════════════════════════════════════════════
+              FRANCHISE Dashboard — /franchise/*
+              Only accessible to users with role === 'franchise'
+          ══════════════════════════════════════════════════════════════ */}
           <Route
-            path="/student-dashboard"
+            path="/franchise"
             element={
-              <ProtectedRoute>
-                {userRole === "student" ? (
-                  <StudentDashboard />
-                ) : (
-                  <Navigate to="/dashboard" replace />
-                )}
+              <ProtectedRoute allowedRoles={["franchise"]}>
+                <DashboardLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard"  element={<DashboardOverview />} />
+            <Route path="admissions" element={<StudentAdmission />} />
+            <Route path="students"   element={<AllStudents />} />
+            <Route path="enrolled"   element={<EnrolledStudents />} />
+            <Route path="courses"    element={<AllCourse />} />
+            <Route path="add-course" element={<AddCourse />} />
+            <Route path="branches"   element={<AllBranches />} />
+            <Route path="add-branch" element={<AddBranch />} />
+            <Route path="staff"      element={<AllStaff />} />
+            {/* Stubs */}
+            <Route path="batches"    element={<ComingSoon title="Batches & Schedules" description="Manage class batches, timing, and batch assignments." />} />
+            <Route path="billing"    element={<ComingSoon title="Local Financials" description="View fee collections, pending invoices, and financial reports for your franchise." />} />
+          </Route>
+
+          {/* ══════════════════════════════════════════════════════════════
+              STUDENT Dashboard — /student/*
+              Only accessible to users with role === 'student'
+          ══════════════════════════════════════════════════════════════ */}
           <Route
-            path="/franchise-dashboard"
+            path="/student"
             element={
-              <ProtectedRoute>
-                {userRole === "franchise" ? (
-                  <FranchiseDashboard />
-                ) : (
-                  <Navigate to="/dashboard" replace />
-                )}
+              <ProtectedRoute allowedRoles={["student"]}>
+                <DashboardLayout />
               </ProtectedRoute>
             }
-          />
-          <Route
-            path="/admin-dashboard"
-            element={
-              <ProtectedRoute>
-                {userRole === "admin" ? (
-                  <AdminDashboard />
-                ) : (
-                  <Navigate to="/dashboard" replace />
-                )}
-              </ProtectedRoute>
-            }
-          />
-          {/* 404 Not Found */}
+          >
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard"   element={<DashboardOverview />} />
+            <Route path="courses"     element={<MyCourses />} />
+            <Route path="assignments" element={<Downloads />} />
+            <Route path="fees"        element={<FeesHistory />} />
+            <Route path="studymat"    element={<StudyMatOrder />} />
+            <Route path="orders"      element={<OrderHistory />} />
+            {/* Stubs */}
+            <Route path="live"        element={<ComingSoon title="Live Classes" description="Join your scheduled live sessions with instructors in real time." badge="Live" />} />
+            <Route path="progress"    element={<ComingSoon title="Progress & Grades" description="View your assessment scores, course completion, and grade reports." />} />
+          </Route>
+
+          {/* ── 404 Catch-all ──────────────────────────────────────────── */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-      <Toaster />
+
+      <Toaster position="top-right" />
       {!hideNavbarFooter && <Footer />}
     </div>
   );

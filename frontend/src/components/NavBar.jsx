@@ -9,6 +9,7 @@ import {
   FaShoppingCart,
   FaUser,
   FaSignOutAlt,
+  FaThLarge,
 } from "react-icons/fa";
 import {
   Container,
@@ -267,6 +268,15 @@ function NavBar() {
                     className="shadow border-0 mt-2 p-2 rounded-3"
                     style={{ minWidth: "170px" }}
                   >
+                    {/* Added Dashboard Item */}
+                    <Dropdown.Item
+                      as={Link}
+                      to="/dashboard" // Update this path if your route relies on a specific role like /admin/dashboard
+                      className="py-2 px-3 rounded-2 text-secondary d-flex align-items-center gap-2 small"
+                    >
+                      <FaThLarge className="opacity-75" /> Dashboard
+                    </Dropdown.Item>
+
                     <Dropdown.Item
                       as={Link}
                       to="/profile"

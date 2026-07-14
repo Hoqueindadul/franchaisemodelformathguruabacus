@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { GoPeople } from "react-icons/go";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../utils.js";
 import toast from "react-hot-toast";
 import { FaBoxOpen, FaPlay } from "react-icons/fa";
 import Hero from "./Hero.jsx";
@@ -16,6 +15,12 @@ import {
 } from "react-icons/fa";
 import Classes from "./CoursesSlider.jsx";
 import About from "../pages/companyDetails/About.jsx";
+
+import { currentConfig } from "../utils.js";
+
+const API_URL = currentConfig.API_URL;
+
+axios.defaults.withCredentials = true;
 
 function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -31,9 +36,7 @@ function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_URL}/api/products/getAllProducts`,
-        );
+        const response = await axios.get(`${API_URL}/products/getAllProducts`);
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else if (Array.isArray(response.data.products)) {
@@ -61,13 +64,10 @@ function Home() {
     setIsSending(true);
 
     try {
-      const response = await axios.get(
-        `${BACKEND_URL}/api/users/sendWhatsappMessage`,
-        {
-          params: formData,
-          withCredentials: true,
-        },
-      );
+      const response = await axios.get(`${API_URL}/users/sendWhatsappMessage`, {
+        params: formData,
+        withCredentials: true,
+      });
 
       if (response.data.response.success) {
         toast.success("WhatsApp message sent successfully!");

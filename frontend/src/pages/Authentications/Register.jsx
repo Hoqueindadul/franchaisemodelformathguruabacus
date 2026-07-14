@@ -2,8 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { BACKEND_URL } from "../../utils";
-import { LOCAL_BACKEND_URL } from "../../local_backend_url";
+import { currentConfig } from "../../utils";
 import {
   FaAngleLeft,
   FaEye,
@@ -15,8 +14,7 @@ import {
   FaUser,
 } from "react-icons/fa6";
 
-const isProduction = process.env.NODE_ENV === "production";
-const BASE_URL = isProduction ? BACKEND_URL : LOCAL_BACKEND_URL;
+const API_URL = currentConfig.API_URL;
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -60,7 +58,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/users/register`,
+        `${API_URL}/users/register`,
         { ...formData, phone: cleanedPhone },
         {
           headers: {

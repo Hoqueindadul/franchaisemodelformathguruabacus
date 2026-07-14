@@ -13,7 +13,6 @@ import {
 export default function Courses() {
   // 1. Pull loadingCourses alongside the courses array from your Auth context
   const { courses, loadingCourses } = useAuth();
-  console.log("Current Courses Payload State:", courses);
 
   // Modern component style configuration mirroring elite ed-tech presentation standards
   const styles = {

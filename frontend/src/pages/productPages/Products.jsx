@@ -6,7 +6,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FaShoppingCart, FaBolt } from "react-icons/fa";
 import { useAuth } from "../../context/AuthProvider.jsx";
-import { BACKEND_URL } from "../../utils.js";
+import { currentConfig } from "../../utils";
+
+const API_URL = currentConfig.API_URL;
 
 export default function Products() {
   const [cart, setCart] = useState([]);
@@ -19,9 +21,7 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `${BACKEND_URL}/api/products/getAllProducts`,
-        );
+        const response = await axios.get(`${API_URL}/products/getAllProducts`);
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else if (Array.isArray(response.data.products)) {

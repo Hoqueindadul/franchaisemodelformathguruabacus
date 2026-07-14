@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BACKEND_URL } from "../../utils";
+import { currentConfig } from "../../utils";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate, useParams } from "react-router-dom"; // Hook reads router tokens
@@ -19,8 +19,9 @@ import {
   FaPlayCircle,
 } from "react-icons/fa";
 
+const API_URL = currentConfig.API_URL;
+
 const CourseDetails = () => {
-  // 1. 🔥 FIX: Target the URL path token as courseId instead of a slug
   const { courseId } = useParams();
   const { isAuthenticated, courses, loadingCourses } = useAuth();
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const CourseDetails = () => {
       return;
     }
 
-    // 3. 🔥 FIX: Match the exact _id from the URL string parameter against your schema records
+    // 3. FIX: Match the exact _id from the URL string parameter against your schema records
     const course = courses.find((c) => c._id === courseId);
     setMatchedCourse(course);
 
@@ -61,7 +62,7 @@ const CourseDetails = () => {
         }
 
         const response = await axios.get(
-          `${BACKEND_URL}/api/enrollcourse/enrolled/${student._id}`,
+          `${API_URL}/enrollcourse/enrolled/${student._id}`,
           {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
           },
@@ -110,7 +111,7 @@ const CourseDetails = () => {
       };
 
       const response = await axios.post(
-        `${BACKEND_URL}/api/enrollcourse/enroll`,
+        `${API_URL}/enrollcourse/enroll`,
         requestBody,
         { headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` } },
       );

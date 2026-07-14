@@ -1,35 +1,40 @@
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./context/AuthProvider";
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './context/AuthProvider';
+import { roleMeta } from './config/navigation';
 
-const ProtectRoute = ({ children }) => {
+/**
+ * ProtectedRoute — Role-Aware Route Guard
+ * ────────────────────────────────────────
+ * Props:
+ *   children     {ReactNode}  - The component to render if auth passes
+ *   allowedRoles {string[]}   - Roles permitted to access this route.
+ *                               Leave undefined / empty to allow all authenticated users.
+ *
+ * Behavior:
+ *   1. Not authenticated → redirect to /login (preserves intended URL)
+ *   2. Authenticated but wrong role → redirect to own role's home dashboard
+ *   3. Authenticated + correct role (or no restriction) → render children
+ */
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const { isAuthenticated, userRole } = useAuth();
   const location = useLocation();
 
-  // If not authenticated, redirect to login
+  // ── Guard 1: Must be logged in ─────────────────────────────────────
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    // Preserve the attempted URL so we can redirect back after login
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
-  // Define role-based dashboards
-  const roleBasedRoutes = {
-    student: "/student-dashboard",
-    franchise: "/franchise-dashboard",
-    admin: "/admin-dashboard",
-  };
-
-  // If the user is already on their dashboard, allow access
-  if (location.pathname === roleBasedRoutes[userRole]) {
-    return children;
+  // ── Guard 2: Role check (only when allowedRoles is specified) ───────
+  if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
+    // Redirect the user to their own correct dashboard home
+    const homePath = roleMeta[userRole]?.home || '/login';
+    return <Navigate to={homePath} replace />;
   }
 
-  // Redirect users to their respective dashboards if they are not already there
-  if (userRole in roleBasedRoutes) {
-    return <Navigate to={roleBasedRoutes[userRole]} replace />;
-  }
-
-  // If no specific role, allow access to the requested route
+  // ── All checks passed → render the protected component ─────────────
   return children;
 };
 
-export default ProtectRoute;
+export default ProtectedRoute;
