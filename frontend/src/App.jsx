@@ -41,7 +41,6 @@ const Login = lazy(() => import("./pages/Authentications/Login"));
 const Register = lazy(() => import("./pages/Authentications/Register"));
 
 // ── Lazy: Shared Dashboard Layout (NEW) ────────────────────────────────────
-// This is the new layout at src/layouts/ — it uses the dynamic Sidebar.
 const DashboardLayout = lazy(() => import("./layouts/DashboardLayout"));
 
 // ── Lazy: Role-Shared Dashboard Overview ───────────────────────────────────
@@ -50,14 +49,11 @@ const DashboardOverview = lazy(
 );
 
 // ── Lazy: ADMIN & FRANCHISE Pages ──────────────────────────────────────────
-const AddBranch = lazy(
-  () => import("./pages/dashboards/components/admin/branch/AddBranch"),
+const ControlPanel = lazy(
+  () => import("./pages/dashboards/components/admin/controlPanel/ControlPanel"),
 );
 const AllBranches = lazy(
   () => import("./pages/dashboards/components/admin/branch/AllBranches"),
-);
-const AddCourse = lazy(
-  () => import("./pages/dashboards/components/admin/courseSubTab/AddCourse"),
 );
 const AllCourse = lazy(
   () => import("./pages/dashboards/components/admin/courseSubTab/AllCourse"),
@@ -77,6 +73,16 @@ const AllStaff = lazy(
 );
 const EnrolledStudents = lazy(
   () => import("./pages/dashboards/components/shared/EnrolledStudents"),
+);
+const Allapproval = lazy(
+  () => import("./pages/dashboards/components/admin/approvals/Allapproval"),
+);
+const Payout = lazy(
+  () => import("./pages/dashboards/components/admin/manageFinance/Payout"),
+);
+const SupportTicket = lazy(
+  () =>
+    import("./pages/dashboards/components/admin/supportTicket/SupportTicket"),
 );
 
 // ── Lazy: STUDENT Pages ─────────────────────────────────────────────────────
@@ -101,7 +107,6 @@ const ComingSoon = lazy(() => import("./pages/common/ComingSoon"));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Paths where the public NavBar/Footer should be hidden
-// (all dashboard namespaces + auth pages)
 const DASHBOARD_PREFIXES = ["/admin", "/franchise", "/student"];
 const AUTH_PATHS = [
   "/login",
@@ -119,12 +124,11 @@ function App() {
     DASHBOARD_PREFIXES.some((p) => location.pathname.startsWith(p)) ||
     AUTH_PATHS.includes(location.pathname);
 
-  // Cart state (lifted up so it persists across public pages)
+  // Cart state
   const [cartItems, setCartItems] = useState([]);
   const addToCart = (item) => setCartItems((prev) => [...prev, item]);
 
   // Determine the home URL for the logged-in user's role
-  // Used to redirect /dashboard → role-specific home
   const roleHome = roleMeta[userRole]?.home || "/login";
 
   return (
@@ -195,7 +199,7 @@ function App() {
             }
           />
 
-          {/* ── Legacy redirects — forward old URLs to new role paths ─── */}
+          {/* ── Legacy redirects ──────────────────────────────────────── */}
           <Route
             path="/dashboard"
             element={
@@ -221,7 +225,6 @@ function App() {
 
           {/* ══════════════════════════════════════════════════════════════
               ADMIN Dashboard — /admin/*
-              Only accessible to users with role === 'admin'
           ══════════════════════════════════════════════════════════════ */}
           <Route
             path="/admin"
@@ -231,18 +234,20 @@ function App() {
               </ProtectedRoute>
             }
           >
-            {/* Default: /admin → /admin/dashboard */}
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardOverview />} />
             <Route path="courses" element={<AllCourse />} />
-            <Route path="add-course" element={<AddCourse />} />
             <Route path="students" element={<AllStudents />} />
             <Route path="admissions" element={<StudentAdmission />} />
             <Route path="enrolled" element={<EnrolledStudents />} />
             <Route path="products" element={<AllProducts />} />
             <Route path="branches" element={<AllBranches />} />
-            <Route path="add-branch" element={<AddBranch />} />
-            {/* Stubs — to be implemented */}
+            <Route path="control-panel" element={<ControlPanel />} />
+            <Route path="approvals" element={<Allapproval />} />
+            <Route path="financials" element={<Payout />} />
+            <Route path="support" element={<SupportTicket />} />
+
+            {/* Remaining Stubs */}
             <Route
               path="franchises"
               element={
@@ -252,15 +257,7 @@ function App() {
                 />
               }
             />
-            <Route
-              path="financials"
-              element={
-                <ComingSoon
-                  title="Financials & Payouts"
-                  description="Revenue reports, payout requests, and billing history."
-                />
-              }
-            />
+
             <Route
               path="support"
               element={
@@ -270,20 +267,10 @@ function App() {
                 />
               }
             />
-            <Route
-              path="settings"
-              element={
-                <ComingSoon
-                  title="System Settings"
-                  description="Configure platform-wide settings and preferences."
-                />
-              }
-            />
           </Route>
 
           {/* ══════════════════════════════════════════════════════════════
               FRANCHISE Dashboard — /franchise/*
-              Only accessible to users with role === 'franchise'
           ══════════════════════════════════════════════════════════════ */}
           <Route
             path="/franchise"
@@ -299,11 +286,8 @@ function App() {
             <Route path="students" element={<AllStudents />} />
             <Route path="enrolled" element={<EnrolledStudents />} />
             <Route path="courses" element={<AllCourse />} />
-            <Route path="add-course" element={<AddCourse />} />
             <Route path="branches" element={<AllBranches />} />
-            <Route path="add-branch" element={<AddBranch />} />
             <Route path="staff" element={<AllStaff />} />
-            {/* Stubs */}
             <Route
               path="batches"
               element={
@@ -326,7 +310,6 @@ function App() {
 
           {/* ══════════════════════════════════════════════════════════════
               STUDENT Dashboard — /student/*
-              Only accessible to users with role === 'student'
           ══════════════════════════════════════════════════════════════ */}
           <Route
             path="/student"
@@ -343,7 +326,6 @@ function App() {
             <Route path="fees" element={<FeesHistory />} />
             <Route path="studymat" element={<StudyMatOrder />} />
             <Route path="orders" element={<OrderHistory />} />
-            {/* Stubs */}
             <Route
               path="live"
               element={

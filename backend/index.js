@@ -11,7 +11,7 @@ import courseRoute from "./routes/courses.route.js";
 import otpRoute from "./routes/otp.route.js";
 import enrollRoute from "./routes/courseEnrollment.route.js";
 import studentAdmissionRoute from "./routes/studentAdmission.route.js";
-import branchRoute from "./routes/addBranch.route.js";
+import branchRoute from "./routes/branch.route.js";
 import productRoute from "./routes/products.route.js"; // Ensure this is correct
 
 const app = express();
@@ -31,7 +31,7 @@ app.use(
   cors({
     origin: frontendUrl,
     credentials: true, // Required if you are handling cookies/sessions
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );

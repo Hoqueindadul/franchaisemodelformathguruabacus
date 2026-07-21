@@ -1,15 +1,34 @@
-import AddBranchModel from "../models/addBranch.model.js";
+import BranchModel from "../models/branch.model.js";
+import FranchiseModel from "../models/franchise.model.js";
 
 export const addBranch = async (req, res) => {
     try {
-        const branch = req.body;
-        const newBranch = new AddBranchModel(branch);
-        const savedBranch = await newBranch.save();
+        const { franchiseId, branchName, status, contact, location } = req.body;
+
+        const franchise = await FranchiseModel.findById(franchiseId);
+        if (!franchise) {
+            return res.status(404).json({
+                success: false,
+                message: "Franchise not found"
+            });
+        }
+
+        const branch = new BranchModel({
+            franchiseId,
+            branchName,
+            status,
+            contact,
+            location
+        });
+
+        await branch.save();
         res.status(201).json({
             success: true,
             message: "Branch added successfully",
-            data: savedBranch
+            data: branch
         });
+
+
     } catch (error) {
         console.error("Error adding branch:", error);
         res.status(500).json({ message: "Server error adding branch" });
@@ -18,7 +37,7 @@ export const addBranch = async (req, res) => {
 
 export const getAllBranches = async (req, res) => {
     try {
-        const branches = await AddBranchModel.find();
+        const branches = await BranchModel.find().populate("franchiseId", "franchiseName");
         if (!branches.length) {
             return res.status(404).json({
                 success: false,
@@ -36,13 +55,13 @@ export const getAllBranches = async (req, res) => {
     }
 };
 
-export const getBranchById = async (req, res) => {
+export const getBranchByFranshiseId = async (req, res) => {
     try {
-        const branch = await AddBranchModel.findById(req.params.id);
+        const branch = await BranchModel.find({franchiseId: req.params.id}).populate("franchiseId", "franchiseName");
         if (!branch) {
             return res.status(404).json({
                 success: false,
-                message: "Branch not found"
+                message: "Branch not found under this franchise"
             });
         }
         res.status(200).json({
@@ -58,7 +77,7 @@ export const getBranchById = async (req, res) => {
 
 export const updateBranch = async (req, res) => {
     try {
-        const updatedBranch = await AddBranchModel.findByIdAndUpdate(
+        const updatedBranch = await BranchModel.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
@@ -82,7 +101,7 @@ export const updateBranch = async (req, res) => {
 
 export const deleteBranch = async (req, res) => {
     try {
-        const branch = await AddBranchModel.findByIdAndDelete(req.params.id);
+        const branch = await BranchModel.findByIdAndDelete(req.params.id);
         if (!branch) {
             return res.status(404).json({
                 success: false,

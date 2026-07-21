@@ -5,62 +5,94 @@ import jwt from "jsonwebtoken"
 
 export const franchise_register = async (req, res) => {
     try {
-        const { fullName, email, phone, address, note, password } = req.body;
+        // 1. Destructure the flat payload provided by the updated Zod schema
+        const { 
+            brandName, firstName, lastName, email, phone, taxId,
+            legalName, tradeName, incorporationType,
+            addressLine1, addressLine2, city, state, postalCode, country,
+            longitude, latitude, signedDate, expiryDate, 
+            initialFeePaid, royaltyPercentage, marketingFeePercentage, contractDocumentUrl,
+            password, notes 
+        } = req.body;
 
-        // Validate input fields
-        if (!fullName || !email || !phone || !address || !note || !password) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        // Check for duplicate franchise name (optional, based on your requirements)
-        const existingFranchiseName = await Franchises.findOne({ fullName });
-        if (existingFranchiseName) {
-            return res.status(400).json({ message: "This franchise already exists." });
-        }
-
-        // Check for duplicate phone number
-        const existingPhone = await Franchises.findOne({ phone });
-        if (existingPhone) {
-            return res.status(400).json({ message: "This phone number is already registered." });
-        }
-
-        // Check for duplicate email
-        const existingEmail = await Franchises.findOne({ email });
+        // 2. Query data using the nested schema paths
+        const existingEmail = await Franchises.findOne({ 'owner.email': email.toLowerCase() });
         if (existingEmail) {
             return res.status(400).json({ message: "This email is already registered." });
         }
 
-        // Hash the password
+        const existingPhone = await Franchises.findOne({ 'owner.phone': phone });
+        if (existingPhone) {
+            return res.status(400).json({ message: "This phone number is already registered." });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create and save the new franchise
+        // 3. Construct the document to match your Mongoose nesting requirements exactly
         const newFranchise = new Franchises({
-            fullName,
-            email,
-            phone,
-            address,
-            note,
-            password: hashedPassword, // Fixed the typo here
+            brandName,
+            owner: {
+                firstName,
+                lastName,
+                email,
+                phone,
+                taxId
+            },
+            businessDetails: {
+                legalName,
+                tradeName,
+                incorporationType
+            },
+            location: {
+                addressLine1,
+                addressLine2,
+                city,
+                state,
+                postalCode,
+                country,
+                coordinates: {
+                    type: 'Point',
+                    coordinates: [longitude, latitude] // Mongo expects [longitude, latitude]
+                }
+            },
+            agreement: {
+                signedDate,
+                expiryDate,
+                initialFeePaid,
+                royaltyPercentage,
+                marketingFeePercentage,
+                contractDocumentUrl
+            },
+            password: hashedPassword,
+            notes
+            // status defaults automatically to 'Applied' via the Mongoose schema design
         });
 
+        // 4. Save to MongoDB
         await newFranchise.save();
 
-        // Generate token and set cookies
+        // 5. Generate Cookie tokens
         try {
             const franchiseToken = await createTokenAndSaveCookiesForFranchise(newFranchise._id, email, res);
+            
+            // Convert to clean JSON and strip password security string out
+            const franchiseResponse = newFranchise.toObject();
+            delete franchiseResponse.password;
+
             return res.status(201).json({
-                message: "Franchise registered successfully", newFranchise, franchiseToken
+                message: "Franchise registered successfully", 
+                franchise: franchiseResponse, 
+                franchiseToken
             });
         } catch (tokenError) {
-            console.error("Token creation error:", tokenError);
-            return res.status(500).json({ error: "Token creation failed" });
+            console.error("Token generation error context:", tokenError);
+            return res.status(500).json({ error: "Franchise saved, but token configuration failed." });
         }
     } catch (error) {
-        console.error("Error during registration:", error);
+        console.error("Error during registration process:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
-
 
 export const franchise_login = async (req, res) => {
     const { email, password } = req.body
@@ -125,6 +157,19 @@ export const franchise_logout = async (req, res) => {
     }
 };
 
+export const getAllFranchiseByStatus = async(req, res) => {
+    try {
+        const { status } = req.params;
+        const franchises = await Franchises.find({ status });
+        return res.status(200).json({
+            message: "All franchises by status are retrive successfully.",
+            data: franchises
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error. "})
+    }
+}
 
 export const getAll_Franchise = async(req, res) => {
     try {
@@ -140,5 +185,21 @@ export const getAll_Franchise = async(req, res) => {
         console.error("Error retrieving franchises", error);
         return res.status(500).json({ message: "Internal server error. "})
         
+    }
+}
+
+export const franchiseStatusUpdate = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const franchise = await Franchises.findByIdAndUpdate(id, { status }, { new: true });
+        return res.status(200).json({
+            message: "Franchise status updated successfully.",
+            data: franchise
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error. "})
     }
 }

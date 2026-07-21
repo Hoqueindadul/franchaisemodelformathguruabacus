@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdSearch, MdClear } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../../../context/AuthProvider";
 
@@ -7,6 +7,7 @@ export default function AllStudents() {
   const { students, fetchAllStudents, deleteStudent } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch students on mount
   useEffect(() => {
@@ -42,6 +43,14 @@ export default function AllStudents() {
       toast.error("Failed to delete student records.");
     }
   };
+
+  // Filter students based on search query (matches name or branch)
+  const filteredStudents = students.filter((student) => {
+    const name = student.studentName?.toLowerCase() || "";
+    const branch = student.branch?.toLowerCase() || "general core";
+    const query = searchQuery.toLowerCase();
+    return name.includes(query) || branch.includes(query);
+  });
 
   return (
     <div className="container-fluid py-4" style={{ maxWidth: "1200px" }}>
@@ -114,10 +123,52 @@ export default function AllStudents() {
           border-radius: 16px;
           border: 1px dashed #e2e8f0;
         }
+        .search-container {
+          position: relative;
+          max-width: 400px;
+          width: 100%;
+        }
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #94a3b8;
+        }
+        .clear-icon-btn {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          color: #94a3b8;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .clear-icon-btn:hover {
+          color: #64748b;
+        }
+        .search-input {
+          padding-left: 40px !important;
+          padding-right: 36px !important;
+          border-radius: 10px;
+          border: 1px solid #cbd5e1;
+          font-size: 0.9rem;
+          height: 42px;
+          transition: all 0.2s;
+        }
+        .search-input:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
       `}</style>
 
       {/* Header Metric Bar */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
         <div>
           <h3 className="fw-bold text-dark mb-1">All Enrolled Students</h3>
           <p className="text-muted small mb-0">
@@ -127,10 +178,10 @@ export default function AllStudents() {
         {!loading && students.length > 0 && (
           <div className="bg-white border rounded-3 px-3 py-2 shadow-sm d-flex align-items-center">
             <span className="text-secondary small fw-medium me-2">
-              Total Directory:
+              {searchQuery ? "Matches:" : "Total Directory:"}
             </span>
             <span className="badge bg-primary rounded-pill px-2.5 py-1.5 fw-semibold">
-              {students.length}
+              {searchQuery ? filteredStudents.length : students.length}
             </span>
           </div>
         )}
@@ -142,6 +193,31 @@ export default function AllStudents() {
           role="alert"
         >
           <span className="small fw-medium">{error}</span>
+        </div>
+      )}
+
+      {/* Search Input Bar (Shown only when there are base records available) */}
+      {!loading && students.length > 0 && (
+        <div className="mb-4 d-flex justify-content-start">
+          <div className="search-container">
+            <MdSearch size={20} className="search-icon" />
+            <input
+              type="text"
+              className="form-control search-input"
+              placeholder="Search by student name or branch..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button
+                className="clear-icon-btn"
+                onClick={() => setSearchQuery("")}
+                title="Clear search"
+              >
+                <MdClear size={18} />
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -168,76 +244,93 @@ export default function AllStudents() {
           </div>
         </div>
       ) : students.length > 0 ? (
-        /* Data Presentation Layout Table Card */
-        <div className="custom-card">
-          <div className="table-responsive">
-            <table className="table custom-table mb-0">
-              <thead>
-                <tr>
-                  <th>Student Name</th>
-                  <th>Assigned Branch</th>
-                  <th>Admission Date</th>
-                  <th className="text-end">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.map((student) => (
-                  <tr key={student._id}>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <div
-                          className="rounded-circle bg-light d-flex align-items-center justify-content-center fw-bold text-primary me-3 shadow-sm"
-                          style={{
-                            width: "38px",
-                            height: "38px",
-                            minWidth: "38px",
-                            fontSize: "0.9rem",
-                            backgroundColor: "#f0fdf4",
-                          }}
-                        >
-                          {student.studentName
-                            ? student.studentName.charAt(0).toUpperCase()
-                            : "?"}
+        filteredStudents.length > 0 ? (
+          /* Data Presentation Layout Table Card */
+          <div className="custom-card">
+            <div className="table-responsive">
+              <table className="table custom-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Assigned Branch</th>
+                    <th>Admission Date</th>
+                    <th className="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStudents.map((student) => (
+                    <tr key={student._id}>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div
+                            className="rounded-circle bg-light d-flex align-items-center justify-content-center fw-bold text-primary me-3 shadow-sm"
+                            style={{
+                              width: "38px",
+                              height: "38px",
+                              minWidth: "38px",
+                              fontSize: "0.9rem",
+                              backgroundColor: "#f0fdf4",
+                            }}
+                          >
+                            {student.studentName
+                              ? student.studentName.charAt(0).toUpperCase()
+                              : "?"}
+                          </div>
+                          <span className="fw-semibold text-dark">
+                            {student.studentName}
+                          </span>
                         </div>
-                        <span className="fw-semibold text-dark">
-                          {student.studentName}
+                      </td>
+                      <td>
+                        <span className="badge-branch">
+                          {student.branch || "General Core"}
                         </span>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge-branch">
-                        {student.branch || "General Core"}
-                      </span>
-                    </td>
-                    <td>
-                      <span className="text-secondary">
-                        {student.addmissionDate
-                          ? new Date(student.addmissionDate).toLocaleDateString(
-                              "en-US",
-                              {
+                      </td>
+                      <td>
+                        <span className="text-secondary">
+                          {student.addmissionDate
+                            ? new Date(
+                                student.addmissionDate,
+                              ).toLocaleDateString("en-US", {
                                 year: "numeric",
                                 month: "short",
                                 day: "numeric",
-                              },
-                            )
-                          : "Pending Entry"}
-                      </span>
-                    </td>
-                    <td className="text-end">
-                      <button
-                        className="btn btn-action-delete"
-                        onClick={() => handleDelete(student._id)}
-                        title="Delete Profile Entry"
-                      >
-                        <MdDelete size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                              })
+                            : "Pending Entry"}
+                        </span>
+                      </td>
+                      <td className="text-end">
+                        <button
+                          className="btn btn-action-delete"
+                          onClick={() => handleDelete(student._id)}
+                          title="Delete Profile Entry"
+                        >
+                          <MdDelete size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        ) : (
+          /* Zero Results Search State */
+          <div className="empty-state">
+            <div className="text-muted mb-3" style={{ fontSize: "2.5rem" }}>
+              🔍
+            </div>
+            <h5 className="fw-semibold text-dark mb-1">No Matching Results</h5>
+            <p
+              className="text-muted small mx-auto mb-0"
+              style={{ maxWidth: "340px" }}
+            >
+              We couldn't find any student matching "
+              <strong>{searchQuery}</strong>". Check your spelling or clear the
+              filter.
+            </p>
+          </div>
+        )
       ) : (
         /* Contemporary Empty Workspace State */
         <div className="empty-state">
