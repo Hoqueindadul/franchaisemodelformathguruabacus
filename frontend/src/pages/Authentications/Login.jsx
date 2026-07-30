@@ -54,6 +54,7 @@ export default function Login() {
       else if (role === "student") navigate("/student-dashboard");
       else if (role === "guest") navigate("/");
     } catch (error) {
+      console.log(error.message);
       toast.error(
         error.response?.data?.message ||
           "Invalid credentials. Please try again.",

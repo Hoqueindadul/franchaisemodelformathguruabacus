@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = async ({ email, password, role }) => {
-    await axiosInstance.post("/users/login", {
+    const response = await axiosInstance.post("/users/login", {
       email,
       password,
       role,
@@ -138,6 +138,7 @@ export const AuthProvider = ({ children }) => {
     await fetchCourses();
     await fetchAllStudents();
     await fetchEnrolledCourses();
+    return response.data;
   };
 
   // Register function

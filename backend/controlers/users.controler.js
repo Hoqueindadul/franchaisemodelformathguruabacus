@@ -129,10 +129,7 @@ export const login = async (req, res) => {
       role: user.role,
     };
 
-    res.status(200).json({
-      message: "User logged in successfully.",
-      user: userData,
-    });
+    res.status(200).json({ message: "User logged in successfully." });
   } catch (error) {
     console.error("Login Error:", error);
     return res.status(500).json({ error: "Internal server error" });
