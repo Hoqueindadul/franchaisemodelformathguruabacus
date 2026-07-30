@@ -2,25 +2,23 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { currentConfig } from "../../utils";
 import {
   FaAngleLeft,
   FaEye,
   FaEyeSlash,
   FaLock,
   FaEnvelope,
-  FaUserShield,
   FaPhone,
   FaUser,
 } from "react-icons/fa6";
 
-const API_URL = currentConfig.API_URL;
+import { useAuth } from "../../context/AuthProvider";
 
 export default function Register() {
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    role: "",
     phone: "",
     email: "",
     password: "",
@@ -42,13 +40,6 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
 
-    const validRoles = ["admin", "franchise", "student"];
-    if (!validRoles.includes(formData.role)) {
-      toast.error("Invalid role selected.");
-      setLoading(false);
-      return;
-    }
-
     const cleanedPhone = formData.phone.replace(/\D/g, "");
     if (cleanedPhone.length !== 10) {
       toast.error("Phone number must be exactly 10 digits.");
@@ -57,24 +48,13 @@ export default function Register() {
     }
 
     try {
-      const response = await axios.post(
-        `${API_URL}/users/register`,
-        { ...formData, phone: cleanedPhone },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        },
-      );
-
-      toast.success(response.data.message || "User registered successfully.");
-      localStorage.setItem("firstName", formData.firstName);
+      const data = await register({ ...formData, phone: cleanedPhone });
+      console.log(data);
+      toast.success(data.message);
 
       setFormData({
         firstName: "",
         lastName: "",
-        role: "",
         phone: "",
         email: "",
         password: "",
@@ -84,7 +64,7 @@ export default function Register() {
     } catch (error) {
       console.error(
         "Registration Error:",
-        error.response?.data || error.message,
+        error.response?.data?.message || error.message,
       );
       toast.error(
         error.response?.data?.message || "An unexpected error occurred.",
@@ -190,34 +170,6 @@ export default function Register() {
                         disabled={loading}
                       />
                     </div>
-                  </div>
-                </div>
-
-                {/* Role Workspace Selection */}
-                <div className="mb-3">
-                  <label className="form-label small fw-semibold text-secondary">
-                    Select Account Workspace Role
-                  </label>
-                  <div className="input-group border rounded-3 overflow-hidden bg-light">
-                    <span className="input-group-text bg-transparent border-0 text-muted ps-3 pe-2">
-                      <FaUserShield size={16} />
-                    </span>
-                    <select
-                      name="role"
-                      value={formData.role}
-                      onChange={handleChange}
-                      className="form-select bg-transparent border-0 ps-2 py-2.5 shadow-none text-dark"
-                      required
-                      disabled={loading}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <option value="" disabled>
-                        Choose your role...
-                      </option>
-                      <option value="admin">Admin Dashboard</option>
-                      <option value="franchise">Franchise Portal</option>
-                      <option value="student">Student Portal</option>
-                    </select>
                   </div>
                 </div>
 

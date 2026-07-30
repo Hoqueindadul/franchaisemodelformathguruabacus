@@ -23,19 +23,17 @@ import toast from "react-hot-toast";
 import OffcanvasMenu from "./Offcanvusmenubar";
 
 function NavBar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, userRole, user } = useAuth();
   const [firstInitial, setFirstInitial] = useState("U");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedStudent = JSON.parse(localStorage.getItem("student"));
-    if (storedStudent?.firstName) {
-      setFirstInitial(storedStudent.firstName.charAt(0).toUpperCase());
+    if (user?.firstName) {
+      setFirstInitial(user.firstName.charAt(0).toUpperCase());
     } else {
       setFirstInitial("U");
     }
-  }, [isAuthenticated]);
-
+  }, [user, isAuthenticated]);
   const handleLogout = () => {
     logout();
     toast.success("Logout Successfully");
@@ -269,13 +267,15 @@ function NavBar() {
                     style={{ minWidth: "170px" }}
                   >
                     {/* Added Dashboard Item */}
-                    <Dropdown.Item
-                      as={Link}
-                      to="/dashboard" // Update this path if your route relies on a specific role like /admin/dashboard
-                      className="py-2 px-3 rounded-2 text-secondary d-flex align-items-center gap-2 small"
-                    >
-                      <FaThLarge className="opacity-75" /> Dashboard
-                    </Dropdown.Item>
+                    {userRole !== "guest" && (
+                      <Dropdown.Item
+                        as={Link}
+                        to="/dashboard" // Update this path if your route relies on a specific role like /admin/dashboard
+                        className="py-2 px-3 rounded-2 text-secondary d-flex align-items-center gap-2 small"
+                      >
+                        <FaThLarge className="opacity-75" /> Dashboard
+                      </Dropdown.Item>
+                    )}
 
                     <Dropdown.Item
                       as={Link}

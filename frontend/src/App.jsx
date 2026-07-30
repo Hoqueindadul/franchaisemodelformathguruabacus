@@ -52,6 +52,9 @@ const DashboardOverview = lazy(
 const ControlPanel = lazy(
   () => import("./pages/dashboards/components/admin/controlPanel/ControlPanel"),
 );
+const Franchises = lazy(
+  () => import("./pages/dashboards/components/admin/franchises/Franchises"),
+);
 const AllBranches = lazy(
   () => import("./pages/dashboards/components/admin/branch/AllBranches"),
 );
@@ -237,6 +240,7 @@ function App() {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardOverview />} />
             <Route path="courses" element={<AllCourse />} />
+            <Route path="franchises" element={<Franchises />} />
             <Route path="students" element={<AllStudents />} />
             <Route path="admissions" element={<StudentAdmission />} />
             <Route path="enrolled" element={<EnrolledStudents />} />

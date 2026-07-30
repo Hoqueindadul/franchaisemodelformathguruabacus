@@ -3,16 +3,10 @@ import React, {
   useState,
   useContext,
   useEffect,
-  useRef,
   useCallback,
 } from "react";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { currentConfig } from "../utils";
+import axiosInstance from "../utils/axiosInstance";
 
-const API_URL = currentConfig.API_URL;
-
-axios.defaults.withCredentials = true;
 // Create Context
 const AuthContext = createContext();
 
@@ -22,39 +16,27 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [user, setUser] = useState(null);
+
   const [courses, setCourses] = useState([]);
+  const [franchiseeCenters, setFranchiseeCenters] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [students, setStudents] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]); // New state for enrolled courses
-  const logoutTimer = useRef(null);
-  const inactivityTimer = useRef(null);
+
   // Check authentication status
-  const checkAuthStatus = useCallback(() => {
-    const token = localStorage.getItem("jwt");
-    const storedUser = localStorage.getItem("student");
-
-    if (token && storedUser) {
-      try {
-        const decoded = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-
-        if (decoded.exp < currentTime) {
-          logout();
-        } else {
-          setIsAuthenticated(true);
-          setUserRole(JSON.parse(storedUser).role);
-          setAutoLogout(decoded.exp - currentTime);
-          startInactivityTimer();
-        }
-      } catch (error) {
-        console.error("Invalid token:", error);
-        logout();
-      }
-    } else {
+  const checkAuthStatus = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get("/users/profile");
+      setIsAuthenticated(true);
+      setUser(response.data);
+      setUserRole(response.data.role);
+    } catch (error) {
       setIsAuthenticated(false);
       setUserRole(null);
-      setCourses([]);
+
       setStudents([]);
+      setCourses([]);
       setEnrolledCourses([]);
     }
   }, []);
@@ -63,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   const fetchCourses = useCallback(async () => {
     try {
       setLoadingCourses(true); // Start loading state before network trip
-      const response = await axios.get(`${API_URL}/courses/allCourse`);
+      const response = await axiosInstance.get(`/courses/allCourse`);
       const targetData = response.data?.courses || response.data;
 
       if (targetData && Array.isArray(targetData)) {
@@ -83,8 +65,8 @@ export const AuthProvider = ({ children }) => {
   // Fetch all students
   const fetchAllStudents = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/admission/getAllAdmitedStudents`,
+      const response = await axiosInstance.get(
+        `/admission/getAllAdmitedStudents`,
       );
       if (Array.isArray(response.data)) {
         setStudents(response.data);
@@ -100,35 +82,16 @@ export const AuthProvider = ({ children }) => {
 
   // Fetch enrolled courses for the logged-in user
   const fetchEnrolledCourses = useCallback(async () => {
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-      setEnrolledCourses([]);
-      return;
-    }
-
     try {
-      const decoded = jwtDecode(token); // Extract user info from JWT
-      const userId = decoded.id; // Ensure this matches the backend user ID field
-
-      if (!userId) {
-        console.error("User ID missing from token.");
-        setEnrolledCourses([]);
-        return;
-      }
-
-      const response = await axios.get(
-        `${API_URL}/enrollment/user-courses/${userId}`,
-      );
+      const response = await axiosInstance.get("/enrollment/my-courses");
 
       if (Array.isArray(response.data)) {
         setEnrolledCourses(response.data);
       } else {
-        console.error("Invalid enrolled courses data format:", response.data);
         setEnrolledCourses([]);
       }
     } catch (error) {
-      console.error("Fetch Enrolled Courses Error:", error);
+      console.error(error);
       setEnrolledCourses([]);
     }
   }, []);
@@ -139,8 +102,8 @@ export const AuthProvider = ({ children }) => {
       return;
 
     try {
-      await axios.delete(
-        `${API_URL}/admission/deleteAdmitedStudent/${studentId}`,
+      await axiosInstance.delete(
+        `/admission/deleteAdmitedStudent/${studentId}`,
       );
       setStudents((prevStudents) =>
         prevStudents.filter((student) => student._id !== studentId),
@@ -148,50 +111,6 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Delete Student Error:", error);
     }
-  };
-
-  // Auto logout when token expires
-  const setAutoLogout = (seconds) => {
-    if (logoutTimer.current) clearTimeout(logoutTimer.current);
-    logoutTimer.current = setTimeout(() => {
-      logout();
-      alert("Session expired! Please log in again.");
-    }, seconds * 1000);
-  };
-
-  // Start inactivity timer (5 min)
-  const startInactivityTimer = () => {
-    if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-    inactivityTimer.current = setTimeout(
-      () => {
-        logout();
-        alert("Logged out due to inactivity.");
-      },
-      5 * 60 * 1000,
-    );
-
-    document.addEventListener("mousemove", resetInactivityTimer);
-    document.addEventListener("keydown", resetInactivityTimer);
-    document.addEventListener("click", resetInactivityTimer);
-  };
-
-  // Reset inactivity timer on activity
-  const resetInactivityTimer = () => {
-    if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-    inactivityTimer.current = setTimeout(
-      () => {
-        logout();
-        alert("Logged out due to inactivity.");
-      },
-      10 * 60 * 1000,
-    ); // 10 min
-  };
-
-  // Remove inactivity listeners on logout
-  const clearInactivityListeners = () => {
-    document.removeEventListener("mousemove", resetInactivityTimer);
-    document.removeEventListener("keydown", resetInactivityTimer);
-    document.removeEventListener("click", resetInactivityTimer);
   };
 
   useEffect(() => {
@@ -207,38 +126,63 @@ export const AuthProvider = ({ children }) => {
   }, [isAuthenticated, fetchCourses, fetchAllStudents, fetchEnrolledCourses]);
 
   // Login function
-  const login = (token, student) => {
-    localStorage.setItem("jwt", token);
-    localStorage.setItem("student", JSON.stringify(student));
+  const login = async ({ email, password, role }) => {
+    await axiosInstance.post("/users/login", {
+      email,
+      password,
+      role,
+    });
 
-    try {
-      const decoded = jwtDecode(token);
-      setIsAuthenticated(true);
-      setUserRole(student.role);
-      fetchCourses();
-      fetchAllStudents();
-      fetchEnrolledCourses(); // Fetch enrolled courses on login
-      setAutoLogout(decoded.exp - Date.now() / 1000);
-      startInactivityTimer();
-    } catch (error) {
-      console.error("Login Error:", error);
-      logout();
-    }
+    await checkAuthStatus();
+
+    await fetchCourses();
+    await fetchAllStudents();
+    await fetchEnrolledCourses();
   };
 
+  // Register function
+  const register = async ({ firstName, lastName, phone, email, password }) => {
+    const response = await axiosInstance.post("/users/register", {
+      firstName,
+      lastName,
+      phone,
+      email,
+      password,
+    });
+    return response.data;
+  };
   // Logout function
-  const logout = () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("student");
+  const logout = async () => {
+    try {
+      await axiosInstance.get("/users/logout");
+    } catch (err) {
+      console.error(err);
+    }
+
     setIsAuthenticated(false);
     setUserRole(null);
-    setCourses([]);
-    setStudents([]);
-    setEnrolledCourses([]);
-    clearInactivityListeners();
 
-    if (logoutTimer.current) clearTimeout(logoutTimer.current);
-    if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    setStudents([]);
+    setCourses([]);
+    setEnrolledCourses([]);
+  };
+  const fetchFranchiseeCenters = async () => {
+    try {
+      const response = await axiosInstance.get("/franchises/getAllFranchises");
+
+      const rawData = response.data;
+      const arrayData = Array.isArray(rawData)
+        ? rawData
+        : rawData?.data || rawData?.franchises || [];
+
+      // 3. Set the state
+      setFranchiseeCenters(arrayData);
+
+      return response.data;
+    } catch (err) {
+      console.log("Something went wrong when fetching the data", err);
+      setFranchiseeCenters([]);
+    }
   };
 
   return (
@@ -246,12 +190,16 @@ export const AuthProvider = ({ children }) => {
       value={{
         setIsAuthenticated,
         isAuthenticated,
+        franchiseeCenters,
+        fetchFranchiseeCenters,
+        user,
         userRole,
         students,
         courses,
         loadingCourses,
         enrolledCourses, // Provide enrolled courses to the context
         login,
+        register,
         logout,
         fetchCourses,
         fetchAllStudents,

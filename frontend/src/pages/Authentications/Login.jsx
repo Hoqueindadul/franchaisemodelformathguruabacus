@@ -1,9 +1,7 @@
 import { useAuth } from "../../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
-import { currentConfig } from "../../utils";
 import {
   FaAngleLeft,
   FaEye,
@@ -12,8 +10,6 @@ import {
   FaEnvelope,
   FaUserShield,
 } from "react-icons/fa6";
-
-const API_URL = currentConfig.API_URL;
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -47,23 +43,17 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const { data } = await axios.post(`${API_URL}/users/login`, formData, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const { token, student } = data;
-      login(token, student);
+      const data = await login(formData);
       setIsAuthenticated(true);
 
-      toast.success(data.message || "Welcome back!");
+      toast.success(data.message || "Logged in successfully");
       setFormData({ role: "", email: "", password: "" });
 
       if (role === "admin") navigate("/admin-dashboard");
       else if (role === "franchise") navigate("/franchise-dashboard");
       else if (role === "student") navigate("/student-dashboard");
-      else navigate("/");
+      else if (role === "guest") navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
       toast.error(
         error.response?.data?.message ||
           "Invalid credentials. Please try again.",
@@ -152,9 +142,10 @@ export default function Login() {
                       <option value="" disabled>
                         Select your workspace role
                       </option>
-                      <option value="admin">Admin Dashboard</option>
-                      <option value="franchise">Franchise Portal</option>
-                      <option value="student">Student Portal</option>
+                      <option value="admin">Admin</option>
+                      <option value="franchise">Franchise</option>
+                      <option value="student">Student</option>
+                      <option value="guest">Guest</option>
                     </select>
                   </div>
                 </div>

@@ -6,7 +6,6 @@
 
 import {
   FaThLarge, // LayoutDashboard
-  FaBriefcase, // Briefcase
   FaBookOpen, // BookOpen / Courses
   FaGraduationCap, // GraduationCap
   FaDollarSign, // DollarSign / Financials
@@ -29,6 +28,7 @@ export const navigationConfig = {
   admin: [
     { label: "Dashboard", path: "/admin/dashboard", icon: FaThLarge },
     { label: "Control Panel", path: "/admin/control-panel", icon: FaCog },
+    { label: "Franchises", path: "/admin/franchises", icon: FaUsers },
     { label: "Courses & Curriculum", path: "/admin/courses", icon: FaBookOpen },
     {
       label: "Global Students",
