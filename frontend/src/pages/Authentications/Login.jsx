@@ -53,12 +53,14 @@ export default function Login() {
       else if (role === "franchise") navigate("/franchise-dashboard");
       else if (role === "student") navigate("/student-dashboard");
       else if (role === "guest") navigate("/");
-    } catch (error) {
-      console.log(error.message);
-      toast.error(
-        error.response?.data?.message ||
-          "Invalid credentials. Please try again.",
-      );
+    } catch (e) {
+      console.log(e);
+      const errorMessage =
+        e.data?.message ||
+        e.data?.error ||
+        "Invalid credentials. Please try again.";
+
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
