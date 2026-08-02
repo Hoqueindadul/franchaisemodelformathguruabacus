@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import axios from "axios";
 import {
   FaThLarge,
   FaUserPlus,
@@ -11,72 +12,186 @@ import {
   FaBookOpen,
   FaSlidersH,
   FaMapMarkerAlt,
-  FaSave,
-  FaCheckCircle,
-  FaBan,
+  FaPlus,
+  FaSpinner,
 } from "react-icons/fa";
 
+import { currentConfig } from "../../../../../utils";
+
+const API_URL = currentConfig.API_URL;
+
+const INITIAL_MODULES_CONFIG = {
+  "/franchise/dashboard": {
+    label: "Dashboard",
+    enabled: false,
+    icon: FaThLarge,
+    color: "#0d6efd",
+  },
+  "/franchise/admissions": {
+    label: "Admissions",
+    enabled: false,
+    icon: FaUserPlus,
+    color: "#198754",
+  },
+  "/franchise/students": {
+    label: "Students",
+    enabled: false,
+    icon: FaUsers,
+    color: "#0dcaf0",
+  },
+  "/franchise/batches": {
+    label: "Batches",
+    enabled: false,
+    icon: FaCalendarAlt,
+    color: "#fd7e14",
+  },
+  "/franchise/staff": {
+    label: "Staff",
+    enabled: false,
+    icon: FaAward,
+    color: "#6f42c1",
+  },
+  "/franchise/billing": {
+    label: "Finance",
+    enabled: false,
+    icon: FaDollarSign,
+    color: "#ffc107",
+  },
+  "/franchise/branches": {
+    label: "Branches",
+    enabled: false,
+    icon: FaCodeBranch,
+    color: "#d63384",
+  },
+  "/franchise/courses": {
+    label: "Courses",
+    enabled: false,
+    icon: FaBookOpen,
+    color: "#20c997",
+  },
+};
+
 export default function ControlPanel() {
-  const [selectedBranch, setSelectedBranch] = useState("all");
+  const [selectedTarget, setSelectedTarget] = useState("");
+  const [franchiseData, setFranchiseData] = useState([]);
+  const [fetchingFranchises, setFetchingFranchises] = useState(false);
+  const [loadingConfig, setLoadingConfig] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const branchesList = [
-    { id: "all", name: "Global Hierarchy (All Branches)" },
-    { id: "br-north", name: "North Campus - Regional Main Hub" },
-    { id: "br-east", name: "East Side Corporate Node" },
-    { id: "br-west", name: "West Tech Placement Ground" },
-  ];
+  const [franchiseFeatures, setFranchiseFeatures] = useState(
+    INITIAL_MODULES_CONFIG,
+  );
 
-  // ─── TARGET PORTAL FEATURES STATE ──────────────────────────
-  const [franchiseFeatures, setFranchiseFeatures] = useState({
-    "/franchise/dashboard": {
-      label: "Main Dashboard",
-      enabled: true,
-      icon: FaThLarge,
-      desc: "Primary administrative overview metrics, system graphs, and priority alerts.",
-    },
-    "/franchise/admissions": {
-      label: "Admissions Engine",
-      enabled: true,
-      icon: FaUserPlus,
-      desc: "Onboard candidates, manage registration queues, and review application forms.",
-    },
-    "/franchise/students": {
-      label: "Student Directory",
-      enabled: true,
-      icon: FaUsers,
-      desc: "Deep profile history tracking, attendance matrix rosters, and student lookups.",
-    },
-    "/franchise/batches": {
-      label: "Batches & Timelines",
-      enabled: true,
-      icon: FaCalendarAlt,
-      desc: "Design master classroom routines, allocate shifts, and map batch cohorts.",
-    },
-    "/franchise/staff": {
-      label: "Staff & Operations",
-      enabled: true,
-      icon: FaAward,
-      desc: "Regulate operational worker logs, assignment permissions, and trainer ratings.",
-    },
-    "/franchise/billing": {
-      label: "Financial Ledgers",
-      enabled: true,
-      icon: FaDollarSign,
-      desc: "Real-time fee receipts processing, transaction books, and tax invoices.",
-    },
-    "/franchise/branches": {
-      label: "Sub-Branch Controller",
-      enabled: true,
-      icon: FaCodeBranch,
-      desc: "Oversee affiliate tracking nodes linked directly to this micro-license.",
-    },
-    "/franchise/courses": {
-      label: "Curriculum Allocator",
-      enabled: true,
-      icon: FaBookOpen,
-      desc: "Activate or restrict master syllabus courses and update module prices.",
-    },
-  });
+  // 1. Fetch Franchises
+  useEffect(() => {
+    const fetchFranchises = async () => {
+      setFetchingFranchises(true);
+      try {
+        const response = await axios.get(
+          `${API_URL}/franchises/getAllFranchises`,
+        );
+        const franchises = response.data?.data || response.data || [];
+        setFranchiseData(franchises);
+      } catch (error) {
+        console.error("Error fetching franchises:", error);
+        toast.error("Failed to load franchises list.");
+      } finally {
+        setFetchingFranchises(false);
+      }
+    };
+
+    fetchFranchises();
+  }, []);
+
+  // Target Metadata Helper
+  const getTargetMetadata = (targetId) => {
+    if (!targetId) return null;
+
+    for (const franchise of franchiseData) {
+      const fId = franchise._id || franchise.id;
+
+      if (fId === targetId) {
+        return {
+          targetId: fId,
+          targetType: "franchise",
+          franchiseId: fId,
+          branchId: null,
+        };
+      }
+
+      if (Array.isArray(franchise.branches)) {
+        const branch = franchise.branches.find(
+          (b) => (b._id || b.id) === targetId,
+        );
+        if (branch) {
+          const bId = branch._id || branch.id;
+          return {
+            targetId: bId,
+            targetType: "branch",
+            franchiseId: fId,
+            branchId: bId,
+          };
+        }
+      }
+    }
+    return null;
+  };
+
+  // -------------------------------------------------------------
+  // UPDATED: Fetch Existing Module Permissions Call
+  // -------------------------------------------------------------
+  const fetchModulePermissions = async (targetId) => {
+    if (!targetId) {
+      setFranchiseFeatures(INITIAL_MODULES_CONFIG);
+      return;
+    }
+
+    const meta = getTargetMetadata(targetId);
+    if (!meta) return;
+
+    setLoadingConfig(true);
+    try {
+      const response = await axios.get(
+        `${API_URL}/modules/${meta.targetType}/${meta.targetId}`,
+      );
+
+      const savedModules = response.data?.data?.modules;
+
+      if (savedModules && Array.isArray(savedModules)) {
+        setFranchiseFeatures((prev) => {
+          const updated = { ...INITIAL_MODULES_CONFIG };
+          savedModules.forEach((mod) => {
+            if (updated[mod.path]) {
+              updated[mod.path] = {
+                ...updated[mod.path],
+                enabled: mod.enabled,
+              };
+            }
+          });
+          return updated;
+        });
+
+        toast.success("Loaded existing permissions", { icon: "🏢" });
+      }
+    } catch (error) {
+      setFranchiseFeatures(INITIAL_MODULES_CONFIG);
+      if (error.response?.status === 404) {
+        toast("No permissions saved yet. Displaying default setup.", {
+          icon: "ℹ️",
+        });
+      } else {
+        toast.error("Failed to fetch module permissions.");
+      }
+    } finally {
+      setLoadingConfig(false);
+    }
+  };
+
+  const handleTargetChange = (e) => {
+    const value = e.target.value;
+    setSelectedTarget(value);
+    fetchModulePermissions(value);
+  };
 
   const toggleFeature = (targetPath) => {
     setFranchiseFeatures((prev) => ({
@@ -85,20 +200,45 @@ export default function ControlPanel() {
     }));
   };
 
-  const handleBranchChange = (e) => {
-    const branchId = e.target.value;
-    setSelectedBranch(branchId);
-    const branchName = branchesList.find((b) => b.id === branchId)?.name;
-    toast(`Active Profile: ${branchName}`, { icon: "🏢" });
-  };
+  // Create Module API Call (Untouched)
+  const handleCreateModule = async () => {
+    if (!selectedTarget) {
+      return toast.error("Please select a franchise or branch first!");
+    }
 
-  const handleSave = () => {
-    const branchName = branchesList.find((b) => b.id === selectedBranch)?.name;
-    console.log(
-      `Saving dynamic menu configuration for [${selectedBranch}]`,
-      franchiseFeatures,
+    const meta = getTargetMetadata(selectedTarget);
+    if (!meta) {
+      return toast.error("Invalid target selection.");
+    }
+
+    const modulesArray = Object.entries(franchiseFeatures).map(
+      ([path, data]) => ({
+        path,
+        moduleName: data.label,
+        enabled: data.enabled,
+      }),
     );
-    toast.success(`Access definitions applied smoothly to ${branchName}!`);
+
+    const payload = {
+      targetType: meta.targetType,
+      franchiseId: meta.franchiseId,
+      branchId: meta.branchId,
+      modules: modulesArray,
+    };
+
+    setSaving(true);
+    try {
+      const response = await axios.post(
+        `${API_URL}/modules/create-modules`,
+        payload,
+      );
+      toast.success(response.data?.message || "Module created successfully!");
+    } catch (error) {
+      console.error("Create Module Error:", error);
+      toast.error(error.response?.data?.message || "Failed to create module.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const totalEnabled = Object.values(franchiseFeatures).filter(
@@ -106,229 +246,169 @@ export default function ControlPanel() {
   ).length;
 
   return (
-    <div className="container-fluid py-5 bg-light-smooth min-vh-100">
-      {/* ── TOP HERO HEADER BAR ──────────────────────────────── */}
-      <div className="card border-0 rounded-4 shadow-sm mb-4 bg-white overflow-hidden position-relative">
-        <div className="accent-glow-strip"></div>
-        <div className="card-body p-4">
-          <div className="row align-items-center g-3">
-            <div className="col-12 col-md-8 d-flex align-items-center gap-3">
-              <div className="p-3 bg-dark text-white rounded-3 shadow-sm d-flex align-items-center justify-content-center">
-                <FaSlidersH size={24} className="spinning-hover" />
-              </div>
-              <div>
-                <h3 className="fw-black text-dark mb-1 tracking-tight">
-                  Branch Architecture Matrix
-                </h3>
-                <p className="text-muted mb-0 small">
-                  Restrict or instantiate core interface modules across specific
-                  workspace territories instantly.
-                </p>
-              </div>
+    <div className="container py-4 bg-light min-vh-100">
+      {/* HEADER BAR */}
+      <div className="card border-0 shadow-sm mb-4 bg-white">
+        <div className="card-body p-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div className="d-flex align-items-center gap-3">
+            <div className="p-2.5 bg-primary text-white rounded-3">
+              <FaSlidersH size={20} />
             </div>
-            <div className="col-12 col-md-4 d-flex justify-content-md-end">
-              <button
-                className="btn btn-dark fw-bold px-4 py-2.5 rounded-3 shadow transition-all hover-lift d-flex align-items-center gap-2"
-                onClick={handleSave}
-              >
-                <FaSave size={14} /> Commit Scope Matrix
-              </button>
+            <div>
+              <h4 className="fw-bold mb-0">Module Access Control</h4>
+              <p className="text-muted small mb-0">
+                Configure and create module access permissions.
+              </p>
             </div>
+          </div>
+
+          <div className="d-flex align-items-center gap-2">
+            <button
+              className="btn btn-primary fw-bold px-4 d-flex align-items-center gap-2"
+              onClick={handleCreateModule}
+              disabled={saving || !selectedTarget || loadingConfig}
+            >
+              {saving ? (
+                <FaSpinner className="spinner-border spinner-border-sm" />
+              ) : (
+                <FaPlus size={14} />
+              )}
+              {saving ? " Updating..." : "Update Modules"}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* ── WORKSPACE SELECTOR CARD ─────────────────────────── */}
-      <div className="card border-0 rounded-4 shadow-sm mb-4 bg-white p-4">
-        <div className="row align-items-center">
-          <div className="col-12 col-lg-6">
-            <label className="form-label small fw-bold text-uppercase tracking-wider text-muted mb-2">
-              Target Active Territory
+      {/* DROPDOWN & SUMMARY ROW */}
+      <div className="card border-0 shadow-sm mb-4 bg-white p-3">
+        <div className="row align-items-center g-3">
+          <div className="col-12 col-md-7">
+            <label className="form-label small fw-bold text-muted text-uppercase mb-1">
+              Select Franchise / Branch
             </label>
-            <div className="position-relative group-focus">
+            <div className="position-relative">
               <select
-                className="form-select form-select-lg border rounded-3 fw-bold text-dark ps-5 shadow-sm transition-all focus-ring-primary"
-                value={selectedBranch}
-                onChange={handleBranchChange}
-                style={{ fontSize: "1rem" }}
+                className="form-select ps-5 fw-medium"
+                value={selectedTarget}
+                onChange={handleTargetChange}
+                disabled={fetchingFranchises || loadingConfig}
               >
-                {branchesList.map((branch) => (
-                  <option key={branch.id} value={branch.id}>
-                    {branch.name}
-                  </option>
-                ))}
+                <option value="">
+                  {fetchingFranchises
+                    ? "Loading franchises..."
+                    : "-- Select Target --"}
+                </option>
+
+                {!fetchingFranchises &&
+                  franchiseData.map((franchise) => {
+                    const franchiseVal = franchise._id || franchise.id;
+                    return (
+                      <React.Fragment key={franchiseVal}>
+                        <option value={franchiseVal} className="fw-bold">
+                          🏢{" "}
+                          {franchise.businessDetails?.legalName ||
+                            "Unnamed Franchise"}
+                        </option>
+
+                        {Array.isArray(franchise.branches) &&
+                          franchise.branches.map((branch) => {
+                            const branchVal = branch._id || branch.id;
+                            return (
+                              <option key={branchVal} value={branchVal}>
+                                &nbsp;&nbsp;&nbsp;&nbsp;└─ 📍{" "}
+                                {branch.name ||
+                                  branch.branchName ||
+                                  "Unnamed Branch"}
+                              </option>
+                            );
+                          })}
+                      </React.Fragment>
+                    );
+                  })}
               </select>
-              <div className="position-absolute top-50 start-0 translate-middle-y ps-3 text-primary">
-                <FaMapMarkerAlt size={16} />
+              <div className="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                {fetchingFranchises ? (
+                  <FaSpinner className="spinner-border spinner-border-sm" />
+                ) : (
+                  <FaMapMarkerAlt size={15} />
+                )}
               </div>
             </div>
           </div>
-          <div className="col-12 col-lg-6 mt-3 mt-lg-0 d-flex justify-content-lg-end">
-            <div className="d-flex gap-3 text-center">
-              <div className="px-4 py-2 bg-light rounded-3 border">
-                <span className="d-block fw-black text-primary h4 mb-0">
-                  {totalEnabled}
-                </span>
-                <small
-                  className="text-muted font-monospace text-uppercase"
-                  style={{ fontSize: "0.65rem" }}
-                >
-                  Active Modules
-                </small>
-              </div>
-              <div className="px-4 py-2 bg-light rounded-3 border">
-                <span className="d-block fw-black text-secondary h4 mb-0">
-                  {Object.keys(franchiseFeatures).length - totalEnabled}
-                </span>
-                <small
-                  className="text-muted font-monospace text-uppercase"
-                  style={{ fontSize: "0.65rem" }}
-                >
-                  Suspended
-                </small>
-              </div>
-            </div>
+
+          <div className="col-12 col-md-5 d-flex justify-content-md-end gap-2">
+            <span className="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 fw-medium">
+              Enabled: {totalEnabled}
+            </span>
+            <span className="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 fw-medium">
+              Disabled: {Object.keys(franchiseFeatures).length - totalEnabled}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* ── GRID PATTERN LAYOUT ──────────────────────────────── */}
-      <div className="row g-3">
-        {Object.entries(franchiseFeatures).map(([path, data]) => {
-          const IconComponent = data.icon;
-          return (
-            <div className="col-12 col-md-6 col-xxl-4" key={path}>
-              <div
-                onClick={() => toggleFeature(path)}
-                className={`card h-100 border rounded-4 cursor-pointer transition-all item-card-interactive ${
-                  data.enabled
-                    ? "border-primary-subtle bg-white shadow-sm"
-                    : "border-light bg-light-muted opacity-75"
-                }`}
-              >
-                <div className="card-body p-3.5 d-flex flex-column justify-content-between">
-                  <div>
-                    {/* Upper Line Header */}
-                    <div className="d-flex align-items-center justify-content-between mb-2.5">
+      {/* MODULE CARDS LIST */}
+      <div className="card border-0 shadow-sm bg-white p-4">
+        <h6 className="fw-bold mb-3 text-dark">Available Modules</h6>
+        {loadingConfig ? (
+          <div className="text-center py-5">
+            <FaSpinner className="spinner-border text-primary mb-2" />
+            <p className="text-muted small">Loading permissions...</p>
+          </div>
+        ) : (
+          <div className="row g-3">
+            {Object.entries(franchiseFeatures).map(([path, data]) => {
+              const IconComponent = data.icon;
+              return (
+                <div key={path} className="col-12 col-lg-6">
+                  <div className="d-flex align-items-center justify-content-between p-3 border rounded-3 bg-white shadow-sm h-100">
+                    <div className="d-flex align-items-center gap-3">
                       <div
-                        className={`p-2.5 rounded-3 d-flex align-items-center justify-content-center transition-all ${
-                          data.enabled
-                            ? "bg-primary text-white shadow-sm"
-                            : "bg-secondary-subtle text-secondary"
-                        }`}
+                        className="p-2 rounded d-flex align-items-center justify-content-center"
+                        style={{
+                          backgroundColor: data.enabled
+                            ? `${data.color}18`
+                            : "#f8f9fa",
+                        }}
                       >
-                        <IconComponent size={18} />
+                        <IconComponent
+                          size={18}
+                          style={{
+                            color: data.enabled ? data.color : "#adb5bd",
+                          }}
+                        />
                       </div>
-
-                      {/* Styled Status Badge pill */}
                       <div>
-                        {data.enabled ? (
-                          <span className="badge-pill bg-success-soft text-success">
-                            <FaCheckCircle className="me-1" size={10} /> Active
-                          </span>
-                        ) : (
-                          <span className="badge-pill bg-secondary-soft text-muted">
-                            <FaBan className="me-1" size={10} /> Inactive
-                          </span>
-                        )}
+                        <span
+                          className={`fw-semibold d-block ${!data.enabled ? "text-muted" : ""}`}
+                        >
+                          {data.label}
+                        </span>
+                        <code className="text-muted small">{path}</code>
                       </div>
                     </div>
 
-                    {/* Metadata Content */}
-                    <h5
-                      className={`fw-bold mb-1 transition-all ${data.enabled ? "text-dark" : "text-muted text-decoration-line-through"}`}
-                    >
-                      {data.label}
-                    </h5>
-                    <p
-                      className="text-muted mb-3 line-clamp-2"
-                      style={{ fontSize: "0.825rem", lineHeight: "1.4" }}
-                    >
-                      {data.desc}
-                    </p>
-                  </div>
-
-                  {/* Footer Path Tag */}
-                  <div className="pt-2 border-top border-light d-flex justify-content-between align-items-center">
-                    <code
-                      className="text-muted font-monospace"
-                      style={{ fontSize: "0.725rem", opacity: 0.75 }}
-                    >
-                      {path}
-                    </code>
-                    <div
-                      className="form-check form-switch p-0 m-0 custom-switch-wrapper"
-                      onClick={(e) => e.stopPropagation()}
-                    >
+                    <div className="form-check form-switch m-0">
                       <input
-                        className="form-check-input ms-0 cursor-pointer"
+                        className="form-check-input"
                         type="checkbox"
                         role="switch"
                         checked={data.enabled}
                         onChange={() => toggleFeature(path)}
-                        style={{ width: "2.3em", height: "1.15em" }}
+                        style={{
+                          width: "2.2em",
+                          height: "1.1em",
+                          cursor: "pointer",
+                        }}
                       />
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        )}
       </div>
-
-      {/* CSS-in-JS style configurations for modern look */}
-      <style>{`
-        .bg-light-smooth { background-color: #f8fafc; }
-        .bg-light-muted { background-color: #f1f5f9; }
-        .fw-black { font-weight: 800; }
-        .tracking-tight { letter-spacing: -0.03em; }
-        .tracking-wider { letter-spacing: 0.06em; }
-        .cursor-pointer { cursor: pointer; }
-        .p-3.5 { padding: 1.15rem !important; }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;  
-          overflow: hidden;
-        }
-
-        /* Accent strip inside top hero bar */
-        .accent-glow-strip {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
-          background: linear-gradient(90deg, #0d6efd 0%, #0284c7 50%, #6366f1 100%);
-        }
-
-        /* Card interactivity transitions */
-        .transition-all { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .item-card-interactive:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.04) !important;
-          border-color: #cbd5e1 !important;
-        }
-
-        /* Micro pill tags styling */
-        .badge-pill {
-          display: inline-flex;
-          align-items: center;
-          padding: 0.25rem 0.65rem;
-          font-size: 0.75rem;
-          font-weight: 600;
-          border-radius: 50px;
-        }
-        .bg-success-soft { background-color: #e6f4ea; }
-        .bg-secondary-soft { background-color: #e2e8f0; }
-
-        /* Custom subtle focus style rules */
-        .focus-ring-primary:focus {
-          border-color: #86b7fe;
-          box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
-        }
-      `}</style>
     </div>
   );
 }

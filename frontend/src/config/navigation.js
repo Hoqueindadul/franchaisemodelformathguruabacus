@@ -1,9 +1,3 @@
-/**
- * Navigation Configuration
- * Maps each user role to its sidebar navigation items.
- * Icons use react-icons (already installed in the project).
- */
-
 import {
   FaThLarge, // LayoutDashboard
   FaBookOpen, // BookOpen / Courses
@@ -50,7 +44,7 @@ export const navigationConfig = {
   franchise: [
     { label: "Dashboard", path: "/franchise/dashboard", icon: FaThLarge },
     { label: "Admissions", path: "/franchise/admissions", icon: FaUserPlus },
-    { label: "Students Directory", path: "/franchise/students", icon: FaUsers },
+    { label: "Students", path: "/franchise/students", icon: FaUsers },
     {
       label: "Batches & Schedules",
       path: "/franchise/batches",
@@ -62,7 +56,7 @@ export const navigationConfig = {
       path: "/franchise/billing",
       icon: FaDollarSign,
     },
-    { label: "My Branches", path: "/franchise/branches", icon: FaCodeBranch },
+    { label: "Branches", path: "/franchise/branches", icon: FaCodeBranch },
     { label: "Courses", path: "/franchise/courses", icon: FaBookOpen },
   ],
 

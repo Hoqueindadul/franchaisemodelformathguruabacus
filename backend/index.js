@@ -12,7 +12,8 @@ import otpRoute from "./routes/otp.route.js";
 import enrollRoute from "./routes/courseEnrollment.route.js";
 import studentAdmissionRoute from "./routes/studentAdmission.route.js";
 import branchRoute from "./routes/branch.route.js";
-import productRoute from "./routes/products.route.js"; // Ensure this is correct
+import productRoute from "./routes/products.route.js";
+import moduleRoute from "./routes/modules.route.js";
 
 const app = express();
 dotenv.config();
@@ -58,6 +59,7 @@ app.use("/api/courses", courseRoute);
 app.use("/api/enrollcourse", enrollRoute);
 app.use("/api/admission", studentAdmissionRoute);
 app.use("/api/branches", branchRoute);
+app.use("/api/modules", moduleRoute);
 
 // Connect to database and start server
 connectDatabase(mongo_url)
